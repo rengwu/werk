@@ -3,7 +3,7 @@ import { join, resolve } from 'node:path';
 import type { Criteria } from '../../shared/profile.ts';
 
 const zoneTable = readFileSync(join(process.env.WERK_RESOURCES_DIR || resolve('resources'), 'geography/zone1970.tab'), 'utf8');
-const zones = zoneTable.split('\n').filter(line => line && !line.startsWith('#')).map(line => { const [countries,,zone] = line.split('\t'); return { countries: countries.split(','), zone }; });
+const zones = zoneTable.split(/\r?\n/).filter(line => line && !line.startsWith('#')).map(line => { const [countries,,zone] = line.split('\t'); return { countries: countries.split(','), zone: zone.trim() }; });
 export function offsetHours(zone: string, at = Date.now()) {
   const name = new Intl.DateTimeFormat('en', { timeZone: zone, timeZoneName: 'longOffset' }).formatToParts(at).find(p => p.type === 'timeZoneName')!.value;
   const match = /^GMT([+-])(\d{2}):(\d{2})$/.exec(name);
