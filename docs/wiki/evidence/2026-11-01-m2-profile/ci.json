@@ -1,0 +1,23 @@
+{
+  "conclusion": "success",
+  "databaseId": 41277590729,
+  "headSha": "5e9f923540de25a30a8ef746300faee5f84a37e7",
+  "jobs": [
+    {
+      "name": "build (macos-latest)",
+      "conclusion": "success",
+      "url": "https://github.com/rengwu/ununemploy/actions/runs/41277590729/job/124762793062"
+    },
+    {
+      "name": "build (windows-latest)",
+      "conclusion": "success",
+      "url": "https://github.com/rengwu/ununemploy/actions/runs/41277590729/job/124762793240"
+    },
+    {
+      "name": "release",
+      "conclusion": "skipped",
+      "url": "https://github.com/rengwu/ununemploy/actions/runs/41277590729/job/124763313676"
+    }
+  ],
+  "url": "https://github.com/rengwu/ununemploy/actions/runs/41277590729"
+}

@@ -39,3 +39,9 @@ node ../jstack/skills/verify-change/scripts/check-reports.mjs docs/wiki
 node docs/wiki/_build.mjs
 node docs/wiki/_build.mjs --check
 ```
+
+## Discovery fixtures
+
+`tests/discovery.test.ts` exercises the real SQLite pipeline and `tests/parsers.test.ts` preserves relevant archived parser regressions. The packaged driver `tests/discovery-smoke.ts` uses the same `WERK_EXE` command as the profile driver, with a test build. It seeds fictional profile/source prerequisites and records HTTP responses in its temporary directory. HTTP fixtures are unavailable in production builds.
+
+`node --experimental-strip-types scripts/check-live-discovery.ts` performs exactly one bounded Remotive scan against a fictional profile, reports counts/database size, and removes its temporary data. Use only when a live check is authorized.

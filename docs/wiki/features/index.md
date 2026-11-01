@@ -9,4 +9,6 @@ updated: 2026-11-01
 - [Profile and search criteria](profile.md) — FEAT-profile
 - [Assistant and ChatGPT connection](assistant.md) — FEAT-assistant
 
+- [Discovery and Inbox](discovery.md) — FEAT-discovery, FEAT-inbox
+
 The remaining rebuild scope is in the [handoff milestones](../journal/2026-11-01-werk-handoff.md#milestones).

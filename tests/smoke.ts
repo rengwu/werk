@@ -34,7 +34,7 @@ try {
   await page.waitForFunction(() => document.documentElement.dataset.mode === 'dark');
   await page.getByRole('tab', { name: 'Diagnostics' }).click();
   await page.getByTestId('diagnostic-fts5').filter({ hasText: 'Available' }).waitFor();
-  assert.equal(await page.getByTestId('diagnostic-schema').textContent(), '2');
+  assert.equal(await page.getByTestId('diagnostic-schema').textContent(), '3');
   assert.equal(await page.getByTestId('diagnostic-backend').textContent(), 'running');
   results.diagnostics = await page.locator('.diagnostics').innerText();
   await page.screenshot({ path: join(output, 'diagnostics-dark.png') });

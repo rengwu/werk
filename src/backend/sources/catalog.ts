@@ -1,0 +1,128 @@
+import type { Source } from "./types.ts";
+import { publicBoards, boardSourceDefaults } from "./boards/catalog.ts";
+export const discoverySources: Pick<
+  Source,
+  "name" | "type" | "identifier" | "enabled" | "requestLimit" | "intervalHours"
+>[] = [
+  ...Object.keys(publicBoards).map(boardSourceDefaults),
+  {
+    name: "Working Nomads",
+    type: "workingnomads",
+    identifier: "workingnomads",
+    requestLimit: 1,
+    intervalHours: 24,
+  },
+  {
+    name: "WordPress Jobs",
+    type: "rss",
+    identifier: "https://jobs.wordpress.net/feed/",
+    requestLimit: 1,
+    intervalHours: 24,
+  },
+  {
+    name: "RemoteJobs.com",
+    type: "rss",
+    identifier: "https://www.remotejobs.com/jobs.rss",
+    requestLimit: 1,
+    intervalHours: 24,
+  },
+  {
+    name: "VueJobs",
+    type: "rss",
+    identifier: "https://app.vuejobs.com/feed/posts",
+    requestLimit: 1,
+    intervalHours: 12,
+  },
+  {
+    name: "Himalayas",
+    type: "himalayas",
+    identifier: "profile",
+    requestLimit: 20,
+    intervalHours: 24,
+  },
+  {
+    name: "Remote OK",
+    type: "remoteok",
+    identifier: "remoteok",
+    requestLimit: 1,
+    intervalHours: 6,
+  },
+  {
+    name: "Remotive",
+    type: "remotive",
+    identifier: "remotive",
+    requestLimit: 1,
+    intervalHours: 12,
+  },
+  {
+    name: "4 Day Week",
+    type: "fourdayweek",
+    identifier: "engineering,product,design,data",
+    requestLimit: 4,
+    intervalHours: 12,
+  },
+  {
+    name: "We Work Remotely · Programming",
+    type: "rss",
+    identifier:
+      "https://weworkremotely.com/categories/remote-programming-jobs.rss",
+    requestLimit: 1,
+    intervalHours: 6,
+  },
+  {
+    name: "We Work Remotely · Design",
+    type: "rss",
+    identifier: "https://weworkremotely.com/categories/remote-design-jobs.rss",
+    requestLimit: 1,
+    intervalHours: 6,
+  },
+  {
+    name: "We Work Remotely · Product",
+    type: "rss",
+    identifier: "https://weworkremotely.com/categories/remote-product-jobs.rss",
+    requestLimit: 1,
+    intervalHours: 6,
+  },
+  {
+    name: "GolangProjects",
+    type: "rss",
+    identifier: "https://www.golangprojects.com/rss.xml",
+    requestLimit: 1,
+    intervalHours: 24,
+  },
+  {
+    name: "LaraJobs",
+    type: "rss",
+    identifier: "https://larajobs.com/feed",
+    requestLimit: 1,
+    intervalHours: 24,
+  },
+  {
+    name: "ClojureJobboard",
+    type: "rss",
+    identifier: "https://clojurejobboard.com/rss.xml",
+    requestLimit: 1,
+    intervalHours: 24,
+  },
+  {
+    name: "Arbeitnow · Germany · Visa sponsorship",
+    type: "arbeitnow",
+    identifier: "de",
+    requestLimit: 3,
+    intervalHours: 12,
+  },
+  {
+    name: "Arbeitnow · UK · Visa sponsorship",
+    type: "arbeitnow",
+    identifier: "uk",
+    requestLimit: 3,
+    intervalHours: 12,
+  },
+  {
+    name: "Jobicy",
+    type: "jobicy",
+    identifier: "jobicy",
+    requestLimit: 1,
+    intervalHours: 6,
+  },
+].map(s=>({...s,type:s.type as Source['type'],enabled:s.type!=="public_board"}));

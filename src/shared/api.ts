@@ -2,8 +2,9 @@ import type { Profile, Criteria } from './profile.ts';
 import type { ProfileReadiness } from '../backend/profile/facts.ts';
 import type { ProfileVersion } from '../backend/profile/store.ts';
 import type { AiState, Task, Attachment, AssistantContext, ChatState } from './ai.ts';
+import type { JobRecord,JobFilter,JobsList,JobStatus,SourceRecord,ScanState } from './jobs.ts';
 export type Theme = 'system' | 'light' | 'dark';
-export type Settings = { appearance: Theme };
+export type Settings = { appearance: Theme; scanInterval:0|4|12 };
 export type UpdateState = { checkedAt: string | null; state: 'unchecked' | 'current' | 'available' | 'unavailable'; version?: string; url?: string };
 export type Diagnostics = {
   version: string; electron: string; chromium: string; node: string; sqlite: string;
@@ -13,7 +14,7 @@ export type Diagnostics = {
 };
 export interface Api {
   'settings.get': (params: undefined) => Settings;
-  'settings.set': (params: { appearance: Theme }) => Settings;
+  'settings.set': (params: { appearance?: Theme; scanInterval?:0|4|12 }) => Settings;
   'diagnostics.get': (params: undefined) => Diagnostics;
   'update.get': (params: undefined) => UpdateState;
   'profile.get': (params: undefined) => { profile: Profile; readiness: ProfileReadiness; versions: ProfileVersion[] };
@@ -32,8 +33,20 @@ export interface Api {
   'assistant.new': (params: undefined) => ChatState;
   'attachments.add': (params: { name: string; bytes: Uint8Array }) => Attachment;
   'attachments.remove': (params: { id: string }) => boolean;
+  'sources.get': (params:undefined) => SourceRecord[];
+  'sources.enable': (params:{id:number;enabled:boolean}) => SourceRecord[];
+  'sources.add': (params:{value:string;name?:string;kind?:'greenhouse'|'ashby'|'lever'|'rss'|'catalog'}) => SourceRecord[];
+  'scan.get': (params:undefined) => ScanState;
+  'scan.start': (params:{id?:number}) => ScanState;
+  'jobs.list': (params:JobFilter) => JobsList;
+  'jobs.get': (params:{id:number}) => JobRecord;
+  'jobs.open': (params:{id:number}) => JobRecord;
+  'jobs.status': (params:{id:number;status:JobStatus}) => JobRecord;
+  'jobs.notes': (params:{id:number;notes:string}) => JobRecord;
+  'jobs.description': (params:{id:number;description:string}) => JobRecord|null;
+  'jobs.hideCompany': (params:{id:number}) => boolean;
 }
-export interface Events { settings: undefined; update: UpdateState; profile: undefined; assistant: undefined; tasks: undefined; ai: undefined }
+export interface Events { settings: undefined; update: UpdateState; profile: undefined; assistant: undefined; tasks: undefined; ai: undefined; sources:undefined; scan:undefined; jobs:undefined }
 export type ApiResult<K extends keyof Api> = ReturnType<Api[K]>;
 export type ApiParams<K extends keyof Api> = Parameters<Api[K]>[0];
 export type Request = { id: number; method: keyof Api; params: unknown };

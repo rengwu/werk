@@ -2,6 +2,7 @@ import { lookup } from "node:dns/promises";
 import { isIP } from "node:net";
 import ipaddr from "ipaddr.js";
 import { Agent } from "undici";
+import { readFileSync } from 'node:fs';
 import type { Store } from "./db/store.ts";
 let validatorStore: Store | undefined;
 export function configureHttp(store: Store) { validatorStore = store; }
@@ -56,6 +57,7 @@ const dispatcher = new Agent({
   },
 });
 export class RequestLimitError extends Error {}
+export class NotModified extends Error {}
 export class FetchError extends Error {
   retryAfterMs: number;
   status?: number;
@@ -73,6 +75,8 @@ export type FetchContext = {
   snapshotStartedAt?: string;
   resumeAt?: string;
   onRequest?: () => void;
+  signal?: AbortSignal;
+  urls?: string[];
 };
 export async function readUrl(
   raw: string,
@@ -86,6 +90,17 @@ export async function readUrl(
     maxBytes?: number;
   } = {},
 ): Promise<string> {
+  ctx.signal?.throwIfAborted();
+  if (typeof WERK_TEST_BUILD !== 'undefined' && WERK_TEST_BUILD && process.env.WERK_SOURCE_FIXTURES) {
+    if(ctx.requests >= ctx.limit) throw new RequestLimitError('Request limit reached.');
+    ctx.requests++; ctx.onRequest?.();
+    const fixtures = JSON.parse(readFileSync(process.env.WERK_SOURCE_FIXTURES,'utf8')) as Record<string,{body?:string;status?:number}>;
+    const fixture = fixtures[raw];
+    if(!fixture) throw new FetchError('No recorded response for this source.');
+    if(fixture.status === 304) throw new NotModified();
+    if(fixture.status && fixture.status >= 400) throw new FetchError(`Source returned HTTP ${fixture.status}.`,0,fixture.status);
+    return fixture.body || '';
+  }
   let url = await publicUrl(raw);
   for (let redirects = 0; redirects <= 4; redirects++) {
     if (ctx.requests >= ctx.limit)
@@ -112,13 +127,14 @@ export async function readUrl(
     if (cache?.etag) headers["If-None-Match"] = cache.etag;
     if (cache?.modified) headers["If-Modified-Since"] = cache.modified;
     ctx.requests++;
+    (ctx.urls ||= []).push(url.href);
     ctx.onRequest?.();
     const response = await fetch(url, {
       method: "GET",
       headers,
       redirect: "manual",
-      signal: options.signal
-        ? AbortSignal.any([options.signal, AbortSignal.timeout(20000)])
+      signal: (options.signal || ctx.signal)
+        ? AbortSignal.any([options.signal || ctx.signal!, AbortSignal.timeout(20000)])
         : AbortSignal.timeout(20000),
       dispatcher,
     } as RequestInit);
@@ -142,7 +158,7 @@ export async function readUrl(
       url = target;
       continue;
     }
-    if (response.status === 304 && cache) return "";
+    if (response.status === 304 && cache) throw new NotModified();
     if (!response.ok) {
       await response.body?.cancel();
       const retry = response.headers.get("retry-after");
