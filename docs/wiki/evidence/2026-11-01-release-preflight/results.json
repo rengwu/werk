@@ -1,0 +1,41 @@
+{
+  "result": "Passed",
+  "baseRevision": "269d7e50c2d8b547238342a7016064e2fa5c1759",
+  "dirtyFiles": {
+    ".github/workflows/build.yml": "e44f5dd29795311f85fe70c39b635f78a7da79109ed93b876b287615471a6a74"
+  },
+  "scope": "Dry-run the exact release command against retained artifact directory layouts, with gh replaced by an argument/file validator. No GitHub write was executed.",
+  "artifactLayouts": [
+    "Downloaded macOS M4 artifact (directory layout only)",
+    "Downloaded Windows final artifact from run 41283633752"
+  ],
+  "baseline": {
+    "exitCode": 1,
+    "draft": true,
+    "files": [
+      "dist/*/*.dmg",
+      "dist/*/*-setup.exe"
+    ],
+    "missing": [
+      "dist/*/*.dmg",
+      "dist/*/*-setup.exe"
+    ],
+    "valid": false
+  },
+  "corrected": {
+    "exitCode": 0,
+    "draft": true,
+    "files": [
+      "dist/werk-macOS/release/werk-0.1.0-arm64.dmg",
+      "dist/werk-Windows/release/werk-0.1.0-setup.exe"
+    ],
+    "missing": [],
+    "valid": true
+  },
+  "windowsPcTrial": {
+    "source": "User report",
+    "quote": "windows build works fine. setup tested to be working.",
+    "buildRevision": "5c258cd75290c5ed1d0fda101c745e4e28a58108",
+    "scope": "Windows build and setup; individual feature checks were not separately reported."
+  }
+}

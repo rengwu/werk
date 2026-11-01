@@ -59,13 +59,13 @@ The no-application/no-engagement product rules remain assistant instructions. Wi
 | ID | Decision | Round |
 | --- | --- | --- |
 | REB-repo | Same repository. The old app is archived on the `legacy` branch at `e493246`, and the wiki restarted for werk. | 2 |
-| REB-rename | Originally planned for the first release. On 1 November, after the completed rebuild and passing packaged CI, the user selected “Rename to werk” in release-next-step form `4c80f066d56e10b85177046aafd941cd`. Renamed to `rengwu/werk` and updated the local remote; the legacy branch and existing prerelease remain. Windows-PC testing and first-tag approval are separate next steps. | 3; release approval |
+| REB-rename | Originally planned for the first release. On 1 November, after the completed rebuild and passing packaged CI, the user selected “Rename to werk” in release-next-step form `4c80f066d56e10b85177046aafd941cd`. Renamed to `rengwu/werk` and updated the local remote; the legacy branch and existing prerelease remain. First-tag approval is separate. | 3; release approval |
 | REB-retire | The old app, its data folder and the checkout's old outputs and private files were deleted on 1 November after the user confirmed each path. | 2, 3 |
 | REB-restructure | Restructured in the planning session, before handoff. | 3 |
 | REB-branch | Work directly on `main`. Differs (a `werk` branch with pull requests was recommended). | 3 |
 | REB-github | The agent may push `main` and `legacy` without asking. Tags, releases, pull requests and other GitHub actions need the user. | 3 |
 | REB-autonomy | Continue through all milestones; stop only for consequential unsettled decisions. | 3 |
 | REB-live-checks | Small live checks are allowed: real inference and bounded read-only scans, with a fictional profile. | 3 |
-| REB-windows-testing | The user tests Windows builds on their PC only before releases. Differs (after each milestone was recommended). | 3 |
+| REB-windows-testing | The user tests Windows builds on their PC only before releases. Differs (after each milestone was recommended). For `v0.1.0`, the user reported “windows build works fine. setup tested to be working.” This completes the Windows-PC setup trial; tag approval remains separate. | 3; user confirmation |
 | REB-docs | No Slopchan. The jstack wiki holds all project documentation. | 3 |
 | REB-start | Implementation starts with milestone 1, proving Windows installation and startup first. | 2 |

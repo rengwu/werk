@@ -5,11 +5,11 @@ updated: 2026-11-01
 ---
 # Desktop shell and local backend
 
-**FEAT-desktop** implements the [M1 shell](../journal/2026-11-01-werk-handoff.md#milestones), [runtime, process and tray decisions](../decisions/index.md#platform-and-delivery). Inbox now shows the setup checklist; [Profile](profile.md) and the [assistant](assistant.md) are functional. Saved and CV remain empty states until their milestones. Settings contains General, AI and Diagnostics.
+**FEAT-desktop** implements the [M1 shell](../journal/2026-11-01-werk-handoff.md#milestones), [runtime, process and tray decisions](../decisions/index.md#platform-and-delivery). Inbox shows the setup checklist; [Profile](profile.md), the [assistant](assistant.md), [Saved and CV](documents.md) are functional. Settings contains General, Sources, AI, Backup and Diagnostics.
 
 ## Entry points and expected outcomes
 
-Launch werk from its installed application. A fresh data folder creates schema 1 in SQLite with WAL and FTS5. Only the utility process owns the database. The sandboxed React renderer uses a typed, validated MessagePort API; it has no Node access or HTTP API server.
+Launch werk from its installed application. A fresh data folder creates schema 6 in SQLite with WAL and FTS5. Only the utility process owns the database. The sandboxed React renderer uses a typed, validated MessagePort API; it has no Node access or HTTP API server.
 
 Appearance defaults to System. Settings → General → Appearance offers System, Light and Dark; the selection persists and controls native chrome. Settings → Diagnostics shows runtime versions, SQLite and FTS5, database size, backend start/restart state, update status and the last 20 sanitized warnings/errors. Copy diagnostics excludes candidate facts, jobs and credentials.
 
@@ -17,7 +17,9 @@ Closing the window hides it while the backend continues. Opening werk again focu
 
 An unexpected backend exit rejects pending calls, restarts after one second and reconnects the renderer. More than three crashes in one minute stops automatic recovery and shows Copy diagnostics / Restart. Restart explicitly retries. Persisted data survives.
 
-A release check runs after 30 seconds and every 12 hours. Only newer stable releases at the configured GitHub repository produce a Download link. There is no auto-update. The repository still has its old name, so a 404 is treated as no releases. A fake endpoint is compiled in only when building with `--test`.
+A release check runs after 30 seconds and every 12 hours. Only newer stable releases at `rengwu/werk` produce a Download link. There is no auto-update. A 404 from the latest-release endpoint means no stable releases. A fake endpoint is compiled in only when building with `--test`.
+
+An approved version tag runs the same packaged checks, then creates a draft release with the macOS DMG and Windows setup executable. Downloaded workflow artifacts retain their `release/` directory; only those installers are attached, excluding smoke evidence. The user publishes the draft.
 
 ## Verification recipe
 
@@ -27,11 +29,12 @@ For the fake release notice: `npm run package -- --test`, then the same smoke co
 
 ## Coverage and limits
 
-The smoke driver verifies close/reopen through Electron and a second OS process. Native Dock click and Windows tray menu click require a separate desktop check; the driver does not claim those clicks. The temporary tray artwork is replaced in M5. The first release remains subject to the user's Windows check and explicit release authorization.
+The smoke driver verifies close/reopen through Electron and a second OS process. Native Dock click and Windows tray menu click require a separate desktop check; the driver does not claim those clicks. M5 replaced the temporary tray artwork. The user confirmed the Windows build and setup work; first-tag approval and publication remain pending.
 
 ## Verification history
 
 - [M1 verification](../verification/runs/2026-11-01-m1-shell.md).
+- [Windows-PC trial and release asset preflight](../verification/runs/2026-11-01-release-preflight.md).
 
 ## Final rebuild polish
 

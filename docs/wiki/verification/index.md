@@ -15,3 +15,5 @@ updated: 2026-11-01
 - [M4 letters and CV](runs/2026-11-01-m4-documents.md)
 
 - [M5 backups and delivery](runs/2026-11-01-m5-delivery.md)
+
+- [Windows setup and release asset preflight](runs/2026-11-01-release-preflight.md)

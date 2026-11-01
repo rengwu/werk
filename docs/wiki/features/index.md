@@ -15,4 +15,4 @@ updated: 2026-11-01
 
 - [ZIP backups](backups.md) — FEAT-backups
 
-The [handoff feature scope through M5](../journal/2026-11-01-werk-handoff.md#milestones) is implemented. The [release steps](../discussions/open-questions.md) await the user’s approval and Windows-PC trial.
+The [handoff feature scope through M5](../journal/2026-11-01-werk-handoff.md#milestones) is implemented. The user confirmed the Windows build and setup work. The [release steps](../discussions/open-questions.md) await first-tag approval and publication.

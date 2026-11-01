@@ -125,4 +125,4 @@ jobs:
           pattern: werk-*
       - env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --draft --title "werk $GITHUB_REF_NAME" --notes "" dist/*/*.dmg dist/*/*-setup.exe
+        run: gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --draft --title "werk $GITHUB_REF_NAME" --notes "" dist/*/release/*.dmg dist/*/release/*-setup.exe
