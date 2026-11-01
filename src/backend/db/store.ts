@@ -18,6 +18,11 @@ export class Store {
   set(key: string, value: unknown) {
     this.db.prepare('INSERT INTO settings(key,value) VALUES(?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value').run(key, JSON.stringify(value));
   }
+  transaction<T>(fn: () => T): T {
+    this.db.exec('BEGIN IMMEDIATE');
+    try { const result = fn(); this.db.exec('COMMIT'); return result; }
+    catch (error) { this.db.exec('ROLLBACK'); throw error; }
+  }
   event(level: 'info' | 'warn' | 'error', scope: string, message: string) {
     this.db.prepare('INSERT INTO events(at,level,scope,message) VALUES(?,?,?,?)').run(new Date().toISOString(), level, scope, message);
     this.db.exec('DELETE FROM events WHERE id NOT IN (SELECT id FROM events ORDER BY id DESC LIMIT 500)');

@@ -1,0 +1,4 @@
+{
+  "result": "Passed",
+  "scenario": "Real packaged SDK starts the verified OAuth browser handoff and cancels cleanly; no authentication or inference performed."
+}

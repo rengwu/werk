@@ -1,0 +1,10 @@
+{
+  "result": "Passed",
+  "scenarios": [
+    "PDF attachment text supports assistant-built ready profile with an actual save receipt",
+    "Overlay does not resize page; conversation and draft survive navigation; Escape returns focus",
+    "Direct form edit appends revision; restoring older facts appends another revision",
+    "Overlap preview and unsaved-edit navigation guard",
+    "Allowance error pauses queued work while retaining the conversation and profile"
+  ]
+}

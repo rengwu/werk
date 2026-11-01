@@ -1,0 +1,9 @@
+export const MODEL = 'gpt-5.6-sol';
+export type AiState = { state: 'signed_out' | 'connected' | 'connecting' | 'unavailable'; model: string; reasoning: 'high'; message?: string; url?: string; manual?: boolean };
+export type Task = { id: number; kind: 'assistant_turn' | 'cover_letter' | 'cv_generate'; subject: string | null; state: 'queued' | 'running' | 'done' | 'failed' | 'paused'; input: string; error: string | null; createdAt: string; updatedAt: string };
+export type Attachment = { id: string; name: string; mediaType: string; size: number; messageId: number | null };
+export type AssistantContext = { page: string; jobId?: number; document?: 'cv' | 'letter' | 'profile'; dirty?: boolean };
+export type Receipt = { record: string; version: number; detail?: string };
+export type ChatMessage = { id: number; role: 'user' | 'assistant'; text: string; attachments: Attachment[]; receipts: Receipt[]; createdAt: string };
+export type ChatState = { chatId: string; messages: ChatMessage[]; tasks: Task[] };
+export type InferenceImage = { name: string; mediaType: string; data: string };

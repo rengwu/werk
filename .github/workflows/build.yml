@@ -35,6 +35,8 @@ jobs:
         if: runner.os == 'macOS'
         run: echo "WERK_EXE=$PWD/release/mac-arm64/werk.app/Contents/MacOS/werk" >> "$GITHUB_ENV"
       - run: npm run smoke
+      - name: Verify packaged OAuth browser handoff and cancellation
+        run: node --experimental-strip-types tests/auth-smoke.ts
       - name: Uninstall on Windows and preserve data
         if: runner.os == 'Windows'
         shell: pwsh
@@ -46,6 +48,16 @@ jobs:
           if (Test-Path $env:WERK_EXE) { throw 'Uninstall left the app installed' }
           if (!(Test-Path "$env:WERK_SMOKE_DATA\werk.db")) { throw 'Uninstall removed user data' }
           Remove-Item $env:WERK_SMOKE_DATA -Recurse -Force
+      - name: Build isolated inference fixture package
+        run: |
+          npm run build -- --test
+          npx electron-builder --dir --publish never
+      - name: Locate fixture app on Windows
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: '"WERK_EXE=$pwd\release\win-unpacked\werk.exe" | Out-File -Append $env:GITHUB_ENV'
+      - name: Verify profile and assistant with fictional data
+        run: node --experimental-strip-types tests/profile-smoke.ts
       - uses: actions/upload-artifact@v7
         if: always()
         with:

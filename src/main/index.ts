@@ -33,7 +33,7 @@ function status(state: string) { win?.webContents.send('werk:backend-status', { 
 function startBackend(previousExit?: number) {
   if (backend || shutdownStarted) return;
   backendReady = false;
-  const child = utilityProcess.fork(join(__dirname, 'backend.cjs'), [], { serviceName: 'werk-backend', stdio: 'ignore' });
+  const child = utilityProcess.fork(join(__dirname, 'backend.cjs'), [], { serviceName: 'werk-backend', stdio: 'ignore', env: { ...process.env, WERK_RESOURCES_DIR: app.isPackaged ? process.resourcesPath : join(app.getAppPath(), 'resources'), WERK_BUNDLE_DIR: __dirname } });
   backend = child;
   child.once('spawn', () => {
     const init: BackendInit = { type: 'init', dataDir: app.getPath('userData'), version: app.getVersion(), system: `${process.platform} ${process.getSystemVersion()} ${process.arch}`, electron: process.versions.electron, chromium: process.versions.chrome, restartCount, previousExit };

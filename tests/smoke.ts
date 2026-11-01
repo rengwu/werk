@@ -24,7 +24,7 @@ try {
   const start = performance.now();
   app = await electron.launch({ executablePath: exe, env, timeout: 20000 });
   let page = await app.firstWindow();
-  await page.getByText('No jobs yet.', { exact: true }).waitFor();
+  await page.getByRole('heading', { name: 'Set up werk', exact: true }).waitFor();
   results.startupMs = Math.round(performance.now() - start);
   assert.ok(Number(results.startupMs) < 3000, `Shell startup took ${results.startupMs} ms`);
   scenarios.push('Fresh launch within 3 seconds');
@@ -34,7 +34,7 @@ try {
   await page.waitForFunction(() => document.documentElement.dataset.mode === 'dark');
   await page.getByRole('tab', { name: 'Diagnostics' }).click();
   await page.getByTestId('diagnostic-fts5').filter({ hasText: 'Available' }).waitFor();
-  assert.equal(await page.getByTestId('diagnostic-schema').textContent(), '1');
+  assert.equal(await page.getByTestId('diagnostic-schema').textContent(), '2');
   assert.equal(await page.getByTestId('diagnostic-backend').textContent(), 'running');
   results.diagnostics = await page.locator('.diagnostics').innerText();
   await page.screenshot({ path: join(output, 'diagnostics-dark.png') });

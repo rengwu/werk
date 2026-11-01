@@ -5,7 +5,7 @@ updated: 2026-11-01
 ---
 # Desktop shell and local backend
 
-**FEAT-desktop** implements the [M1 shell](../journal/2026-11-01-werk-handoff.md#milestones), [runtime, process and tray decisions](../decisions/index.md#platform-and-delivery). The four primary pages currently show empty states. Settings contains General and Diagnostics.
+**FEAT-desktop** implements the [M1 shell](../journal/2026-11-01-werk-handoff.md#milestones), [runtime, process and tray decisions](../decisions/index.md#platform-and-delivery). Inbox now shows the setup checklist; [Profile](profile.md) and the [assistant](assistant.md) are functional. Saved and CV remain empty states until their milestones. Settings contains General, AI and Diagnostics.
 
 ## Entry points and expected outcomes
 

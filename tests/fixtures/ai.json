@@ -1,0 +1,25 @@
+[
+  {
+    "when": "Build my profile from this CV.",
+    "result": {
+      "reply": "Your profile is ready for discovery. Citizenship and work authorization are still unknown.",
+      "actions": [
+        {
+          "name": "edit_profile",
+          "argsJson": "{\"expectedRevision\": 0, \"edits\": [{\"op\": \"set\", \"path\": \"/basics/name\", \"valueJson\": \"\\\"Alex Example\\\"\", \"evidenceQuote\": \"Alex Example\"}, {\"op\": \"set\", \"path\": \"/basics/location\", \"valueJson\": \"\\\"Kuala Lumpur, Malaysia\\\"\", \"evidenceQuote\": \"Kuala Lumpur, Malaysia\"}, {\"op\": \"set\", \"path\": \"/basics/summary\", \"valueJson\": \"\\\"I build accessible TypeScript applications and contribute to open source projects.\\\"\", \"evidenceQuote\": \"I build accessible TypeScript applications and contribute to open source projects.\"}, {\"op\": \"set\", \"path\": \"/criteria/targetRoles\", \"valueJson\": \"[\\\"Software engineer\\\"]\", \"evidenceQuote\": \"Target role: Software engineer\"}, {\"op\": \"set\", \"path\": \"/criteria/arrangements\", \"valueJson\": \"[\\\"remote\\\"]\", \"evidenceQuote\": \"Work arrangement: remote\"}]}"
+        }
+      ]
+    }
+  },
+  {
+    "when": "simulate allowance",
+    "error": "Your ChatGPT subscription allowance is unavailable. Retry after it resets."
+  },
+  {
+    "when": "No changes",
+    "result": {
+      "reply": "No facts were changed.",
+      "actions": []
+    }
+  }
+]

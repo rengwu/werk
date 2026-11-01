@@ -18,6 +18,8 @@ WERK_EXE="$PWD/release/mac-arm64/werk.app/Contents/MacOS/werk" npm run smoke
 
 The smoke driver requires a packaged executable. It creates a fresh OS temporary `werk-smoke-*` data folder, injects `WERK_DATA_DIR`, and removes its own folder after quitting. Screenshots and JSON results remain in ignored `smoke-output/`. On Windows CI, cleanup is deferred until the uninstall-preservation assertion.
 
+M2 adds `tests/auth-smoke.ts` for the real SDK browser handoff/cancellation and `tests/profile-smoke.ts` for fictional PDF-to-profile generation. Run them with `node --experimental-strip-types` and `WERK_EXE` set. Profile smoke needs the `--test` build; it sets the simulated-inference environment and reads `tests/fixtures/ai.json`. Ordinary builds cannot enable simulated inference. CI keeps the production installer, then builds a separate unpacked test app for the fictional profile journey.
+
 For development-only fixture injection, `npm run package -- --test` compiles a test build and `WERK_SMOKE_TEST_BUILD=1` enables the matching smoke fixture. Production builds ignore the injected release URL. Test builds are never release artifacts. `npm run package` returns to a production build.
 
 ## Identity and evidence

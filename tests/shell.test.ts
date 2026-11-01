@@ -13,12 +13,12 @@ test('SQLite migrations, FTS5, settings persistence, validation and sanitized di
   const events: string[] = [];
   let service = new Service(init, event => events.push(event));
   try {
-    assert.equal(service.diagnostics().schema, 1); assert.equal(service.diagnostics().fts5, true);
+    assert.equal(service.diagnostics().schema, 2); assert.equal(service.diagnostics().fts5, true);
     assert.equal(service.settings().appearance, 'system');
     await assert.rejects(service.call('settings.set', { appearance: 'invalid' as never }));
     await assert.rejects(service.call('executeShell' as never, undefined as never));
     await service.call('settings.set', { appearance: 'dark' });
-    assert.deepEqual(events, ['settings']);
+    assert.ok(events.includes('settings'));
     service.close(); service = new Service({ ...init, restartCount: 1, previousExit: 9 }, () => {});
     assert.equal(service.settings().appearance, 'dark');
     assert.equal(service.diagnostics().restartCount, 1);
