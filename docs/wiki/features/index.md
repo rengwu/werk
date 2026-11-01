@@ -15,4 +15,4 @@ updated: 2026-11-01
 
 - [ZIP backups](backups.md) — FEAT-backups
 
-The remaining rebuild scope is in the [handoff milestones](../journal/2026-11-01-werk-handoff.md#milestones).
+The [handoff feature scope through M5](../journal/2026-11-01-werk-handoff.md#milestones) is implemented. The [release steps](../discussions/open-questions.md) await the user’s approval and Windows-PC trial.

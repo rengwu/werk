@@ -2,7 +2,7 @@
 title: M4 letters and CV verification
 section: Verification
 updated: 2026-11-01
-result: Untested
+result: Passed
 ---
 # M4 letters and CV verification
 
@@ -21,10 +21,10 @@ Base `4057deee560e75c948696e251caff808072fe868`; the exact dirty-tree fingerprin
 | CV workspace | Profile source, sandboxed PDF, download, dirty guard, failure retains old PDF, restore | Packaged macOS journey passed | Passed | [CV](../../evidence/2026-11-01-m4-documents/cv.png), [results](../../evidence/2026-11-01-m4-documents/results.json) |
 | Runtime compiler | Offline compilation and adversarial isolation | All 11 macOS scenarios passed, including absolute/indirect/traversal reads, font/image/openin reads, external writes, shell escape and cancellation | Passed | [Compiler results](../../evidence/2026-11-01-m4-documents/latex.json) |
 | Live letter | Fixed model/high reasoning generates a supported fictional letter | One generation succeeded in 20.5 s; 230 words produced the expected soft length review note | Passed | [Live result](../../evidence/2026-11-01-m4-documents/live.json) |
-| Windows AppContainer and installed workspace | Actual file/network/process boundaries and same UI journey | Awaiting CI at this revision | Untested | [CI recipe](../setup.md#windows-ci) |
+| Windows AppContainer and installed workspace | Actual file/network/process boundaries and same UI journey | Passed in the final build at `5c258cd75290c5ed1d0fda101c745e4e28a58108`, including AppContainer boundary tests and the corrected editor synchronization | Passed | [CI run](https://github.com/rengwu/ununemploy/actions/runs/41283633752) |
 
 ## Findings and limits
 
 UI verification found that Chromium clipboard permissions blocked Copy text. The action now uses a validated native clipboard IPC handler. The driver captures its output in the isolated app process without replacing the user's clipboard. The macOS packaging step tried to sign a TeX font-metric cache file as executable code; excluding only the data cache from individual code signing fixed packaging while the compiler binary and app bundle remain signed ad hoc.
 
-The restore driver initially observed the previous successful compile before the new restore completed. It now waits for the new version before asserting compilation. Cache preparation was expanded to include the actual starter's font/macro combinations. No private candidate data or credentials are included. Windows results remain unclaimed until CI finishes.
+The restore driver initially observed the previous successful compile before the new restore completed. It now waits for the new version before asserting compilation. Cache preparation was expanded to include the actual starter's font/macro combinations. No private candidate data or credentials are included. Windows compilation passed in the first M4 run; its UI artifact exposed a saved-source/editor synchronization error. The final build fixes it and the complete Windows journey now passes. See the [M5 report](2026-11-01-m5-delivery.md) for the final source identity and CI evidence.

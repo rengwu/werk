@@ -1,0 +1,302 @@
+{
+  "revision": "5c258cd75290c5ed1d0fda101c745e4e28a58108",
+  "result": "success",
+  "url": "https://github.com/rengwu/ununemploy/actions/runs/41283633752",
+  "jobs": [
+    {
+      "name": "latex-cache",
+      "result": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "result": "success"
+        },
+        {
+          "name": "Run actions/checkout@v7",
+          "result": "success"
+        },
+        {
+          "name": "Run actions/setup-node@v7",
+          "result": "success"
+        },
+        {
+          "name": "Run npm ci",
+          "result": "success"
+        },
+        {
+          "name": "Run npm run setup:latex",
+          "result": "success"
+        },
+        {
+          "name": "Run actions/upload-artifact@v7",
+          "result": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@v7",
+          "result": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v7",
+          "result": "success"
+        },
+        {
+          "name": "Complete job",
+          "result": "success"
+        }
+      ]
+    },
+    {
+      "name": "build (windows-latest)",
+      "result": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "result": "success"
+        },
+        {
+          "name": "Run actions/checkout@v7",
+          "result": "success"
+        },
+        {
+          "name": "Run actions/setup-node@v7",
+          "result": "success"
+        },
+        {
+          "name": "Run npm ci",
+          "result": "success"
+        },
+        {
+          "name": "Run actions/setup-go@v6",
+          "result": "success"
+        },
+        {
+          "name": "Run actions/download-artifact@v8",
+          "result": "success"
+        },
+        {
+          "name": "Run npm run setup:latex",
+          "result": "success"
+        },
+        {
+          "name": "Verify Windows AppContainer boundaries",
+          "result": "success"
+        },
+        {
+          "name": "Run npm run check",
+          "result": "success"
+        },
+        {
+          "name": "Run npm test",
+          "result": "success"
+        },
+        {
+          "name": "Run npm run package",
+          "result": "success"
+        },
+        {
+          "name": "Install on Windows",
+          "result": "success"
+        },
+        {
+          "name": "Locate app on macOS",
+          "result": "skipped"
+        },
+        {
+          "name": "Verify offline compiler isolation",
+          "result": "success"
+        },
+        {
+          "name": "Run npm run smoke",
+          "result": "success"
+        },
+        {
+          "name": "Verify packaged OAuth browser handoff and cancellation",
+          "result": "success"
+        },
+        {
+          "name": "Uninstall on Windows and preserve data",
+          "result": "success"
+        },
+        {
+          "name": "Build isolated inference fixture package",
+          "result": "success"
+        },
+        {
+          "name": "Locate fixture app on Windows",
+          "result": "success"
+        },
+        {
+          "name": "Verify profile and assistant with fictional data",
+          "result": "success"
+        },
+        {
+          "name": "Verify pi tools, dropped files, steering and interruption",
+          "result": "success"
+        },
+        {
+          "name": "Verify discovery and keyboard triage with recorded responses",
+          "result": "success"
+        },
+        {
+          "name": "Verify letters and sandboxed CV workspace",
+          "result": "success"
+        },
+        {
+          "name": "Verify backup export and restore",
+          "result": "success"
+        },
+        {
+          "name": "Audit accessibility and keyboard navigation",
+          "result": "success"
+        },
+        {
+          "name": "Run actions/upload-artifact@v7",
+          "result": "success"
+        },
+        {
+          "name": "Post Run actions/setup-go@v6",
+          "result": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@v7",
+          "result": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v7",
+          "result": "success"
+        },
+        {
+          "name": "Complete job",
+          "result": "success"
+        }
+      ]
+    },
+    {
+      "name": "build (macos-latest)",
+      "result": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "result": "success"
+        },
+        {
+          "name": "Run actions/checkout@v7",
+          "result": "success"
+        },
+        {
+          "name": "Run actions/setup-node@v7",
+          "result": "success"
+        },
+        {
+          "name": "Run npm ci",
+          "result": "success"
+        },
+        {
+          "name": "Run actions/setup-go@v6",
+          "result": "skipped"
+        },
+        {
+          "name": "Run actions/download-artifact@v8",
+          "result": "success"
+        },
+        {
+          "name": "Run npm run setup:latex",
+          "result": "success"
+        },
+        {
+          "name": "Verify Windows AppContainer boundaries",
+          "result": "skipped"
+        },
+        {
+          "name": "Run npm run check",
+          "result": "success"
+        },
+        {
+          "name": "Run npm test",
+          "result": "success"
+        },
+        {
+          "name": "Run npm run package",
+          "result": "success"
+        },
+        {
+          "name": "Install on Windows",
+          "result": "skipped"
+        },
+        {
+          "name": "Locate app on macOS",
+          "result": "success"
+        },
+        {
+          "name": "Verify offline compiler isolation",
+          "result": "success"
+        },
+        {
+          "name": "Run npm run smoke",
+          "result": "success"
+        },
+        {
+          "name": "Verify packaged OAuth browser handoff and cancellation",
+          "result": "success"
+        },
+        {
+          "name": "Uninstall on Windows and preserve data",
+          "result": "skipped"
+        },
+        {
+          "name": "Build isolated inference fixture package",
+          "result": "success"
+        },
+        {
+          "name": "Locate fixture app on Windows",
+          "result": "skipped"
+        },
+        {
+          "name": "Verify profile and assistant with fictional data",
+          "result": "success"
+        },
+        {
+          "name": "Verify pi tools, dropped files, steering and interruption",
+          "result": "success"
+        },
+        {
+          "name": "Verify discovery and keyboard triage with recorded responses",
+          "result": "success"
+        },
+        {
+          "name": "Verify letters and sandboxed CV workspace",
+          "result": "success"
+        },
+        {
+          "name": "Verify backup export and restore",
+          "result": "success"
+        },
+        {
+          "name": "Audit accessibility and keyboard navigation",
+          "result": "success"
+        },
+        {
+          "name": "Run actions/upload-artifact@v7",
+          "result": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@v7",
+          "result": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v7",
+          "result": "success"
+        },
+        {
+          "name": "Complete job",
+          "result": "success"
+        }
+      ]
+    },
+    {
+      "name": "release",
+      "result": "skipped",
+      "steps": []
+    }
+  ]
+}
