@@ -59,7 +59,7 @@ The no-application/no-engagement product rules remain assistant instructions. Wi
 | ID | Decision | Round |
 | --- | --- | --- |
 | REB-repo | Same repository. The old app is archived on the `legacy` branch at `e493246`, and the wiki restarted for werk. | 2 |
-| REB-rename | Rename the GitHub repository to `werk` at the first release. Differs (renaming now was recommended). | 3 |
+| REB-rename | Originally planned for the first release. On 1 November, after the completed rebuild and passing packaged CI, the user selected “Rename to werk” in release-next-step form `4c80f066d56e10b85177046aafd941cd`. Renamed to `rengwu/werk` and updated the local remote; the legacy branch and existing prerelease remain. Windows-PC testing and first-tag approval are separate next steps. | 3; release approval |
 | REB-retire | The old app, its data folder and the checkout's old outputs and private files were deleted on 1 November after the user confirmed each path. | 2, 3 |
 | REB-restructure | Restructured in the planning session, before handoff. | 3 |
 | REB-branch | Work directly on `main`. Differs (a `werk` branch with pull requests was recommended). | 3 |

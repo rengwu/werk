@@ -2,7 +2,7 @@
 
 werk is a local desktop app for job discovery, fit assessment, private cover-letter drafts and a master CV. It runs on macOS Apple Silicon and Windows 11 x64. You review and submit applications yourself.
 
-The rebuild is ready for pre-release testing. Installers are available in the [Build workflow artifacts](https://github.com/rengwu/ununemploy/actions/workflows/build.yml); no public release has been published. The previous app is archived on [`legacy`](https://github.com/rengwu/ununemploy/tree/legacy).
+The rebuild is ready for pre-release testing. Installers are available in the [Build workflow artifacts](https://github.com/rengwu/werk/actions/workflows/build.yml); no public werk release has been published. The previous app is archived on [`legacy`](https://github.com/rengwu/werk/tree/legacy).
 
 ## Install
 

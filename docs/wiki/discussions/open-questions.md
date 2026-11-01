@@ -5,10 +5,9 @@ updated: 2026-11-01
 ---
 # Open questions
 
-Implementation and packaged CI verification are complete through M5. The release sequence still needs the user’s explicit go-ahead.
+Implementation and packaged CI verification are complete through M5. The user approved the repository rename, now completed at [rengwu/werk](https://github.com/rengwu/werk), with the local remote updated and the release-check target verified. See [REB-rename](../decisions/index.md#repository-and-working-agreement). The user's Windows-PC trial and first-tag approval remain.
 
 | Item | When | State |
 | --- | --- | --- |
-| Rename the repository to `werk` | First release (M5) | Ready for approval; no rename performed. Decided ([REB-rename](../decisions/index.md#repository-and-working-agreement)). The user approves the rename; the agent then updates the remote and verifies the release-check target. |
-| Windows-PC trial and first tag | After the repository decision | Use the [verified Windows artifact](https://github.com/rengwu/ununemploy/actions/runs/41283633752/artifacts/13073868321). The user tests it on their PC, then approves the first `v0.1.0` tag. CI creates a draft release; the user publishes it. |
+| Windows-PC trial and first tag | Before the first release | Use the [verified Windows artifact](https://github.com/rengwu/werk/actions/runs/41283633752/artifacts/13073868321), containing `release/werk-0.1.0-setup.exe`. The same installer is available locally under `release/`. The user tests installation, launch, ChatGPT sign-in, assistant tools, CV compilation and close/reopen/quit on their PC, then approves the first `v0.1.0` tag. CI creates a draft release; the user publishes it. |
 | Old ununemploy install on the user's Windows PC | Any time | The user removes it through Settings → Apps. |

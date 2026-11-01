@@ -1,0 +1,33 @@
+{
+  "result": "Passed",
+  "testedRevision": "c4e282ee1aaa6f758d72287ddcf03b52d1c30d81",
+  "approval": {
+    "session": "4c80f066d56e10b85177046aafd941cd",
+    "question": "Rename rengwu/ununemploy to rengwu/werk now?",
+    "answer": "Rename to werk"
+  },
+  "repository": {
+    "before": "rengwu/ununemploy",
+    "after": "rengwu/werk",
+    "idBefore": "R_kgDOU5Km5Q",
+    "idAfter": "R_kgDOU5Km5Q",
+    "origin": "git@github.com:rengwu/werk.git",
+    "main": "c4e282ee1aaa6f758d72287ddcf03b52d1c30d81",
+    "legacy": "e49324633efcfcb71e87e20c0bc48cc80ab0451f",
+    "retainedPrerelease": "v0.2.0-beta.7"
+  },
+  "releaseCheck": {
+    "repository": "rengwu/werk",
+    "latestReleaseStatus": 404,
+    "checkedAt": "2026-11-01T10:03:13.371Z",
+    "state": "current"
+  },
+  "windowsInstaller": {
+    "testedRevision": "5c258cd75290c5ed1d0fda101c745e4e28a58108",
+    "ciRun": "41283633752",
+    "artifact": "13073868321",
+    "file": "werk-0.1.0-setup.exe",
+    "bytes": 155716106,
+    "sha256": "bd07228dd72ffd723af46638966e533047f369e5bff8553cf4a7d93232a06512"
+  }
+}
