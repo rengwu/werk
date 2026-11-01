@@ -1,0 +1,88 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>werk — inbox</title></head><body><style>
+:root{--bg:#fcfcfc;--panel:#f3f3f3;--field:#fff;--raised:#fff;--text:#242424;--muted:#636363;--line:#14141412;--line-strong:#14141425;--focus:#506f80;--selected:#14141418;--hover:#14141408;--ok:#36734c;--warn:#8a5a00;--bad:#a33632;--pri:#242424;--pri-text:#fff;--hl-ok:#36734c1f;--hl-ok-line:#36734c;--hl-gap:#c27c0e1f;--hl-gap-line:#c27c0e;--notice:#fff8ec;--notice-line:#c27c0e55;--shadow:0 8px 28px #00000024;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#181818;--panel:#222;--field:#181818;--raised:#232323;--text:#e7e7e7;--muted:#a0a0a0;--line:#ffffff0f;--line-strong:#ffffff20;--focus:#adbec8;--selected:#ffffff14;--hover:#ffffff0b;--ok:#94bda2;--warn:#e0b25c;--bad:#f49c92;--pri:#e7e7e7;--pri-text:#181818;--hl-ok:#94bda224;--hl-ok-line:#94bda2;--hl-gap:#e0b25c24;--hl-gap-line:#e0b25c;--notice:#2a2418;--notice-line:#e0b25c55;--shadow:0 8px 28px #00000080;color-scheme:dark}}
+*{box-sizing:border-box}html,body{height:100%}
+body{margin:0;font:13px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;color:var(--text);background:var(--bg);overflow:hidden}
+.app{display:grid;grid-template-columns:220px minmax(0,1fr);height:100%;position:relative}
+.side{background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column;padding:0 8px 8px}
+.brand{height:44px;display:flex;align-items:center;gap:8px;padding:0 6px;font-weight:600;font-size:12px}
+.lights{display:flex;gap:8px;margin-right:14px}.lights i{width:12px;height:12px;border-radius:6px;background:#ff5f57}.lights i:nth-child(2){background:#febc2e}.lights i:nth-child(3){background:#28c840}
+.nav{display:flex;flex-direction:column;gap:1px}
+.nav span{display:flex;justify-content:space-between;align-items:center;height:28px;padding:0 8px;border-radius:5px;font-size:12px}
+.nav span.on{background:var(--selected)}
+.nav em{font-style:normal;color:var(--muted);font-size:11px}
+.dot{width:6px;height:6px;border-radius:3px;background:var(--bad);display:inline-block}
+.update{display:flex;justify-content:space-between;align-items:center;font-size:11px;padding:6px 8px;margin-bottom:4px;border:1px solid var(--line-strong);border-radius:5px;background:var(--raised)}
+.update a{color:var(--text);font-weight:600;text-decoration:underline}
+.grow{flex:1}
+.main{display:flex;flex-direction:column;min-width:0;min-height:0}
+.top{height:44px;flex:none;display:flex;align-items:center;gap:8px;padding:0 16px;border-bottom:1px solid var(--line)}
+.top b{font-size:13px;font-weight:600}
+.muted{color:var(--muted)}.small{font-size:11px}
+.btn{display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 9px;border:1px solid var(--line-strong);background:var(--raised);border-radius:5px;font-size:12px;white-space:nowrap;color:var(--text)}
+.btn.pri{background:var(--pri);border-color:var(--pri);color:var(--pri-text)}
+.btn.pri kbd{color:inherit;opacity:.7;border-color:currentColor}
+.btn.ghost{border-color:transparent;background:transparent;color:var(--muted)}
+.btn[disabled]{opacity:.45}
+.icon{width:26px;justify-content:center;padding:0}
+kbd{font:10px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted);border:1px solid var(--line-strong);border-radius:3px;padding:0 3px;line-height:14px}
+.field{min-height:26px;border:1px solid var(--line-strong);background:var(--field);border-radius:5px;padding:3px 8px;display:flex;align-items:center;gap:6px;color:var(--muted);font-size:12px}
+.ok{color:var(--ok)}.warn{color:var(--warn)}.bad{color:var(--bad)}
+h2{font-size:20px;font-weight:600;margin:2px 0 6px}
+mark{color:inherit;border-radius:2px;padding:0 1px}
+.hl-ok{background:var(--hl-ok);border-bottom:1.5px solid var(--hl-ok-line)}
+.hl-gap{background:var(--hl-gap);border-bottom:1.5px solid var(--hl-gap-line)}
+.chip{display:inline-flex;align-items:center;gap:4px;font-size:11px;line-height:18px;padding:0 6px;border-radius:4px;background:var(--selected);color:var(--muted)}
+.chip.ok{color:var(--ok)}
+hr{border:0;border-top:1px solid var(--line);margin:12px 0}
+</style><style>
+.panes{display:grid;grid-template-columns:360px minmax(0,1fr);flex:1;min-height:0}
+.list{border-right:1px solid var(--line);overflow:hidden}
+.tabs{height:36px;display:flex;align-items:center;gap:14px;padding:0 14px;border-bottom:1px solid var(--line);font-size:12px}
+.tabs span.on{font-weight:600;box-shadow:inset 0 -2px var(--text);height:36px;display:flex;align-items:center}
+.tabs em{font-style:normal;color:var(--muted);margin-left:4px}
+.row{display:grid;grid-template-columns:1fr auto;gap:1px 10px;padding:8px 14px;border-bottom:1px solid var(--line)}
+.row .t{font-weight:600}.row.read .t{font-weight:400}
+.row .r{text-align:right;font-size:11px}
+.row.sel{background:var(--selected);box-shadow:inset 2px 0 var(--focus)}
+.detail{padding:16px 24px;overflow:hidden;max-width:820px}
+.sig{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 12px}
+.act{display:flex;gap:6px;align-items:center;margin-bottom:6px}
+.why{display:grid;grid-template-columns:100px 1fr;gap:3px 12px;font-size:12px;margin:12px 0;padding:10px 12px;background:var(--panel);border-radius:6px}
+.why b{font-weight:500;color:var(--muted)}
+.legend{display:flex;gap:12px;margin-bottom:8px}
+p{margin:0 0 10px}ul{margin:0 0 10px;padding-left:18px}li{margin-bottom:3px}
+.h{font-weight:600;margin-bottom:4px}
+.dtabs{display:flex;gap:16px;font-size:12px;border-bottom:1px solid var(--line);margin:12px 0}.dtabs span{padding:7px 0}.dtabs .on{box-shadow:inset 0 -2px var(--text);font-weight:600}</style>
+<div class="app"><aside class="side"><div class="brand"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span>werk</div><nav class="nav"><span class="on">Inbox<em>14</em></span><span class="">Saved<em>28</em></span><span class="">Profile</span><span class="">CV</span></nav><div class="grow"></div><nav class="nav"><span class="">Settings</span></nav></aside>
+<section class="main"><header class="top"><b>Inbox</b><span class="field" style="width:260px;margin-left:12px">Search all jobs <kbd style="margin-left:auto">/</kbd></span><span class="btn">Filters</span><span class="grow"></span><span class="btn">Scan</span><span class="btn icon" aria-label="Open assistant"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg></span></header>
+<div class="panes"><div class="list">
+<div class="tabs"><span class="on">New<em>14</em></span><span>All matches</span><span class="grow"></span><span class="muted small">Best match</span></div>
+
+<div class="row sel"><div class="t">Senior Frontend Engineer</div><div class="r ok">Strong</div><div class="muted small">Fieldwork · Remote, APAC</div><div class="r muted">2d</div></div>
+<div class="row"><div class="t">Design Engineer</div><div class="r ok">Strong</div><div class="muted small">Forma · Singapore · Hybrid</div><div class="r muted">1d</div></div>
+<div class="row"><div class="t">Product Engineer</div><div class="r ok">Strong</div><div class="muted small">Northstar · Remote, Worldwide</div><div class="r muted">3d</div></div>
+<div class="row"><div class="t">Software Engineer, Developer Experience</div><div class="r">Adjacent</div><div class="muted small">Meridian · Tokyo · Visa support</div><div class="r muted">1d</div></div>
+<div class="row read"><div class="t">Frontend Engineer</div><div class="r">Adjacent</div><div class="muted small">Kite · Remote, UTC+5 to +10</div><div class="r muted">4d</div></div>
+<div class="row"><div class="t">Full-stack Engineer</div><div class="r">Adjacent</div><div class="muted small">Tallow · Berlin · Visa sponsorship</div><div class="r muted">5d</div></div>
+<div class="row"><div class="t">UI Engineer, Editor</div><div class="r">Adjacent</div><div class="muted small">Quire · Remote, APAC</div><div class="r muted">6d</div></div>
+<div class="row"><div class="t">Frontend Platform Engineer</div><div class="r">Adjacent</div><div class="muted small">Harbor · Remote, Asia</div><div class="r muted">6d</div></div>
+</div>
+<div class="detail">
+<div class="muted">Fieldwork</div>
+<h2>Senior Frontend Engineer</h2>
+<div class="sig"><span class="chip ok">Strong match</span><span class="chip">Remote from Malaysia allowed</span><span class="chip">4 h overlap</span><span class="chip">Posted 2 days ago</span><span class="chip">Salary not listed</span></div>
+<div class="act"><span class="btn pri">Save <kbd>S</kbd></span><span class="btn">Skip <kbd>X</kbd></span><span class="btn">Open posting ↗ <kbd>O</kbd></span><span class="grow"></span><span class="btn ghost">Hide company</span></div>
+<div class="why">
+<b>Role</b><span>Frontend engineering · matches your target roles</span>
+<b>Level</b><span>Senior · consistent with 6 years of professional engineering</span>
+<b>Eligibility</b><span>“Remote within APAC” — Malaysia is in APAC</span>
+<b>Gaps</b><span class="warn">WebGL or canvas rendering</span>
+</div>
+<div class="dtabs"><span class="on">Description</span><span>Notes</span></div>
+<div class="legend small"><span><mark class="hl-ok">Matches your profile</mark></span><span><mark class="hl-gap">Not in your profile</mark></span></div>
+<p>Build developer tools with <mark class="hl-ok">React and TypeScript</mark>. Work with a small engineering team to improve accessibility, performance and the everyday experience of our customers.</p>
+<div class="h">What we’re looking for</div>
+<ul><li><mark class="hl-ok">5+ years building web applications</mark></li><li><mark class="hl-gap">Experience with WebGL or canvas rendering</mark></li><li><mark class="hl-ok">Clear written communication</mark></li><li>Based between UTC+5 and UTC+10</li></ul>
+<div class="muted small">From Fieldwork careers · checked 2 hours ago · also listed on Himalayas, We Work Remotely</div>
+</div></div></section></div></body></html>

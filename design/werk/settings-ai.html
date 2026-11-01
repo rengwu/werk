@@ -1,0 +1,72 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>werk — settings-ai</title></head><body><style>
+:root{--bg:#fcfcfc;--panel:#f3f3f3;--field:#fff;--raised:#fff;--text:#242424;--muted:#636363;--line:#14141412;--line-strong:#14141425;--focus:#506f80;--selected:#14141418;--hover:#14141408;--ok:#36734c;--warn:#8a5a00;--bad:#a33632;--pri:#242424;--pri-text:#fff;--hl-ok:#36734c1f;--hl-ok-line:#36734c;--hl-gap:#c27c0e1f;--hl-gap-line:#c27c0e;--notice:#fff8ec;--notice-line:#c27c0e55;--shadow:0 8px 28px #00000024;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#181818;--panel:#222;--field:#181818;--raised:#232323;--text:#e7e7e7;--muted:#a0a0a0;--line:#ffffff0f;--line-strong:#ffffff20;--focus:#adbec8;--selected:#ffffff14;--hover:#ffffff0b;--ok:#94bda2;--warn:#e0b25c;--bad:#f49c92;--pri:#e7e7e7;--pri-text:#181818;--hl-ok:#94bda224;--hl-ok-line:#94bda2;--hl-gap:#e0b25c24;--hl-gap-line:#e0b25c;--notice:#2a2418;--notice-line:#e0b25c55;--shadow:0 8px 28px #00000080;color-scheme:dark}}
+*{box-sizing:border-box}html,body{height:100%}
+body{margin:0;font:13px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;color:var(--text);background:var(--bg);overflow:hidden}
+.app{display:grid;grid-template-columns:220px minmax(0,1fr);height:100%;position:relative}
+.side{background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column;padding:0 8px 8px}
+.brand{height:44px;display:flex;align-items:center;gap:8px;padding:0 6px;font-weight:600;font-size:12px}
+.lights{display:flex;gap:8px;margin-right:14px}.lights i{width:12px;height:12px;border-radius:6px;background:#ff5f57}.lights i:nth-child(2){background:#febc2e}.lights i:nth-child(3){background:#28c840}
+.nav{display:flex;flex-direction:column;gap:1px}
+.nav span{display:flex;justify-content:space-between;align-items:center;height:28px;padding:0 8px;border-radius:5px;font-size:12px}
+.nav span.on{background:var(--selected)}
+.nav em{font-style:normal;color:var(--muted);font-size:11px}
+.dot{width:6px;height:6px;border-radius:3px;background:var(--bad);display:inline-block}
+.update{display:flex;justify-content:space-between;align-items:center;font-size:11px;padding:6px 8px;margin-bottom:4px;border:1px solid var(--line-strong);border-radius:5px;background:var(--raised)}
+.update a{color:var(--text);font-weight:600;text-decoration:underline}
+.grow{flex:1}
+.main{display:flex;flex-direction:column;min-width:0;min-height:0}
+.top{height:44px;flex:none;display:flex;align-items:center;gap:8px;padding:0 16px;border-bottom:1px solid var(--line)}
+.top b{font-size:13px;font-weight:600}
+.muted{color:var(--muted)}.small{font-size:11px}
+.btn{display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 9px;border:1px solid var(--line-strong);background:var(--raised);border-radius:5px;font-size:12px;white-space:nowrap;color:var(--text)}
+.btn.pri{background:var(--pri);border-color:var(--pri);color:var(--pri-text)}
+.btn.pri kbd{color:inherit;opacity:.7;border-color:currentColor}
+.btn.ghost{border-color:transparent;background:transparent;color:var(--muted)}
+.btn[disabled]{opacity:.45}
+.icon{width:26px;justify-content:center;padding:0}
+kbd{font:10px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted);border:1px solid var(--line-strong);border-radius:3px;padding:0 3px;line-height:14px}
+.field{min-height:26px;border:1px solid var(--line-strong);background:var(--field);border-radius:5px;padding:3px 8px;display:flex;align-items:center;gap:6px;color:var(--muted);font-size:12px}
+.ok{color:var(--ok)}.warn{color:var(--warn)}.bad{color:var(--bad)}
+h2{font-size:20px;font-weight:600;margin:2px 0 6px}
+mark{color:inherit;border-radius:2px;padding:0 1px}
+.hl-ok{background:var(--hl-ok);border-bottom:1.5px solid var(--hl-ok-line)}
+.hl-gap{background:var(--hl-gap);border-bottom:1.5px solid var(--hl-gap-line)}
+.chip{display:inline-flex;align-items:center;gap:4px;font-size:11px;line-height:18px;padding:0 6px;border-radius:4px;background:var(--selected);color:var(--muted)}
+.chip.ok{color:var(--ok)}
+hr{border:0;border-top:1px solid var(--line);margin:12px 0}
+</style><style>
+.panes{display:grid;grid-template-columns:150px minmax(0,1fr);flex:1;min-height:0}
+.sub{border-right:1px solid var(--line);padding:8px}
+.sub span{display:flex;justify-content:space-between;align-items:center;height:28px;padding:0 8px;border-radius:5px;font-size:12px}
+.sub span.on{background:var(--selected)}
+.content{padding:16px 24px;overflow:hidden;max-width:820px}
+h3{font-size:14px;font-weight:600;margin:0 0 10px}
+.rows{display:grid;grid-template-columns:170px 1fr;gap:8px 16px;font-size:12px;align-items:center;margin-bottom:18px}
+.rows dt{color:var(--muted)}.rows dd{margin:0}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{text-align:left;font-weight:500;color:var(--muted);font-size:11px;padding:6px 8px;border-bottom:1px solid var(--line-strong)}
+td{padding:7px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+td.n,th.n{text-align:right}
+.tg{display:inline-block;width:26px;height:15px;border-radius:8px;background:var(--pri);position:relative;vertical-align:middle}
+.tg:after{content:"";position:absolute;right:2px;top:2px;width:11px;height:11px;border-radius:6px;background:var(--bg)}
+.tg.off{background:var(--line-strong)}.tg.off:after{right:auto;left:2px}
+.log{font:11px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--panel);border-radius:6px;padding:8px 10px}</style>
+<div class="app"><aside class="side"><div class="brand"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span>werk</div><nav class="nav"><span class="">Inbox<em>14</em></span><span class="">Saved<em>28</em></span><span class="">Profile</span><span class="">CV</span></nav><div class="grow"></div><nav class="nav"><span class="on">Settings</span></nav></aside>
+<section class="main"><header class="top"><b>Settings</b><span class="grow"></span><span class="btn icon" aria-label="Open assistant"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg></span></header>
+<div class="panes"><div class="sub"><span class="">General</span><span class="">Sources</span><span class="on">AI</span><span class="">Backup</span><span class="">Diagnostics</span></div>
+<div class="content">
+<h3>ChatGPT</h3>
+<dl class="rows">
+<dt>Connection</dt><dd><span class="ok">Connected</span> <span class="btn" style="margin-left:8px">Sign out</span></dd>
+<dt>Model</dt><dd>gpt-5.6-sol · high reasoning</dd>
+<dt>Allowance</dt><dd>Available · checked 5 min ago</dd>
+<dt>Queue</dt><dd>1 cover letter writing, 1 waiting</dd>
+</dl>
+<h3>When not connected</h3>
+<dl class="rows">
+<dt>Connection</dt><dd><span class="btn pri">Sign in with ChatGPT</span></dd>
+<dt></dt><dd class="muted">Waiting for sign-in in your browser… <span class="btn ghost">Cancel</span></dd>
+<dt>Code from browser</dt><dd><div style="display:flex;gap:6px"><span class="field" style="width:240px">Paste code</span><span class="btn">Submit</span></div></dd>
+</dl>
+</div></div></section></div></body></html>

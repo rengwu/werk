@@ -1,55 +1,18 @@
 ---
-title: ununemploy wiki
-section: Overview
-updated: 2026-10-19
-order: 0
+title: werk wiki
+updated: 2026-11-01
 ---
-# ununemploy wiki
+# werk wiki
 
-Local job discovery, fit assessment, private cover-letter drafting and master CV management.
+werk is a local desktop app that finds matching jobs, explains the fit, drafts private cover letters and keeps a LaTeX CV. Project requirements are in `AGENTS.md`.
 
-## Start
+## Start here
 
-- [ZIP backups](features/backups.md)
-- [Native desktop app](features/desktop.md)
-- [Local development](guides/local-development.md)
-- [Application workflow](guides/workflow.md)
-- [Feature map](features/index.md)
-- [Unraid installation](guides/unraid.md) and [backups](guides/backups.md)
+- [Implementation handoff](journal/2026-11-01-werk-handoff.md): architecture, data model, screens, milestones, build and release.
+- [Decisions](decisions/index.md)
+- [Open questions](discussions/open-questions.md)
 
-## Project contract and implementation
+## Journal
 
-- [Decision register](decisions/index.md) and [dashboard UI](decisions/dashboard-ui.md)
-- [Architecture](reference/architecture.md)
-- [Source coverage](reference/source-coverage.md) and [geography data](reference/geography.md)
-- [Limitations](reference/limitations.md) and [open follow-up](discussions/open-questions.md)
-
-## Verification and history
-
-- [Pi runtime and assistant attachments — 19 October 2026](verification/runs/2026-10-19-pi-attachments.md)
-
-- [Timezone filter](verification/runs/2026-10-18-timezone-filter.md), [map and offset](verification/runs/2026-10-18-timezone-map.md), [wrapping offset](verification/runs/2026-10-18-timezone-wrap.md) and [Pi compatibility checkpoint](verification/runs/2026-10-18-pi-compatibility.md) — 18 October 2026
-
-- [Large-inbox timeout fix — 18 October 2026](verification/runs/2026-10-18-inbox-performance.md)
-
-- [Package size and Mac-first Pi handoff — 18 October 2026](journal/2026-10-18-pi-runtime-handoff.md)
-
-- [Windows installer integrity — 17 October 2026](verification/runs/2026-10-17-windows-installer.md)
-
-- [Windows local port — 17 October 2026](journal/2026-10-17-windows-port.md) and [verification](verification/runs/2026-10-17-windows-port.md)
-
-- [Cursor-inspired UI redesign — 16 October 2026](verification/runs/2026-10-16-cursor-redesign.md)
-
-- [Verification setup](verification/setup.md), [runs](verification/index.md), and [historical checks](verification/history.md)
-- [Source evaluation — September 2026](journal/2026-09-16-source-evaluation.md)
-- [Coverage research — 17 September 2026](journal/2026-09-17-coverage-research.md)
-- [Additional source evaluation — 8 October 2026](journal/2026-10-08-source-evaluation.md)
-- [Integration audit and simplification proposals — 8 October 2026](journal/2026-10-08-integration-audit.md)
-- [Accepted integration design — 8 October 2026](journal/2026-10-08-integration-design.md)
-- [jstack adoption — 7 October 2026](journal/2026-10-07-jstack-migration.md)
-- [Native desktop packaging — 7 October 2026](journal/2026-10-07-desktop.md)
-- [Windows and Linux desktop assessment — 16 October 2026](journal/2026-10-16-desktop-portability.md)
-
-## Maintain this wiki
-
-Follow [documentation maintenance](guides/documentation.md). Markdown is authoritative; build `docs/wiki/index.html` with `node docs/wiki/_build.mjs` and validate it with `node docs/wiki/_build.mjs --check`. The generated reader opens locally without a server. Private candidate evidence, credentials, application records and generated CVs stay outside this wiki.
+- [Clean rebuild plan](journal/2026-11-01-rebuild.md): findings from the previous app and the accepted direction.
+- Interview answers: [round 1](journal/2026-11-01-grill-2429f43a2dda41cdf1aaa20116f739b4.md), [round 2](journal/2026-11-01-grill-8310ced881c9d8f1fe6b9c2f5277b081.md), [round 3](journal/2026-11-01-grill-28a582f50b30795a161c06d0221e222e.md), [round 4](journal/2026-11-01-grill-79bc64157692f581ef75d39f3c59308f.md), [round 5](journal/2026-11-01-grill-9472293cf4bb700313881eac8d7833b7.md).

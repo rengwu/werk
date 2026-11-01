@@ -1,0 +1,7 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Design reference for the chosen app icon (light monogram with match dot).
+       The "w" is system-font text here; redraw it as outlines from an OFL font before export. -->
+  <rect x="9" y="9" width="82" height="82" rx="19" fill="#fcfcfc" stroke="#14141433" stroke-width="1"/>
+  <text x="47" y="64" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-weight="600" font-size="46" fill="#242424">w</text>
+  <circle cx="72" cy="60" r="4.5" fill="#36734c"/>
+</svg>

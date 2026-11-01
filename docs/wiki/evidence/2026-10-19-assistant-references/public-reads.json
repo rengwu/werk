@@ -1,8 +1,0 @@
-{
-  "passed": true,
-  "publicCommitList": true,
-  "publicPullRequestList": true,
-  "derivedCommitDetail": true,
-  "credentialFree": true,
-  "requests": 3
-}

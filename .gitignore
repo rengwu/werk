@@ -1,16 +1,13 @@
 node_modules/
-.svelte-kit/
-build/
-dist/
+out/
+release/
+smoke-output/
+resources/runtime/
 .local-data/
-# Original candidate evidence stays local and outside Git history.
-data/candidate-profile.json
-docs/MASTER_CV.md
 .env
 .env.*
-!.env.example
 *.db
 *.db-shm
 *.db-wal
-auth.json
+*.tsbuildinfo
 .DS_Store

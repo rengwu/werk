@@ -1,4 +1,0 @@
-interface:
-  display_name: "User profile guide"
-  short_description: "Build and correct an evidence-based career profile"
-  default_prompt: "Use $build-user-profile to help me build or update my ununemploy profile."

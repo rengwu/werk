@@ -1,0 +1,76 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>werk — cv</title></head><body><style>
+:root{--bg:#fcfcfc;--panel:#f3f3f3;--field:#fff;--raised:#fff;--text:#242424;--muted:#636363;--line:#14141412;--line-strong:#14141425;--focus:#506f80;--selected:#14141418;--hover:#14141408;--ok:#36734c;--warn:#8a5a00;--bad:#a33632;--pri:#242424;--pri-text:#fff;--hl-ok:#36734c1f;--hl-ok-line:#36734c;--hl-gap:#c27c0e1f;--hl-gap-line:#c27c0e;--notice:#fff8ec;--notice-line:#c27c0e55;--shadow:0 8px 28px #00000024;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#181818;--panel:#222;--field:#181818;--raised:#232323;--text:#e7e7e7;--muted:#a0a0a0;--line:#ffffff0f;--line-strong:#ffffff20;--focus:#adbec8;--selected:#ffffff14;--hover:#ffffff0b;--ok:#94bda2;--warn:#e0b25c;--bad:#f49c92;--pri:#e7e7e7;--pri-text:#181818;--hl-ok:#94bda224;--hl-ok-line:#94bda2;--hl-gap:#e0b25c24;--hl-gap-line:#e0b25c;--notice:#2a2418;--notice-line:#e0b25c55;--shadow:0 8px 28px #00000080;color-scheme:dark}}
+*{box-sizing:border-box}html,body{height:100%}
+body{margin:0;font:13px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;color:var(--text);background:var(--bg);overflow:hidden}
+.app{display:grid;grid-template-columns:220px minmax(0,1fr);height:100%;position:relative}
+.side{background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column;padding:0 8px 8px}
+.brand{height:44px;display:flex;align-items:center;gap:8px;padding:0 6px;font-weight:600;font-size:12px}
+.lights{display:flex;gap:8px;margin-right:14px}.lights i{width:12px;height:12px;border-radius:6px;background:#ff5f57}.lights i:nth-child(2){background:#febc2e}.lights i:nth-child(3){background:#28c840}
+.nav{display:flex;flex-direction:column;gap:1px}
+.nav span{display:flex;justify-content:space-between;align-items:center;height:28px;padding:0 8px;border-radius:5px;font-size:12px}
+.nav span.on{background:var(--selected)}
+.nav em{font-style:normal;color:var(--muted);font-size:11px}
+.dot{width:6px;height:6px;border-radius:3px;background:var(--bad);display:inline-block}
+.update{display:flex;justify-content:space-between;align-items:center;font-size:11px;padding:6px 8px;margin-bottom:4px;border:1px solid var(--line-strong);border-radius:5px;background:var(--raised)}
+.update a{color:var(--text);font-weight:600;text-decoration:underline}
+.grow{flex:1}
+.main{display:flex;flex-direction:column;min-width:0;min-height:0}
+.top{height:44px;flex:none;display:flex;align-items:center;gap:8px;padding:0 16px;border-bottom:1px solid var(--line)}
+.top b{font-size:13px;font-weight:600}
+.muted{color:var(--muted)}.small{font-size:11px}
+.btn{display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 9px;border:1px solid var(--line-strong);background:var(--raised);border-radius:5px;font-size:12px;white-space:nowrap;color:var(--text)}
+.btn.pri{background:var(--pri);border-color:var(--pri);color:var(--pri-text)}
+.btn.pri kbd{color:inherit;opacity:.7;border-color:currentColor}
+.btn.ghost{border-color:transparent;background:transparent;color:var(--muted)}
+.btn[disabled]{opacity:.45}
+.icon{width:26px;justify-content:center;padding:0}
+kbd{font:10px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted);border:1px solid var(--line-strong);border-radius:3px;padding:0 3px;line-height:14px}
+.field{min-height:26px;border:1px solid var(--line-strong);background:var(--field);border-radius:5px;padding:3px 8px;display:flex;align-items:center;gap:6px;color:var(--muted);font-size:12px}
+.ok{color:var(--ok)}.warn{color:var(--warn)}.bad{color:var(--bad)}
+h2{font-size:20px;font-weight:600;margin:2px 0 6px}
+mark{color:inherit;border-radius:2px;padding:0 1px}
+.hl-ok{background:var(--hl-ok);border-bottom:1.5px solid var(--hl-ok-line)}
+.hl-gap{background:var(--hl-gap);border-bottom:1.5px solid var(--hl-gap-line)}
+.chip{display:inline-flex;align-items:center;gap:4px;font-size:11px;line-height:18px;padding:0 6px;border-radius:4px;background:var(--selected);color:var(--muted)}
+.chip.ok{color:var(--ok)}
+hr{border:0;border-top:1px solid var(--line);margin:12px 0}
+</style><style>
+.bar{display:flex;gap:6px;align-items:center;padding:8px 16px;border-bottom:1px solid var(--line)}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);flex:1;min-height:0}
+.ed{border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0}
+.ph{height:32px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;border-bottom:1px solid var(--line);font-size:12px}
+pre{margin:0;padding:10px 12px;font:12px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;overflow:hidden;flex:1}
+.k{color:#2f6fb0}.c{color:var(--muted)}
+.diag{border-top:1px solid var(--line);padding:6px 12px;font-size:11px}
+.pv{background:var(--panel);display:flex;flex-direction:column;min-height:0}
+.page{margin:14px auto;width:78%;aspect-ratio:1/1.414;background:#fff;color:#222;box-shadow:0 1px 4px #00000030;padding:26px 30px;font:9px/1.45 Georgia,serif;overflow:hidden}
+.page h4{font:600 13px Georgia,serif;margin:0 0 2px;font-variant:small-caps}
+.page .sec{font-variant:small-caps;border-bottom:1px solid #444;margin:8px 0 4px;font-size:10px}
+</style>
+<div class="app"><aside class="side"><div class="brand"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span>werk</div><nav class="nav"><span class="">Inbox<em>14</em></span><span class="">Saved<em>28</em></span><span class="">Profile</span><span class="on">CV</span></nav><div class="grow"></div><nav class="nav"><span class="">Settings</span></nav></aside>
+<section class="main"><header class="top"><b>CV</b><span class="grow"></span><span class="btn icon" aria-label="Open assistant"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg></span></header>
+<div class="bar"><span class="btn">Version 4 ▾</span><span class="btn">Generate from profile</span><span class="muted small">Profile revision 12 is newer than this version</span><span class="grow"></span><span class="btn">Recompile</span><span class="btn pri">Save</span></div>
+<div class="cols">
+<div class="ed"><div class="ph"><span>cv.tex</span><span class="btn ghost">Download .tex</span></div>
+<pre><span class="c">% Generated from profile revision 11, then edited</span>
+<span class="k">\documentclass</span>[11pt,a4paper]{article}
+<span class="k">\usepackage</span>[margin=18mm]{geometry}
+<span class="k">\begin</span>{document}
+<span class="k">\name</span>{Alex Example}
+<span class="k">\contact</span>{Kuala Lumpur · alex@example.com · example.com}
+
+<span class="k">\section</span>{Experience}
+<span class="k">\role</span>{Frontend Engineer}{Example Software}{2021 -- present}
+<span class="k">\begin</span>{details}
+  <span class="k">\item</span> Rebuilt the component library with accessibility checks.
+  <span class="k">\item</span> Led the move from webpack to Vite.
+<span class="k">\end</span>{details}
+
+<span class="k">\section</span>{Projects}
+<span class="k">\project</span>{Lumen}{github.com/example/lumen}{Desktop note-taking tool}
+<span class="k">\end</span>{document}</pre>
+<div class="diag ok">Compiled 4 s ago · 1 page</div></div>
+<div class="pv"><div class="ph"><span>Preview</span><span class="btn ghost">Download PDF</span></div>
+<div class="page"><h4>Alex Example</h4><div>Kuala Lumpur · alex@example.com · example.com</div><div class="sec">Experience</div><b>Frontend Engineer</b>, Example Software <span style="float:right">2021 – present</span><ul style="margin:2px 0;padding-left:14px"><li>Rebuilt the component library with accessibility checks.</li><li>Led the move from webpack to Vite.</li></ul><div class="sec">Projects</div><b>Lumen</b> — Desktop note-taking tool</div>
+</div></div></section></div></body></html>

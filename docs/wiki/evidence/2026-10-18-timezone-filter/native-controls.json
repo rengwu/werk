@@ -1,9 +1,0 @@
-{
-  "nativeWindow": "WKWebView",
-  "minimumHandleVisible": true,
-  "maximumHandleVisible": true,
-  "keyboardStepMinutes": 15,
-  "clearRestoresBounds": true,
-  "filterLeftInactive": true,
-  "timeoutVisible": false
-}

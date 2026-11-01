@@ -1,8 +1,0 @@
-{
-  "command": "npx tsx --test tests/timezones.test.ts tests/job-query.test.ts",
-  "passed": 23,
-  "failed": 0,
-  "skipped": 0,
-  "typecheckAndViteBuild": "Passed",
-  "nativeBuild": "Passed"
-}
