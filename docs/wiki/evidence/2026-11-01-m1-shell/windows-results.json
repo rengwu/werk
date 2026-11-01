@@ -1,0 +1,15 @@
+{
+  "platform": "win32",
+  "arch": "x64",
+  "scenarios": [
+    "Fresh launch within 3 seconds",
+    "Sandboxed renderer, utility-process SQLite, FTS5, schema and diagnostics",
+    "Backend killed, restarted and queries reconnected",
+    "Repeated crashes stop automatic retries; explicit Restart recovers",
+    "Close hides window; second launch reopens the same instance",
+    "Appearance persists after quit and relaunch"
+  ],
+  "startupMs": 614,
+  "diagnostics": "werk\n0.1.0\nElectron\n44.9.1\nChromium\n152.0.7977.167\nNode\n24.22.0\nSQLite\n3.53.4\nFTS5\nAvailable\nSchema\n1\nDatabase size\n28,848 bytes\nSystem\nwin32 10.0.26100 x64\nData folder\nC:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\werk-smoke-UdoBwB\nBackend\nrunning\nStarted\n2026-11-01T05:11:10.009Z\nRestarts\n0\nUpdate\nunchecked\nLast checked\nNot checked",
+  "result": "Passed"
+}
