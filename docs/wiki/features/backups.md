@@ -11,6 +11,8 @@ updated: 2026-11-01
 
 Settings → Backup has Export backup and Restore backup. Export opens a native save dialog. Restore opens a ZIP picker and replaces records after validation; cancellation changes nothing. The page describes replacement before the action. There is no automatic recovery archive or merge step. Export first to retain current records.
 
+To clear all app records, sign-in and settings, use [Factory reset](factory-reset.md) in Settings → General.
+
 A backup contains the canonical profile and evidence references, jobs and their assessments, saved descriptions, notes and manual status, current source observations, the latest letter per job, and the current CV source with its matching PDF when available. A failed current CV never exports an older PDF as though it matched the source.
 
 Older versions, chats, attachments, queued tasks, fingerprints, scan history, source configuration, schedules, app settings and credentials are excluded. Evidence-file references remain references; the original files are not copied. The archive is an ordinary unencrypted ZIP.

@@ -6,6 +6,7 @@ export class ModelQueue {
   notify: () => void;
   handlers: Partial<Record<Task['kind'], (task: Task, signal: AbortSignal) => Promise<void>>> = {};
   running?: { id: number; controller: AbortController };
+  active?: Promise<void>;
   closed = false;
   constructor(store: Store, notify: () => void) {
     this.store = store; this.notify = notify;
@@ -25,14 +26,14 @@ export class ModelQueue {
     this.running = { id: task.id, controller: new AbortController() };
     const signal = this.running.controller.signal;
     this.setState(task.id,'running',null);
-    try { await handler(task,signal); signal.throwIfAborted(); if (!this.closed) this.setState(task.id,'done',null); }
+    try { this.active = Promise.resolve().then(() => handler(task,signal)); await this.active; signal.throwIfAborted(); if (!this.closed) this.setState(task.id,'done',null); }
     catch (error) {
       if (!this.closed) {
         const message = signal.aborted ? 'Stopped.' : error instanceof Error ? error.message : 'The task failed.';
         if (error instanceof AiUnavailable) this.store.set('aiPause', message);
         this.setState(task.id,error instanceof AiUnavailable ? 'paused' : 'failed',message);
       }
-    } finally { this.running = undefined; if (!this.closed) this.kick(); }
+    } finally { this.active = undefined; this.running = undefined; if (!this.closed) this.kick(); }
   }
   setState(id: number, state: Task['state'], error: string | null) { this.store.db.prepare('UPDATE tasks SET state=?,error=?,updated_at=? WHERE id=?').run(state,error,new Date().toISOString(),id); this.notify(); }
   retry(id: number) {

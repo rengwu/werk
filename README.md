@@ -20,6 +20,8 @@ Saving a job queues a plain-text cover letter. The CV page generates one master 
 
 Settings → Backup exports current personal records and latest documents. Restore replaces personal records and history while preserving sign-in and app settings. Credentials, conversation history and older versions are excluded from the ZIP. Data stays in `~/Library/Application Support/werk` on macOS or `%APPDATA%\werk` on Windows. There is no cloud account or telemetry.
 
+Settings → General → Reset werk clears app data, conversations, ChatGPT sign-in and preferences after confirmation, then opens first-run setup. Export a backup first if you want to keep your profile, jobs, letters or CV. Original files and exports outside the app's data folder are preserved. See [factory reset](docs/wiki/features/factory-reset.md).
+
 ## Develop
 
 Use Node 22.19+ (CI uses Node 24), then:

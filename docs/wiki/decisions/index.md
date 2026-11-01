@@ -17,6 +17,8 @@ The no-application/no-engagement product rules remain assistant instructions. Wi
 
 ## Product
 
+**REB-factory-reset (2026-11-02):** The user requested a Settings button to clear the entire app's state. Add a confirmed factory reset that removes personal records, conversations, copied attachments, app-owned ChatGPT credentials, schedules, source configuration and preferences, and returns to first-run setup. Cancel leaves data intact. Preserve originals and exports outside app-owned storage. Tests use fictional data; implementing the button does not authorize resetting the user's installation.
+
 | ID | Decision | Round |
 | --- | --- | --- |
 | REB-name | The app is **werk**, always lowercase. | 2 |

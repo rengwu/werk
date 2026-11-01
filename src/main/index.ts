@@ -1,9 +1,10 @@
-import { app, BrowserWindow, Menu, MessageChannelMain, Tray, ipcMain, nativeTheme, shell, utilityProcess, dialog, clipboard } from 'electron';
+import { app, BrowserWindow, Menu, MessageChannelMain, Tray, ipcMain, nativeTheme, shell, utilityProcess, dialog, clipboard, session } from 'electron';
 import type { UtilityProcess, IpcMainEvent, IpcMainInvokeEvent } from 'electron';
-import { appendFileSync, mkdirSync, renameSync, statSync } from 'node:fs';
-import { writeFile } from 'node:fs/promises';
+import { appendFileSync, existsSync, mkdirSync, renameSync, statSync } from 'node:fs';
+import { rm, writeFile } from 'node:fs/promises';
 import { basename, join, resolve } from 'node:path';
 import type { BackendInit, FileDownload } from '../shared/api.ts';
+import { clearAppData, markReset, resetMarker } from './reset.ts';
 
 app.setName('werk');
 if (process.env.WERK_DATA_DIR) app.setPath('userData', resolve(process.env.WERK_DATA_DIR));
@@ -22,6 +23,8 @@ let restartCount = 0;
 let restarts: number[] = [];
 let tray: Tray | null = null;
 let reconnectTimer: ReturnType<typeof setTimeout> | undefined;
+let resetPending = false;
+let resetting = false;
 
 function crashLog(message: string) {
   const dir = join(app.getPath('userData'), 'logs'); mkdirSync(dir, { recursive: true });
@@ -31,7 +34,7 @@ function crashLog(message: string) {
 }
 function status(state: string) { win?.webContents.send('werk:backend-status', { state, restartCount, version: app.getVersion() }); }
 function startBackend(previousExit?: number) {
-  if (backend || shutdownStarted) return;
+  if (backend || shutdownStarted || resetting) return;
   backendReady = false;
   const child = utilityProcess.fork(join(__dirname, 'backend.cjs'), [], { serviceName: 'werk-backend', stdio: 'ignore', env: { ...process.env, WERK_RESOURCES_DIR: app.isPackaged ? process.resourcesPath : join(app.getAppPath(), 'resources'), WERK_BUNDLE_DIR: __dirname } });
   backend = child;
@@ -43,6 +46,7 @@ function startBackend(previousExit?: number) {
   child.once('exit', (code) => {
     backend = null; backendReady = false;
     if (shutdownStarted) { app.exit(0); return; }
+    if (resetting) return;
     crashLog(`Backend exited with code ${code}.`);
     restartCount++; restarts = [...restarts.filter(t => Date.now() - t < 60000), Date.now()];
     stopped = restarts.length > 3; status(stopped ? 'failed' : 'restarting');
@@ -59,6 +63,7 @@ function openExternal(url: string) {
   try { const parsed = new URL(url); if (['https:', 'http:'].includes(parsed.protocol)) void shell.openExternal(parsed.href); } catch { /* invalid link */ }
 }
 function showWindow() {
+  if (resetting) return;
   if (!win) createWindow();
   if (win?.isMinimized()) win.restore();
   win?.show(); win?.focus();
@@ -70,6 +75,46 @@ function beginShutdown() {
   if (!backend) { app.exit(0); return; }
   backend.postMessage({ type: 'shutdown' });
   setTimeout(() => { backend?.kill(); app.exit(0); }, 3000);
+}
+async function stopBackendForReset() {
+  const child = backend;
+  if (!child) return;
+  await new Promise<void>((resolve, reject) => {
+    const exited = (code: number) => {
+      clearTimeout(timer);
+      if (code === 0) resolve(); else reject(new Error('Background work did not stop cleanly.'));
+    };
+    const timer = setTimeout(() => { child.removeListener('exit', exited); reject(new Error('Background work is still stopping. Try again.')); }, 30000);
+    child.once('exit', exited);
+    child.postMessage({ type: 'shutdown' });
+  });
+}
+async function finishFactoryReset() {
+  resetting = true; clearTimeout(reconnectTimer);
+  // Destroying the confirmed window discards its unsaved edits and prevents old
+  // renderer requests from reaching the fresh database.
+  win?.destroy(); rendererReady = false;
+  for (;;) {
+    try {
+      await stopBackendForReset();
+      const browser = session.defaultSession;
+      browser.flushStorageData();
+      await browser.closeAllConnections();
+      await browser.clearData();
+      await browser.clearAuthCache();
+      await clearAppData(app.getPath('userData'));
+      await rm(join(app.getPath('userData'), resetMarker), { force: true });
+      break;
+    } catch (error) {
+      const { response } = await dialog.showMessageBox({ type: 'error', title: 'werk', message: 'Factory reset could not finish.',
+        detail: `${error instanceof Error ? error.message : 'Data could not be cleared.'}\nwerk will retry the reset on its next launch.`,
+        buttons: ['Retry reset', 'Quit werk'], defaultId: 0, cancelId: 1 });
+      if (response === 1) { app.exit(1); return; }
+    }
+  }
+  restartCount = 0; restarts = []; stopped = false;
+  nativeTheme.themeSource = 'system'; resetting = false;
+  startBackend(); createWindow();
 }
 function createWindow() {
   rendererReady = false;
@@ -92,7 +137,19 @@ function createWindow() {
   const dev = !app.isPackaged && process.env.WERK_RENDERER_URL;
   void (dev ? win.loadURL(dev) : win.loadFile(join(__dirname, 'renderer/index.html')));
 }
-function trusted(event: IpcMainEvent | IpcMainInvokeEvent) { return !!win && event.sender === win.webContents && event.senderFrame === win.webContents.mainFrame; }
+function trusted(event: IpcMainEvent | IpcMainInvokeEvent) { return !resetting && !!win && event.sender === win.webContents && event.senderFrame === win.webContents.mainFrame; }
+ipcMain.handle('werk:factory-reset', async event => {
+  if (!trusted(event) || resetPending) return false;
+  resetPending = true;
+  try {
+    const { response } = await dialog.showMessageBox(win!, { type: 'warning', title: 'werk', message: 'Factory reset werk?',
+      detail: 'This permanently deletes your profile, jobs, letters, CV, conversations, attached copies, ChatGPT connection and settings. Running work and unsaved edits will be discarded. Original files and exported backups outside werk’s data folder are kept.\n\nExport a backup in Settings → Backup first if you need your profile, jobs, letters or CV.',
+      buttons: ['Cancel', 'Reset werk'], defaultId: 0, cancelId: 0, noLink: true });
+    if (response !== 1) return false;
+    await markReset(app.getPath('userData'));
+    await finishFactoryReset(); return true;
+  } finally { resetPending = false; }
+});
 ipcMain.on('werk:connect', event => {
   if (!trusted(event)) return;
   rendererReady = true;
@@ -119,13 +176,14 @@ app.on('before-quit', event => {
   quitting = true;
   if (win) win.close(); else beginShutdown();
 });
-void app.whenReady().then(() => {
+void app.whenReady().then(async () => {
   Menu.setApplicationMenu(Menu.buildFromTemplate([
     ...(process.platform === 'darwin' ? [{ label: 'werk', submenu: [{ role: 'about' as const }, { type: 'separator' as const }, { role: 'hide' as const }, { role: 'hideOthers' as const }, { role: 'unhide' as const }, { type: 'separator' as const }, { label: 'Quit werk', accelerator: 'Cmd+Q', click: () => app.quit() }] }] : []),
     { role: 'editMenu' }, { role: 'viewMenu' }, { role: 'windowMenu' },
     ...(process.platform !== 'darwin' ? [{ label: 'File', submenu: [{ label: 'Quit werk', accelerator: 'Alt+F4', click: () => app.quit() }] }] : []),
   ]));
-  startBackend(); createWindow();
+  if (existsSync(join(app.getPath('userData'), resetMarker))) await finishFactoryReset();
+  else { startBackend(); createWindow(); }
   if (process.platform === 'win32') {
     tray = new Tray(app.isPackaged ? join(process.resourcesPath, 'tray.png') : join(app.getAppPath(), 'resources/tray.png'));
     tray.setToolTip('werk'); tray.on('click', showWindow);

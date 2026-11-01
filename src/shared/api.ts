@@ -73,6 +73,6 @@ export type FileDownload = { name: string; bytes: Uint8Array };
 declare global {
   const WERK_TEST_BUILD: boolean;
   interface Window {
-    werk: { platform: string; connect(): void; setTheme(mode: Theme): void; saveFile(file: FileDownload): Promise<boolean>; copyText(text: string): Promise<void> };
+    werk: { platform: string; connect(): void; setTheme(mode: Theme): void; saveFile(file: FileDownload): Promise<boolean>; copyText(text: string): Promise<void>; factoryReset(): Promise<boolean> };
   }
 }

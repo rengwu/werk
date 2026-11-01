@@ -28,6 +28,9 @@ export class Service {
   assistant: Assistant;
   jobs:Jobs;sources:Sources;
   letters:Letters;cv:Cv;backups:Backups;activeEdits=0;
+  private closing = false;
+  private inFlight = new Set<Promise<unknown>>();
+  private shutdownPromise?: Promise<void>;
   emit: <K extends keyof Events>(event: K, data: Events[K]) => void;
   constructor(init: BackendInit, emit: Service['emit']) {
     this.init = init; this.emit = emit; this.store = new Store(init.dataDir);
@@ -64,6 +67,7 @@ export class Service {
     };
   }
   async call<K extends keyof Api>(method: K, params: ApiParams<K>): Promise<ApiResult<K>> {
+    if (this.closing) throw new Error('werk is stopping.');
     const handlers: { [P in keyof Api]: (input: unknown) => ReturnType<Api[P]> | Promise<ReturnType<Api[P]>> } = {
       'backup.export':()=>this.backups.export(),
       'backup.restore':input=>this.backups.restore(z.object({bytes:z.instanceof(Uint8Array).refine(b=>b.length<=MAX_ZIP_BYTES)}).strict().parse(input).bytes),
@@ -114,7 +118,19 @@ export class Service {
     if (!Object.hasOwn(handlers, method)) throw new Error('Unknown action.');
     const edit=!/\.(?:get|list|pdf|overlap)$/.test(method)&&!method.startsWith('backup.');
     if(edit)this.activeEdits++;
-    try{return await handlers[method](params) as ApiResult<K>;}finally{if(edit)this.activeEdits--;}
+    let request: Promise<unknown> | undefined;
+    try {
+      request = Promise.resolve(handlers[method](params)); this.inFlight.add(request);
+      return await request as ApiResult<K>;
+    } finally { if(request)this.inFlight.delete(request);if(edit)this.activeEdits--; }
+  }
+  shutdown() {
+    return this.shutdownPromise ??= (async () => {
+      this.closing = true;
+      this.sources.close(); this.queue.close(); this.cv.close();
+      await Promise.allSettled([this.assistant.stop(), this.queue.active, this.sources.active, this.cv.active, this.ai.cancel(), ...this.inFlight]);
+      this.close();
+    })();
   }
   close() { this.sources.close();this.queue.close();this.assistant.close();this.cv.close(); void this.ai.cancel(); this.store.close(); }
 }

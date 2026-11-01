@@ -8,4 +8,5 @@ contextBridge.exposeInMainWorld('werk', {
   setTheme: (mode: Theme) => ipcRenderer.send('werk:theme', mode),
   saveFile: (file: FileDownload) => ipcRenderer.invoke('werk:save-file', file),
   copyText: (text: string) => ipcRenderer.invoke('werk:copy-text', text),
+  factoryReset: () => ipcRenderer.invoke('werk:factory-reset'),
 });

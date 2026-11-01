@@ -56,3 +56,7 @@ node docs/wiki/_build.mjs --check
 With the fixture package selected in `WERK_EXE`, run `tests/documents-smoke.ts`, `tests/backup-smoke.ts` and `tests/accessibility-smoke.ts` using `node --experimental-strip-types`. Document inference is simulated; the PDF compiler and backup operations are real. The accessibility driver uses axe WCAG A/AA checks in light/dark themes and explicit keyboard/focus assertions. It cannot audit Chromium's internal PDF viewer. Screenshot/JSON outputs are under matching `smoke-output/` subfolders. Test cleanup dismisses native unsaved-edit prompts in its own instance; normal close/quit behavior remains covered by the shell driver.
 
 Production installers are retained before the separate fixture package replaces unpacked build output. Never release a fixture build. `scripts/licenses.mjs` emits bundled dependency notices during a normal build.
+
+## Factory reset
+
+`node --experimental-strip-types --test tests/reset.test.ts` verifies owned-path deletion and graceful shutdown. With `WERK_EXE` pointing to the fixture package, run `node --experimental-strip-types tests/reset-smoke.ts`. It creates and removes its own temporary app folder; never replace that folder with live user data. Native confirmation responses are stubbed, while actual IPC, backend shutdown, filesystem deletion and Electron storage cleanup execute. Evidence is in `smoke-output/reset/`.
