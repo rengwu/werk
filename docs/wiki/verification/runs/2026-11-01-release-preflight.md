@@ -6,7 +6,7 @@ result: Passed
 ---
 # Windows setup and release asset preflight
 
-Scope: the user's Windows-PC setup trial and installer selection for the [desktop release workflow](../../features/desktop.md). Tag creation, GitHub release creation and publication are outside this preflight; they await approval.
+Scope: the user's Windows-PC setup trial and installer selection for the [desktop release workflow](../../features/desktop.md). Tag creation, GitHub release creation and publication were outside this preflight and awaited approval at the time. The later approval and delivery are recorded in [v0.1.0 verification](2026-11-01-v0.1.0-draft.md).
 
 ## Build and environment
 
@@ -26,4 +26,4 @@ The release-command check used a dirty tree based on `269d7e50c2d8b547238342a701
 
 The release step now selects `dist/*/release/*.dmg` and `dist/*/release/*-setup.exe`. Runtime code and the tested installers are unchanged. To repeat the bounded check, arrange downloaded `werk-macOS` and `werk-Windows` artifacts below `dist/`, then substitute an argument/file validator for `gh` when running the exact release command. Require two existing installer files and the `--draft` argument; do not execute the GitHub write before approval.
 
-The Windows-PC outcome is user-reported, not an independently observed test. Individual assistant, sign-in, CV and tray interactions were not separately reported; their packaged automated coverage is recorded in [M5 verification](2026-11-01-m5-delivery.md). No version tag, draft release or publication was performed during this preflight. Actual tag-triggered delivery remains to be checked after approval.
+The Windows-PC outcome is user-reported, not an independently observed test. Individual assistant, sign-in, CV and tray interactions were not separately reported; their packaged automated coverage is recorded in [M5 verification](2026-11-01-m5-delivery.md). No version tag, draft release or publication was performed during this preflight. See the [subsequent delivery run](2026-11-01-v0.1.0-draft.md) for the approved tag's results.

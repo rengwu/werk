@@ -17,3 +17,7 @@ updated: 2026-11-01
 - [M5 backups and delivery](runs/2026-11-01-m5-delivery.md)
 
 - [Windows setup and release asset preflight](runs/2026-11-01-release-preflight.md)
+
+- [v0.1.0 draft release](runs/2026-11-01-v0.1.0-draft.md)
+
+- [v0.1.0 first CI attempt](runs/2026-11-01-v0.1.0-attempt1.md)

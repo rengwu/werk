@@ -29,12 +29,13 @@ For the fake release notice: `npm run package -- --test`, then the same smoke co
 
 ## Coverage and limits
 
-The smoke driver verifies close/reopen through Electron and a second OS process. Native Dock click and Windows tray menu click require a separate desktop check; the driver does not claim those clicks. M5 replaced the temporary tray artwork. The user confirmed the Windows build and setup work; first-tag approval and publication remain pending.
+The smoke driver verifies close/reopen through Electron and a second OS process. Native Dock click and Windows tray menu click require a separate desktop check; the driver does not claim those clicks. M5 replaced the temporary tray artwork. The user confirmed the Windows build and setup work, then approved `v0.1.0`; publication belongs to the user.
 
 ## Verification history
 
 - [M1 verification](../verification/runs/2026-11-01-m1-shell.md).
 - [Windows-PC trial and release asset preflight](../verification/runs/2026-11-01-release-preflight.md).
+- [v0.1.0 draft release](../verification/runs/2026-11-01-v0.1.0-draft.md).
 
 ## Final rebuild polish
 

@@ -1,0 +1,320 @@
+{
+  "attempt": 1,
+  "testedRevision": "3711bdf4635d07b34bae577200d5f922af9f6f87",
+  "url": "https://github.com/rengwu/werk/actions/runs/41303117731",
+  "conclusion": "failure",
+  "jobs": [
+    {
+      "name": "latex-cache",
+      "conclusion": "success",
+      "url": "https://github.com/rengwu/werk/actions/runs/41303117731/job/124837990782",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm ci",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run setup:latex",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/upload-artifact@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "name": "build (windows-latest)",
+      "conclusion": "success",
+      "url": "https://github.com/rengwu/werk/actions/runs/41303117731/job/124838165710",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm ci",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-go@v6",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/download-artifact@v8",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run setup:latex",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify Windows AppContainer boundaries",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run check",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm test",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run package",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install on Windows",
+          "conclusion": "success"
+        },
+        {
+          "name": "Locate app on macOS",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Verify offline compiler isolation",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run smoke",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify packaged OAuth browser handoff and cancellation",
+          "conclusion": "success"
+        },
+        {
+          "name": "Uninstall on Windows and preserve data",
+          "conclusion": "success"
+        },
+        {
+          "name": "Build isolated inference fixture package",
+          "conclusion": "success"
+        },
+        {
+          "name": "Locate fixture app on Windows",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify profile and assistant with fictional data",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify pi tools, dropped files, steering and interruption",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify discovery and keyboard triage with recorded responses",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify letters and sandboxed CV workspace",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify backup export and restore",
+          "conclusion": "success"
+        },
+        {
+          "name": "Audit accessibility and keyboard navigation",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/upload-artifact@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-go@v6",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "name": "build (macos-latest)",
+      "conclusion": "failure",
+      "url": "https://github.com/rengwu/werk/actions/runs/41303117731/job/124838165799",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm ci",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-go@v6",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Run actions/download-artifact@v8",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run setup:latex",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify Windows AppContainer boundaries",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Run npm run check",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm test",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run package",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install on Windows",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Locate app on macOS",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify offline compiler isolation",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run smoke",
+          "conclusion": "failure"
+        },
+        {
+          "name": "Verify packaged OAuth browser handoff and cancellation",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Uninstall on Windows and preserve data",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Build isolated inference fixture package",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Locate fixture app on Windows",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Verify profile and assistant with fictional data",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Verify pi tools, dropped files, steering and interruption",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Verify discovery and keyboard triage with recorded responses",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Verify letters and sandboxed CV workspace",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Verify backup export and restore",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Audit accessibility and keyboard navigation",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Run actions/upload-artifact@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@v7",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Post Run actions/checkout@v7",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "name": "release",
+      "conclusion": "skipped",
+      "url": "https://github.com/rengwu/werk/actions/runs/41303117731/job/124839169688",
+      "steps": []
+    }
+  ],
+  "startupFailure": {
+    "observedMs": 6168,
+    "requiredBelowMs": 3000,
+    "message": "Shell startup took 6168 ms"
+  },
+  "comparison": {
+    "run": 41303014622,
+    "testedRevision": "3711bdf4635d07b34bae577200d5f922af9f6f87",
+    "macOSJob": "success",
+    "note": "The separate main-branch run passed all required platform checks on the same source; macOS startup was 1,303 ms.",
+    "conclusion": "success",
+    "startupMs": 1303
+  }
+}

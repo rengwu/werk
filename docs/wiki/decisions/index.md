@@ -51,6 +51,7 @@ The no-application/no-engagement product rules remain assistant instructions. Wi
 | REB-latex-isolation | CV LaTeX compiles only inside an OS sandbox: `sandbox-exec` on macOS, the legacy Go AppContainer helper on Windows. The assistant keeps editing LaTeX directly. Tectonic alone can read and write any of the user's files ([evidence](../journal/2026-11-01-werk-handoff.md#tectonic-file-access)). Round 5 offered the rule-lean alternative, in which untrusted text never becomes LaTeX and no sandbox is needed; it was recommended and declined. | 4, 5 |
 | REB-delivery | Unsigned builds; an in-app notice links to a newer GitHub release; no automatic updates. Differs (signing was recommended). | 1 |
 | REB-builds | GitHub Actions builds unsigned installers on version tags into a draft release. | 2 |
+| REB-first-tag | On 1 November, after the Windows-PC setup trial, the user selected “Push v0.1.0” in form `316b089663e8da00f4b6fe36f1128cc7`, approving commit `3711bdf4635d07b34bae577200d5f922af9f6f87` and its tag-triggered draft release. The tag was pushed at that exact revision, and CI created the draft with both installers; see [verification](../verification/runs/2026-11-01-v0.1.0-draft.md). The user publishes the draft. | Release approval |
 | REB-icon | Light monogram with a green match dot: [reference](../attachments/werk-design/icon.png), source `design/werk/icon.svg`. Differs (the dark monogram was recommended). | 3 |
 | REB-license | MIT. | 3 |
 
@@ -66,6 +67,6 @@ The no-application/no-engagement product rules remain assistant instructions. Wi
 | REB-github | The agent may push `main` and `legacy` without asking. Tags, releases, pull requests and other GitHub actions need the user. | 3 |
 | REB-autonomy | Continue through all milestones; stop only for consequential unsettled decisions. | 3 |
 | REB-live-checks | Small live checks are allowed: real inference and bounded read-only scans, with a fictional profile. | 3 |
-| REB-windows-testing | The user tests Windows builds on their PC only before releases. Differs (after each milestone was recommended). For `v0.1.0`, the user reported “windows build works fine. setup tested to be working.” This completes the Windows-PC setup trial; tag approval remains separate. | 3; user confirmation |
+| REB-windows-testing | The user tests Windows builds on their PC only before releases. Differs (after each milestone was recommended). For `v0.1.0`, the user reported “windows build works fine. setup tested to be working.” This completed the Windows-PC setup trial before first-tag approval. | 3; user confirmation |
 | REB-docs | No Slopchan. The jstack wiki holds all project documentation. | 3 |
 | REB-start | Implementation starts with milestone 1, proving Windows installation and startup first. | 2 |
