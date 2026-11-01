@@ -74,6 +74,10 @@ function records() {
 }
 async function freshState(page: Page) {
   await page.getByRole('heading',{name:'Set up werk',exact:true}).waitFor();
+  // Setup renders before its queries finish. Wait for an actual backend reply
+  // before opening SQLite, especially on slower packaged CI launches.
+  await settings(page); await page.getByRole('tab',{name:'Diagnostics',exact:true}).click();
+  assert.equal(await page.getByTestId('diagnostic-backend').textContent(),'running');
   assert.equal(await page.evaluate(()=>localStorage.getItem('reset-probe')),null);
   assert.equal(await page.evaluate(()=>sessionStorage.getItem('werk:backup-restored')),null);
   assert.equal(await page.evaluate(()=>Object.values(localStorage).some(v=>v.includes('Draft to erase'))),false);
