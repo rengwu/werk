@@ -1,0 +1,16 @@
+{
+  "platform": "darwin",
+  "arch": "arm64",
+  "scenarios": [
+    "Fresh launch within 3 seconds",
+    "Sandboxed renderer, utility-process SQLite, FTS5, schema and diagnostics",
+    "Backend killed, restarted and queries reconnected",
+    "Repeated crashes stop automatic retries; explicit Restart recovers",
+    "Fake newer release produces the download notice",
+    "Close hides window; second launch reopens the same instance",
+    "Appearance persists after quit and relaunch"
+  ],
+  "startupMs": 639,
+  "diagnostics": "werk\n0.1.0\nElectron\n44.9.1\nChromium\n152.0.7977.167\nNode\n24.22.0\nSQLite\n3.53.4\nFTS5\nAvailable\nSchema\n1\nDatabase size\n37,088 bytes\nSystem\ndarwin 27.0.0 arm64\nData folder\n/var/folders/00/h_k67s0j5dq0qvg6ylqysk2w0000gn/T/werk-smoke-yLLoMA\nBackend\nrunning\nStarted\n2026-11-01T05:08:22.932Z\nRestarts\n0\nUpdate\navailable\nLast checked\n2026-11-01T05:08:23.038Z",
+  "result": "Passed"
+}

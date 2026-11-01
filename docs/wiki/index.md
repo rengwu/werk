@@ -11,6 +11,8 @@ werk is a local desktop app that finds matching jobs, explains the fit, drafts p
 - [Implementation handoff](journal/2026-11-01-werk-handoff.md): architecture, data model, screens, milestones, build and release.
 - [Decisions](decisions/index.md)
 - [Open questions](discussions/open-questions.md)
+- [Features](features/index.md)
+- [Verification](verification/index.md)
 
 ## Journal
 

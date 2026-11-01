@@ -1,0 +1,70 @@
+name: Build
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+permissions:
+  contents: read
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    env:
+      CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npm test
+      - run: npm run package
+      - name: Install on Windows
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $setup = Get-ChildItem release -Filter '*-setup.exe' | Select-Object -First 1
+          Start-Process -FilePath $setup.FullName -ArgumentList '/S' -Wait
+          "WERK_EXE=$env:LOCALAPPDATA\Programs\werk\werk.exe" | Out-File -Append $env:GITHUB_ENV
+      - name: Locate app on macOS
+        if: runner.os == 'macOS'
+        run: echo "WERK_EXE=$PWD/release/mac-arm64/werk.app/Contents/MacOS/werk" >> "$GITHUB_ENV"
+      - run: npm run smoke
+      - name: Uninstall on Windows and preserve data
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $uninstaller = "$env:LOCALAPPDATA\Programs\werk\Uninstall werk.exe"
+          Start-Process -FilePath $uninstaller -ArgumentList '/S' -Wait
+          $deadline = (Get-Date).AddSeconds(30)
+          while ((Test-Path $env:WERK_EXE) -and (Get-Date) -lt $deadline) { Start-Sleep -Milliseconds 200 }
+          if (Test-Path $env:WERK_EXE) { throw 'Uninstall left the app installed' }
+          if (!(Test-Path "$env:WERK_SMOKE_DATA\werk.db")) { throw 'Uninstall removed user data' }
+          Remove-Item $env:WERK_SMOKE_DATA -Recurse -Force
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: werk-${{ runner.os }}
+          path: |
+            release/*.dmg
+            release/*-setup.exe
+            smoke-output/
+          retention-days: 7
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          path: dist
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --draft --title "werk $GITHUB_REF_NAME" --notes "" dist/*/*.dmg dist/*/*-setup.exe
