@@ -23,7 +23,7 @@ Base `54aa41fa56830d706e88e95d4600ce9b6fc13743`, dirty tree fingerprint `df4381a
 | Persistence and allowance | Restore pi context, tool history and composer; pause without data loss | Restart/reload and simulated allowance checks passed | Passed | [Recipe](../../features/assistant.md#verification-recipe) |
 | Packaged PDF/profile regression | Same overlay, attachment, save and focus behavior | Packaged macOS driver passed | Passed | `tests/profile-smoke.ts` |
 | Real ChatGPT inference | Fixed model/high reasoning executes real read/profile tools | read, read_profile and edit_profile succeeded; fictional revision 1 ready | Passed | [Live result](../../evidence/2026-11-01-pi-session/live.json) |
-| Windows packaged pi | Same tools, PowerShell interruption and UI journey | Awaiting CI for this change | Untested | [CI recipe](../setup.md#windows-ci) |
+| Windows packaged pi | Same tools, PowerShell interruption and UI journey | Initial CI found a test-only dependency on the unbuilt out directory; corrected to read source skill files. Rerun pending | Untested | [CI recipe](../setup.md#windows-ci) |
 
 ## Findings and limits
 

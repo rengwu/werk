@@ -26,7 +26,7 @@ test('pi runs real local and network tools, repairs validation, streams, steers,
     {when:'resume check',result:{reply:'Conversation restored.'}},
     {when:'simulate allowance',error:'Your ChatGPT subscription allowance is unavailable. Retry after it resets.'},
   ];writeFileSync(fixturePath,JSON.stringify(fixtures));
-  process.env.WERK_FAKE_AI='1';process.env.WERK_AI_FIXTURES=fixturePath;process.env.WERK_BUNDLE_DIR=resolve('out');
+  process.env.WERK_FAKE_AI='1';process.env.WERK_AI_FIXTURES=fixturePath;delete process.env.WERK_BUNDLE_DIR;
   const init={type:'init' as const,dataDir:dir,version:'test',system:'test',electron:'test',chromium:'test',restartCount:0};
   let service=new Service(init,()=>{});
   const send=(text:string,mode:'steer'|'interrupt'|'followUp'='steer')=>service.assistant.send(text,[],{page:'Profile'},randomUUID(),mode);
