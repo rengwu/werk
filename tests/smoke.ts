@@ -23,7 +23,7 @@ let app: Awaited<ReturnType<typeof electron.launch>> | undefined;
 try {
   const start = performance.now();
   app = await electron.launch({ executablePath: exe, env, timeout: 20000 });
-  let page = await app.firstWindow();
+  let page = await app.firstWindow();page.setDefaultTimeout(20000);
   await page.getByRole('heading', { name: 'Set up werk', exact: true }).waitFor();
   results.startupMs = Math.round(performance.now() - start);
   assert.ok(Number(results.startupMs) < 3000, `Shell startup took ${results.startupMs} ms`);
@@ -34,7 +34,7 @@ try {
   await page.waitForFunction(() => document.documentElement.dataset.mode === 'dark');
   await page.getByRole('tab', { name: 'Diagnostics' }).click();
   await page.getByTestId('diagnostic-fts5').filter({ hasText: 'Available' }).waitFor();
-  assert.equal(await page.getByTestId('diagnostic-schema').textContent(), '5');
+  assert.equal(await page.getByTestId('diagnostic-schema').textContent(), '6');
   assert.equal(await page.getByTestId('diagnostic-backend').textContent(), 'running');
   results.diagnostics = await page.locator('.diagnostics').innerText();
   await page.screenshot({ path: join(output, 'diagnostics-dark.png') });
@@ -73,7 +73,7 @@ try {
   await page.waitForFunction(() => document.documentElement.dataset.mode === 'dark');
   await app.close(); app = undefined;
   const reopen = await electron.launch({ executablePath: exe, env, timeout: 20000 }); app = reopen;
-  page = await reopen.firstWindow();
+  page = await reopen.firstWindow();page.setDefaultTimeout(20000);
   await page.waitForFunction(() => document.documentElement.dataset.mode === 'dark');
   scenarios.push('Appearance persists after quit and relaunch');
   await reopen.close(); app = undefined;

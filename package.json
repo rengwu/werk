@@ -21,11 +21,13 @@
     "setup:latex": "node --experimental-strip-types scripts/setup-latex.mjs"
   },
   "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
     "@codemirror/commands": "6.8.1",
     "@codemirror/language": "6.11.3",
     "@codemirror/legacy-modes": "6.5.1",
     "@codemirror/state": "6.5.4",
     "@codemirror/view": "6.38.6",
+    "@lezer/highlight": "1.2.5",
     "@tanstack/react-query": "5.104.4",
     "@types/node": "^24.0.0",
     "@types/react": "19.3.0",
@@ -38,6 +40,7 @@
     "electron-builder": "26.17.0",
     "esbuild": "0.28.2",
     "fast-xml-parser": "5.11.1",
+    "fflate": "0.8.3",
     "htmlparser2": "12.0.0",
     "ipaddr.js": "2.5.0",
     "pdfjs-dist": "5.4.624",
@@ -82,6 +85,10 @@
       {
         "from": "resources/runtime",
         "to": "runtime"
+      },
+      {
+        "from": "resources/licenses",
+        "to": "licenses"
       }
     ],
     "mac": {
@@ -94,8 +101,11 @@
         }
       ],
       "category": "public.app-category.productivity",
-      "signIgnore": ["/Contents/Resources/runtime/cache/"],
-      "identity": "-"
+      "signIgnore": [
+        "/Contents/Resources/runtime/cache/"
+      ],
+      "identity": "-",
+      "icon": "resources/icon.png"
     },
     "win": {
       "target": [
@@ -105,7 +115,8 @@
             "x64"
           ]
         }
-      ]
+      ],
+      "icon": "resources/icon.png"
     },
     "nsis": {
       "oneClick": true,

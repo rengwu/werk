@@ -10,10 +10,13 @@ export type UpdateState = { checkedAt: string | null; state: 'unchecked' | 'curr
 export type Diagnostics = {
   version: string; electron: string; chromium: string; node: string; sqlite: string;
   fts5: boolean; schema: number; databaseBytes: number; system: string; dataFolder: string;
+  model:string;reasoning:string;modelWork:string;compiler:string;lastScanAt:string|null;nextScanAt:string|null;
   backend: 'running'; startedAt: string; restartCount: number; update: UpdateState;
   events: Array<{ at: string; level: string; scope: string; message: string }>;
 };
 export interface Api {
+  'backup.export': (params:undefined) => FileDownload;
+  'backup.restore': (params:{bytes:Uint8Array}) => {jobs:number;letters:number};
   'settings.get': (params: undefined) => Settings;
   'settings.set': (params: { appearance?: Theme; scanInterval?:0|4|12 }) => Settings;
   'diagnostics.get': (params: undefined) => Diagnostics;

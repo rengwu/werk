@@ -80,7 +80,7 @@ function createWindow() {
   });
   win.once('ready-to-show', () => win?.show());
   win.webContents.setWindowOpenHandler(({ url }) => { openExternal(url); return { action: 'deny' }; });
-  win.webContents.on('will-navigate', (event, url) => { event.preventDefault(); openExternal(url); });
+  win.webContents.on('will-navigate', (event, url) => { if(url===win?.webContents.getURL())return;event.preventDefault(); openExternal(url); });
   win.webContents.session.setPermissionRequestHandler((_wc, _permission, callback) => callback(false));
   win.webContents.on('will-attach-webview', (event) => event.preventDefault());
   win.webContents.on('will-prevent-unload', (event) => {
@@ -100,7 +100,7 @@ ipcMain.on('werk:connect', event => {
 });
 ipcMain.on('werk:theme', (event, mode) => { if (trusted(event) && ['system','light','dark'].includes(mode)) nativeTheme.themeSource = mode; });
 ipcMain.handle('werk:save-file', async (event, file: FileDownload) => {
-  if (!trusted(event) || !file || typeof file.name !== 'string' || file.name !== basename(file.name) || !/\.(tex|pdf|txt|zip)$/i.test(file.name) || !(file.bytes instanceof Uint8Array) || file.bytes.byteLength > 100 * 1024 * 1024) throw new Error('Invalid download.');
+  if (!trusted(event) || !file || typeof file.name !== 'string' || file.name !== basename(file.name) || !/\.(tex|pdf|txt|zip)$/i.test(file.name) || !(file.bytes instanceof Uint8Array) || file.bytes.byteLength > 128 * 1024 * 1024) throw new Error('Invalid download.');
   const result = await dialog.showSaveDialog(win!, { defaultPath: file.name });
   if (result.canceled || !result.filePath) return false;
   await writeFile(result.filePath, file.bytes); return true;

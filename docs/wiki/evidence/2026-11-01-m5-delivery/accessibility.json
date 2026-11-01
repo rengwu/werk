@@ -1,0 +1,117 @@
+{
+  "result": "Passed",
+  "scenarios": [
+    {
+      "name": "light:Settings/General",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "light:Settings/Sources",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "light:Settings/AI",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "light:Settings/Backup",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "light:Settings/Diagnostics",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "light:Inbox",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "light:Saved",
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "light:Profile",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "light:CV",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "light:Assistant",
+      "violations": [],
+      "incomplete": [
+        "color-contrast",
+        "label-content-name-mismatch"
+      ]
+    },
+    {
+      "name": "dark:Settings/General",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "dark:Settings/Sources",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "dark:Settings/AI",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "dark:Settings/Backup",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "dark:Settings/Diagnostics",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "dark:Inbox",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "dark:Saved",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "dark:Profile",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "dark:CV",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "dark:Assistant",
+      "violations": [],
+      "incomplete": [
+        "color-contrast",
+        "label-content-name-mismatch"
+      ]
+    },
+    {
+      "name": "Keyboard tabs and assistant Escape/focus return",
+      "result": "Passed"
+    }
+  ]
+}

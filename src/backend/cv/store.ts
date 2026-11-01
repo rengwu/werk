@@ -13,8 +13,9 @@ export class Cv {
   current(){return this.versions()[0]||null;}
   state():CvState{const versions=this.versions();return{current:versions[0]||null,versions,pdfVersion:versions.find(v=>existsSync(join(this.directory,`${v.version}.pdf`)))?.version||null,compiling:!!this.active,tasks:[]};}
   save(source:string,expectedVersion:number,createdBy:CvVersion['createdBy']='user',profileRevision:number|null=null){
+    if(!source.trim()||Buffer.byteLength(source)>2*1024*1024)throw new Error('Use nonempty LaTeX source up to 2 MiB.');
     if((this.current()?.version||0)!==expectedVersion)throw new Error('The CV changed. Review the current version before saving.');
-    if(this.active)throw new Error('Wait for the current compile to finish.');const version=expectedVersion+1;
+    if(this.active)throw new Error('Wait for the current compile to finish.');const version=Math.max(expectedVersion,this.store.get('cvVersionFloor',0))+1;
     this.store.db.prepare('INSERT INTO cv_versions(version,source,created_by,profile_revision,created_at) VALUES(?,?,?,?,?)').run(version,source,createdBy,profileRevision,new Date().toISOString());return this.current()!;
   }
   edit(source:string,expectedVersion:number){const current=this.current(),saved=this.store.transaction(()=>this.save(source,expectedVersion,'user',current?.profileRevision||null));this.compile(saved.version);return this.state();}

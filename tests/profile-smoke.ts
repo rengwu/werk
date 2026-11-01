@@ -43,7 +43,7 @@ try{
   results.scenarios.push('Direct form edit appends revision; restoring older facts appends another revision');
   await page.getByRole('button',{name:'Edit search criteria',exact:true}).click();
   await page.getByText(/countries meet the overlap/).waitFor();
-  page.once('dialog',dialog=>void dialog.dismiss());await page.getByRole('button',{name:'Inbox',exact:true}).click();
+  page.once('dialog',dialog=>void dialog.dismiss());await page.getByRole('button',{name:/^Inbox(?: \d+)?$/,exact:true}).click();
   assert.equal(await page.getByRole('button',{name:'Save',exact:true}).count(),1);
   await page.getByRole('button',{name:'Cancel',exact:true}).click();
   results.scenarios.push('Overlap preview and unsaved-edit navigation guard');
@@ -56,5 +56,5 @@ try{
   results.scenarios.push('Allowance error pauses queued work while retaining the conversation and profile');
   results.result='Passed';
 }catch(error){results.error=error instanceof Error?error.message:String(error);const page=await app.firstWindow();await page.screenshot({path:join(output,'failure.png')}).catch(()=>{});throw error;}
-finally{await writeFile(join(output,'results.json'),JSON.stringify(results,null,2));await app.close();await rm(dir,{recursive:true,force:true});}
+finally{await writeFile(join(output,'results.json'),JSON.stringify(results,null,2));await app.evaluate(({dialog})=>{dialog.showMessageBoxSync=()=>1;}).catch(()=>{});await app.close();await rm(dir,{recursive:true,force:true});}
 console.log(JSON.stringify(results,null,2));

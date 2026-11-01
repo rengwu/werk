@@ -30,7 +30,9 @@ export class Jobs {
   overlapCache:{key:string;value:Map<string,number>}|undefined;
   constructor(store:Store,profiles:Profiles,changed:()=>void){this.store=store;this.profiles=profiles;this.changed=changed;}
   row(id:number):Row {const row=this.store.db.prepare('SELECT * FROM jobs WHERE id=?').get(id);if(!row)throw new Error('Job not found.');return row;}
-  listings(id:number):Row[]{return this.store.db.prepare('SELECT l.*,s.name,s.kind FROM job_listings l JOIN sources s ON s.id=l.source_id WHERE job_id=? ORDER BY last_seen_at DESC').all(id);}
+  listings(id:number):Row[]{return this.store.db.prepare(`SELECT l.*,s.name,s.kind,s.identifier FROM job_listings l JOIN sources s ON s.id=l.source_id WHERE job_id=?
+      UNION ALL SELECT NULL AS source_id,l.source_item_id,l.job_id,l.url,l.fields,l.last_seen_at,l.name,l.kind,l.identifier FROM imported_listings l WHERE job_id=? AND NOT EXISTS(SELECT 1 FROM job_listings live JOIN sources s ON s.id=live.source_id WHERE s.kind=l.kind AND s.identifier=l.identifier AND live.source_item_id=l.source_item_id)
+      ORDER BY last_seen_at DESC`).all(id,id);}
   record(row:Row):JobRecord {
     const sources=this.listings(row.id).map(l=>({name:l.name,url:l.url,checkedAt:l.last_seen_at}));
     let letterState:string|undefined;
@@ -63,7 +65,7 @@ export class Jobs {
   }
   quality(item:IncomingJob,row:Row|undefined,source?:Source):Pick<Assessment,'availability'|'freshness'|'qualityNotes'> {
     const time=at(),listings=row?this.listings(row.id):[];
-    const observations=listings.filter(l=>String(l.source_id)!==source?.id).map(l=>({sourceId:String(l.source_id),sourceType:l.kind,sourceName:l.name,item:JSON.parse(l.fields),firstSeenAt:row?.first_seen_at||time,checkedAt:l.last_seen_at,changedAt:l.last_seen_at,missingAt:JSON.parse(l.fields).removedAt||null}));
+    const observations=listings.filter(l=>!source||!(l.kind===source.type&&l.identifier===source.identifier)).map(l=>({sourceId:String(l.source_id),sourceType:l.kind,sourceName:l.name,item:JSON.parse(l.fields),firstSeenAt:row?.first_seen_at||time,checkedAt:l.last_seen_at,changedAt:l.last_seen_at,missingAt:JSON.parse(l.fields).removedAt||null}));
     if(source)observations.push({sourceId:source.id,sourceType:source.type,sourceName:source.name,item,firstSeenAt:row?.first_seen_at||time,checkedAt:time,changedAt:time,missingAt:item.removedAt||null});
     return listingQuality(item as Job,observations);
   }
@@ -87,8 +89,9 @@ export class Jobs {
     const closed=assessment.availability==='closed'?(row?.closed_at||time):null;
     const fields=[content.company,companyKey(content.company),content.title,content.location,JSON.stringify(criteria.countries),criteria.arrangement,content.salary,content.description,descriptionQuality(content)==='full'?1:0,content.publishedAt,time,closed,assessment.category,assessment.score,assessment.eligibility==='unknown'?'review':assessment.eligibility,criteria.overlapHours,JSON.stringify(assessment),profile.revision];
     if(row)this.store.db.prepare('UPDATE jobs SET company=?,company_key=?,title=?,location=?,countries=?,arrangement=?,salary=?,description=?,description_complete=?,posted_at=?,last_seen_at=?,closed_at=?,match_level=?,match_score=?,eligibility=?,overlap_hours=?,assessment=?,profile_revision=? WHERE id=?').run(...fields,row.id);
-    else {const insert=this.store.db.prepare('INSERT INTO jobs(company,company_key,title,location,countries,arrangement,salary,description,description_complete,posted_at,last_seen_at,closed_at,match_level,match_score,eligibility,overlap_hours,assessment,profile_revision,url,first_seen_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)').run(...fields,item.url,time);row=this.row(Number(insert.lastInsertRowid));}
+    else {const insert=this.store.db.prepare('INSERT INTO jobs(id,company,company_key,title,location,countries,arrangement,salary,description,description_complete,posted_at,last_seen_at,closed_at,match_level,match_score,eligibility,overlap_hours,assessment,profile_revision,url,first_seen_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)').run(Math.max(Number(this.store.db.prepare('SELECT coalesce(max(id),0) AS id FROM jobs').get()!.id),this.store.get('jobIdFloor',0))+1,...fields,item.url,time);row=this.row(Number(insert.lastInsertRowid));}
     this.store.db.prepare('INSERT INTO job_listings VALUES(?,?,?,?,?,?) ON CONFLICT(source_id,source_item_id) DO UPDATE SET job_id=excluded.job_id,url=excluded.url,fields=excluded.fields,last_seen_at=excluded.last_seen_at').run(Number(source.id),item.sourceItemId,row.id,item.url,JSON.stringify(item),time);
+    this.store.db.prepare('DELETE FROM imported_listings WHERE kind=? AND identifier=? AND source_item_id=?').run(source.type,source.identifier,item.sourceItemId);
     this.store.db.prepare('DELETE FROM fingerprints WHERE url=?').run(item.url);
     this.deduplicate(companyKey(content.company));return true;
   }

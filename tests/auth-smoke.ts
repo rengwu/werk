@@ -21,4 +21,4 @@ try{
   await mkdir(resolve('smoke-output/auth'),{recursive:true});
   await writeFile(resolve('smoke-output/auth/results.json'),JSON.stringify({result:'Passed',scenario:'Real packaged SDK starts the verified OAuth browser handoff and cancels cleanly; no authentication or inference performed.'},null,2));
   console.log('Packaged OAuth handoff and cancellation passed.');
-}finally{await app.close();await rm(dir,{recursive:true,force:true});}
+}finally{await app.evaluate(({dialog})=>{dialog.showMessageBoxSync=()=>1;}).catch(()=>{});await app.close();await rm(dir,{recursive:true,force:true});}

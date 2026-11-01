@@ -1,6 +1,7 @@
 import { build } from 'esbuild';
 import { build as viteBuild } from 'vite';
 import { mkdir, copyFile } from 'node:fs/promises';
+import {writeNotices} from './licenses.mjs';
 import { openAiOAuth } from './openai-oauth.mjs';
 
 export const testBuild = process.argv.includes('--test');
@@ -17,3 +18,5 @@ await build({ entryPoints: ['src/backend/assistant/extract-pdf.worker.mjs'], out
 await copyFile('node_modules/pdfjs-dist/legacy/build/pdf.worker.mjs', 'out/pdf.worker.mjs');
 await copyFile('src/backend/profile/build-user-profile/SKILL.md', 'out/build-user-profile.md');
 await viteBuild();
+
+await writeNotices();

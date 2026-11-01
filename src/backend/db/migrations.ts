@@ -104,6 +104,14 @@ CREATE TABLE assistant_evidence (
   chat_id TEXT NOT NULL, id TEXT NOT NULL, text TEXT NOT NULL, name TEXT, url TEXT,
   PRIMARY KEY(chat_id,id)
 ) STRICT;
+`, `
+CREATE TABLE imported_listings (
+  job_id INTEGER NOT NULL REFERENCES jobs(id) ON DELETE CASCADE,
+  kind TEXT NOT NULL, identifier TEXT NOT NULL, name TEXT NOT NULL, source_item_id TEXT NOT NULL,
+  url TEXT NOT NULL, fields TEXT NOT NULL CHECK(json_valid(fields)), last_seen_at TEXT NOT NULL,
+  PRIMARY KEY(kind,identifier,source_item_id)
+) STRICT;
+CREATE INDEX imported_listings_job ON imported_listings(job_id);
 ` ];
 export function migrate(db: DatabaseSync) {
   let version = Number(db.prepare('PRAGMA user_version').get()?.user_version || 0);

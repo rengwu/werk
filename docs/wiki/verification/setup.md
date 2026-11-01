@@ -12,6 +12,7 @@ Run from the repository root. Node 22.19+ is required locally; CI uses Node 24. 
 ```sh
 npm run check
 npm test
+npm run setup:latex
 npm run package
 WERK_EXE="$PWD/release/mac-arm64/werk.app/Contents/MacOS/werk" npm run smoke
 ```
@@ -45,3 +46,13 @@ node docs/wiki/_build.mjs --check
 `tests/discovery.test.ts` exercises the real SQLite pipeline and `tests/parsers.test.ts` preserves relevant archived parser regressions. The packaged driver `tests/discovery-smoke.ts` uses the same `WERK_EXE` command as the profile driver, with a test build. It seeds fictional profile/source prerequisites and records HTTP responses in its temporary directory. HTTP fixtures are unavailable in production builds.
 
 `node --experimental-strip-types scripts/check-live-discovery.ts` performs exactly one bounded Remotive scan against a fictional profile, reports counts/database size, and removes its temporary data. Use only when a live check is authorized.
+
+## Documents, backups and accessibility
+
+`npm run setup:latex` downloads the pinned compiler and prepares/verifies its offline package cache. On Windows, install Go 1.24 and download the `latex-cache` CI artifact into `resources/runtime/cache` first. The cache is built once on macOS and tested on both OSes. Packaged apps contain the compiler/cache; development setup is separate.
+
+`tests/latex-sandbox.ts` executes the actual compiler against fictional content and forbidden reads/writes, shell escape and cancellation. Windows additionally runs `go test ./...` under `tools/texsandbox` for AppContainer network/file/process isolation and broker-death cleanup.
+
+With the fixture package selected in `WERK_EXE`, run `tests/documents-smoke.ts`, `tests/backup-smoke.ts` and `tests/accessibility-smoke.ts` using `node --experimental-strip-types`. Document inference is simulated; the PDF compiler and backup operations are real. The accessibility driver uses axe WCAG A/AA checks in light/dark themes and explicit keyboard/focus assertions. It cannot audit Chromium's internal PDF viewer. Screenshot/JSON outputs are under matching `smoke-output/` subfolders. Test cleanup dismisses native unsaved-edit prompts in its own instance; normal close/quit behavior remains covered by the shell driver.
+
+Production installers are retained before the separate fixture package replaces unpacked build output. Never release a fixture build. `scripts/licenses.mjs` emits bundled dependency notices during a normal build.

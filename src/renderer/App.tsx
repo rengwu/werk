@@ -1,3 +1,4 @@
+import {tabKeys} from './tabs.ts';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { call } from './rpc.ts';
@@ -9,11 +10,12 @@ import { hasDirtyEdits } from './editing.ts';
 import { JobsPage } from './JobsPage.tsx';
 import { SourcesSettings } from './SourcesSettings.tsx';
 import {CvPage} from './CvPage.tsx';
+import {BackupSettings} from './BackupSettings.tsx';
 
 export function App() {
-  const [page, setPage] = useState('Inbox');
+  const [page, setPage] = useState(()=>sessionStorage.getItem('werk:backup-restored')==='1'?'Settings':'Inbox');
   const [selected,setSelected]=useState<number|null>(null);
-  const [assistantOpen,setAssistantOpen]=useState(false),[settingsTab,setSettingsTab]=useState('General'),[dirty,setDirty]=useState(false);
+  const [assistantOpen,setAssistantOpen]=useState(false),[settingsTab,setSettingsTab]=useState(()=>sessionStorage.getItem('werk:backup-restored')==='1'?'Backup':'General'),[dirty,setDirty]=useState(false);
   const assistantButton=useRef<HTMLButtonElement>(null);
   const closeAssistant=useCallback(()=>{setAssistantOpen(false);assistantButton.current?.focus();},[]);
   const navigate=(name:string)=>{if(hasDirtyEdits()&&!window.confirm('Discard unsaved changes?'))return;setPage(name);};
@@ -28,7 +30,7 @@ export function App() {
   useEffect(() => { const mode = settings?.appearance || 'system'; document.documentElement.dataset.mode = mode; window.werk.setTheme(mode); }, [settings?.appearance]);
   useEffect(()=>{const update=()=>setDirty(hasDirtyEdits());window.addEventListener('werk:dirty',update);return()=>window.removeEventListener('werk:dirty',update);},[]);
   return <div className="app">
-    <aside className="sidebar"><div className={`brand ${window.werk.platform}`}>werk</div><nav aria-label="Main">{['Inbox','Saved','Profile','CV'].map(name => <button key={name} aria-label={name} aria-current={page === name ? 'page' : undefined} onClick={() => navigate(name)}>{name}{name==='Inbox'&&!!counts?.newCount&&<span className="nav-count">{counts.newCount}</span>}{name==='Saved'&&!!counts?.savedCount&&<span className="nav-count">{counts.savedCount}</span>}</button>)}</nav><div className="grow" />
+    <aside className="sidebar"><div className={`brand ${window.werk.platform}`}>werk</div><nav aria-label="Main">{['Inbox','Saved','Profile','CV'].map(name => <button key={name} aria-label={name==='Inbox'&&counts?.newCount?`${name} ${counts.newCount}`:name==='Saved'&&counts?.savedCount?`${name} ${counts.savedCount}`:name} aria-current={page === name ? 'page' : undefined} onClick={() => navigate(name)}>{name}{name==='Inbox'&&!!counts?.newCount&&<span className="nav-count">{` ${counts.newCount}`}</span>}{name==='Saved'&&!!counts?.savedCount&&<span className="nav-count">{` ${counts.savedCount}`}</span>}</button>)}</nav><div className="grow" />
       {update?.state === 'available' && <div className="update">werk {update.version}<a href={update.url} target="_blank" rel="noreferrer">Download</a></div>}
       <nav><button aria-label="Settings" aria-current={page === 'Settings' ? 'page' : undefined} onClick={() => navigate('Settings')}>Settings{(sources?.some(s=>s.enabled&&s.lastError)||['signed_out','unavailable'].includes(ai?.connection.state||''))&&<span className="attention-dot" aria-label="Needs attention"/>}</button></nav>
     </aside>
@@ -45,8 +47,8 @@ function SettingsPage({tab,setTab}:{tab:string;setTab:(value:string)=>void}) {
   const { data } = useQuery({ queryKey: ['settings'], queryFn: () => call('settings.get', undefined) });
   const change = useMutation({ mutationFn: (appearance: Theme) => call('settings.set', { appearance }) });
   const schedule=useMutation({mutationFn:(scanInterval:0|4|12)=>call('settings.set',{scanInterval})});
-  return <><div className="tabs" role="tablist" aria-label="Settings">{['General','Sources','AI','Diagnostics'].map(name => <button role="tab" aria-selected={tab === name} key={name} onClick={() => setTab(name)}>{name}</button>)}</div>
-    <section className={`settings ${tab==='Sources'?'wide':''}`} role="tabpanel">{tab === 'General' ? <><label className="setting">Appearance<select aria-label="Appearance" value={data?.appearance || 'system'} onChange={e => change.mutate(e.target.value as Theme)}><option value="system">System</option><option value="light">Light</option><option value="dark">Dark</option></select></label><label className="setting">Scan schedule<select aria-label="Scan schedule" value={data?.scanInterval||0} onChange={e=>schedule.mutate(Number(e.target.value) as 0|4|12)}><option value="0">Manual</option><option value="4">Every 4 hours</option><option value="12">Every 12 hours</option></select></label>{(change.error||schedule.error) && <p role="alert">{(change.error||schedule.error)?.message}</p>}</> :tab==='AI'?<AiSettings/>:tab==='Sources'?<SourcesSettings/>: <DiagnosticsPage />}</section></>;
+  return <><div className="tabs" role="tablist" onKeyDown={tabKeys} aria-label="Settings">{['General','Sources','AI','Backup','Diagnostics'].map(name => <button role="tab" tabIndex={tab===name?0:-1} aria-selected={tab === name} key={name} onClick={() => setTab(name)}>{name}</button>)}</div>
+    <section className={`settings ${tab==='Sources'?'wide':''}`} role="tabpanel">{tab === 'General' ? <><label className="setting">Appearance<select aria-label="Appearance" value={data?.appearance || 'system'} onChange={e => change.mutate(e.target.value as Theme)}><option value="system">System</option><option value="light">Light</option><option value="dark">Dark</option></select></label><label className="setting">Scan schedule<select aria-label="Scan schedule" value={data?.scanInterval||0} onChange={e=>schedule.mutate(Number(e.target.value) as 0|4|12)}><option value="0">Manual</option><option value="4">Every 4 hours</option><option value="12">Every 12 hours</option></select></label>{(change.error||schedule.error) && <p role="alert">{(change.error||schedule.error)?.message}</p>}</> :tab==='AI'?<AiSettings/>:tab==='Sources'?<SourcesSettings/>:tab==='Backup'?<BackupSettings/>: <DiagnosticsPage />}</section></>;
 }
 function Setup({openAssistant,openProfile,openAi,openSources}:{openAssistant:()=>void;openProfile:()=>void;openAi:()=>void;openSources:()=>void}) {
   const {data:profile}=useQuery({queryKey:['profile'],queryFn:()=>call('profile.get',undefined)});
@@ -61,6 +63,6 @@ function DiagnosticsPage() {
   const [copied, setCopied] = useState(false);
   if (error) return <p role="alert">{error.message}</p>;
   if (!data) return <p role="status">Loading diagnostics…</p>;
-  const rows: [string, string | number][] = [ ['werk', data.version], ['Electron', data.electron], ['Chromium', data.chromium], ['Node', data.node], ['SQLite', data.sqlite], ['FTS5', data.fts5 ? 'Available' : 'Unavailable'], ['Schema', data.schema], ['Database size', `${data.databaseBytes.toLocaleString()} bytes`], ['System', data.system], ['Data folder', data.dataFolder], ['Backend', data.backend], ['Started', data.startedAt], ['Restarts', data.restartCount], ['Update', data.update.state], ['Last checked', data.update.checkedAt || 'Not checked'] ];
+  const rows: [string, string | number][] = [ ['werk', data.version], ['Electron', data.electron], ['Chromium', data.chromium], ['Node', data.node], ['SQLite', data.sqlite], ['FTS5', data.fts5 ? 'Available' : 'Unavailable'], ['Schema', data.schema], ['Model',data.model], ['Reasoning',data.reasoning], ['Model work',data.modelWork], ['CV compiler',data.compiler], ['Last scan',data.lastScanAt||'Not scanned'], ['Next scan',data.nextScanAt||'Manual'], ['Database size', `${data.databaseBytes.toLocaleString()} bytes`], ['System', data.system], ['Data folder', data.dataFolder], ['Backend', data.backend], ['Started', data.startedAt], ['Restarts', data.restartCount], ['Update', data.update.state], ['Last checked', data.update.checkedAt || 'Not checked'] ];
   return <><div className="actions"><button onClick={async () => { await window.werk.copyText(rows.map(([k,v]) => `${k}: ${v}`).join('\n') + '\n' + data.events.map(e => `${e.at} ${e.level} ${e.scope}: ${e.message}`).join('\n')); setCopied(true); }}>Copy diagnostics</button>{copied && <span role="status">Copied</span>}</div><dl className="diagnostics">{rows.map(([name, value]) => <div key={name}><dt>{name}</dt><dd data-testid={`diagnostic-${name.toLowerCase().replaceAll(' ','-')}`}>{value}</dd></div>)}</dl>{data.events.length > 0 && <><h2>Recent warnings and errors</h2>{data.events.map((e,i) => <p key={i}>{e.at} · {e.scope} · {e.message}</p>)}</>}</>;
 }

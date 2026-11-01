@@ -13,4 +13,6 @@ updated: 2026-11-01
 
 - [Saved letters and master CV](documents.md) — FEAT-letters, FEAT-cv
 
+- [ZIP backups](backups.md) — FEAT-backups
+
 The remaining rebuild scope is in the [handoff milestones](../journal/2026-11-01-werk-handoff.md#milestones).

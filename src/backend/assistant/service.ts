@@ -216,5 +216,10 @@ export class Assistant {
       this.injected.clear(); this.activeTask = undefined; this.activity = undefined; this.changed(true);
     }
   }
+  resetSession() {
+    clearTimeout(this.notifyTimer); this.unsubscribe?.(); this.session?.dispose();
+    this.session=undefined; this.sessionChat=undefined; this.currentMessage=undefined;
+    this.toolMessages.clear(); this.injected.clear(); this.context={page:'Profile'}; this.activity=undefined;
+  }
   close() { this.closed = true; clearTimeout(this.notifyTimer); this.unsubscribe?.(); this.session?.clearQueue(); this.session?.dispose(); }
 }

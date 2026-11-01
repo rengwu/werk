@@ -3,14 +3,15 @@ import {useMutation,useQuery} from '@tanstack/react-query';
 import {EditorState} from '@codemirror/state';
 import {EditorView,keymap,lineNumbers,highlightActiveLine} from '@codemirror/view';
 import {defaultKeymap,history,historyKeymap} from '@codemirror/commands';
-import {StreamLanguage,syntaxHighlighting,defaultHighlightStyle} from '@codemirror/language';
+import {StreamLanguage,syntaxHighlighting,HighlightStyle} from '@codemirror/language';
+import {tags} from '@lezer/highlight';
 import {stex} from '@codemirror/legacy-modes/mode/stex';
 import {call} from './rpc.ts';
 import {useDirty} from './editing.ts';
 
 function LatexEditor({value,onChange,readOnly}:{value:string;onChange:(value:string)=>void;readOnly:boolean}) {
  const parent=useRef<HTMLDivElement>(null),editor=useRef<EditorView>(undefined),change=useRef(onChange);change.current=onChange;
- useEffect(()=>{const view=new EditorView({parent:parent.current!,state:EditorState.create({doc:value,extensions:[lineNumbers(),history(),highlightActiveLine(),keymap.of([...defaultKeymap,...historyKeymap]),StreamLanguage.define(stex),syntaxHighlighting(defaultHighlightStyle),EditorView.lineWrapping,EditorState.readOnly.of(readOnly),EditorView.contentAttributes.of({'aria-label':'CV LaTeX','role':'textbox','aria-multiline':'true'}),EditorView.updateListener.of(update=>{if(update.docChanged)change.current(update.state.doc.toString());}),EditorView.theme({'&':{height:'100%',fontSize:'12px'},'.cm-scroller':{overflow:'auto'},'.cm-content':{fontFamily:'ui-monospace,SFMono-Regular,Consolas,monospace'},'.cm-gutters':{backgroundColor:'var(--panel)',color:'var(--muted)',borderColor:'var(--line)'},'.cm-activeLine':{backgroundColor:'var(--hover)'},'.cm-activeLineGutter':{backgroundColor:'var(--selected)'},'&.cm-focused':{outline:'none'}})]})});editor.current=view;return()=>{view.destroy();editor.current=undefined;};},[readOnly]);
+ useEffect(()=>{const view=new EditorView({parent:parent.current!,state:EditorState.create({doc:value,extensions:[lineNumbers(),history(),highlightActiveLine(),keymap.of([...defaultKeymap,...historyKeymap]),StreamLanguage.define(stex),syntaxHighlighting(HighlightStyle.define([{tag:[tags.keyword,tags.name,tags.tagName],color:'var(--code-keyword)'},{tag:[tags.string,tags.number,tags.atom,tags.bool],color:'var(--code-value)'},{tag:tags.comment,color:'var(--muted)'}])),EditorView.lineWrapping,EditorState.readOnly.of(readOnly),EditorView.contentAttributes.of({'aria-label':'CV LaTeX','role':'textbox','aria-multiline':'true'}),EditorView.updateListener.of(update=>{if(update.docChanged)change.current(update.state.doc.toString());}),EditorView.theme({'&':{height:'100%',fontSize:'12px'},'.cm-scroller':{overflow:'auto'},'.cm-content':{fontFamily:'ui-monospace,SFMono-Regular,Consolas,monospace'},'.cm-gutters':{backgroundColor:'var(--panel)',color:'var(--muted)',borderColor:'var(--line)'},'.cm-activeLine':{backgroundColor:'var(--hover)'},'.cm-activeLineGutter':{backgroundColor:'var(--selected)'},'&.cm-focused':{outline:'none'}})]})});editor.current=view;return()=>{view.destroy();editor.current=undefined;};},[readOnly]);
  useEffect(()=>{const view=editor.current;if(view&&view.state.doc.toString()!==value)view.dispatch({changes:{from:0,to:view.state.doc.length,insert:value}});},[value]);
  return <div className="latex-editor" ref={parent}/>;
 }

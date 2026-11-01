@@ -1,3 +1,4 @@
+import {tabKeys} from './tabs.ts';
 import {useEffect,useState} from 'react';
 import {useMutation,useQuery} from '@tanstack/react-query';
 import {call} from './rpc.ts';
@@ -11,7 +12,7 @@ export function SavedWorkspace({job}:{job:JobRecord}) {
  const status=useMutation({mutationFn:(status:'saved'|'applied')=>call('jobs.status',{id:job.id,status})});
  const full=useMutation({mutationFn:()=>call('jobs.description',{id:job.id,description}),onSuccess:()=>{setEditing(false);setDescription('');}});
  return <section className="saved-workspace"><div className="saved-heading"><div><span className="muted">{job.company}</span><h1>{job.title}</h1></div><select aria-label="Application status" value={job.status} onChange={e=>status.mutate(e.target.value as 'saved'|'applied')}><option value="saved">Saved</option><option value="applied">Applied</option></select><a href={job.url} target="_blank" rel="noreferrer">Open posting ↗</a>{status.error&&<p role="alert">{status.error.message}</p>}</div>
- <div className="saved-columns"><div className="saved-posting"><div className="tabs" role="tablist" aria-label="Saved job"><button role="tab" aria-selected={tab==='Posting'} onClick={()=>setTab('Posting')}>Posting</button><button role="tab" aria-selected={tab==='Notes'} onClick={()=>setTab('Notes')}>Notes</button></div><div className="saved-posting-content">{tab==='Notes'?<JobNotes job={job}/>:<>
+ <div className="saved-columns"><div className="saved-posting"><div className="tabs" role="tablist" onKeyDown={tabKeys} aria-label="Saved job"><button role="tab" tabIndex={tab==='Posting'?0:-1} aria-selected={tab==='Posting'} onClick={()=>setTab('Posting')}>Posting</button><button role="tab" tabIndex={tab==='Notes'?0:-1} aria-selected={tab==='Notes'} onClick={()=>setTab('Notes')}>Notes</button></div><div className="saved-posting-content">{tab==='Notes'?<JobNotes job={job}/>:<>
  {job.appliedAt&&<p className="muted">Applied {dateLabel(job.appliedAt)} · Manual record</p>}{job.closedAt&&<p className="muted">Closed {dateLabel(job.closedAt)}</p>}
  {!job.descriptionComplete&&<><p>Description incomplete. Add the full posting to generate a letter.</p><button onClick={()=>setEditing(true)}>Add full description</button></>}
  {editing?<div className="form-stack"><label>Full description<textarea rows={12} value={description} onChange={e=>setDescription(e.target.value)}/></label><div className="actions"><button disabled={description.trim().length<80||full.isPending} onClick={()=>full.mutate()}>Save description</button><button onClick={()=>setEditing(false)}>Cancel</button></div>{full.error&&<p role="alert">{full.error.message}</p>}</div>:<div className="description">{job.savedDescription||job.description}</div>}

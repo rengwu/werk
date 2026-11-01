@@ -7,6 +7,7 @@ permissions:
   contents: read
 jobs:
   latex-cache:
+    timeout-minutes: 10
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v7
@@ -22,6 +23,7 @@ jobs:
           path: resources/runtime/cache
           retention-days: 7
   build:
+    timeout-minutes: 20
     needs: latex-cache
     strategy:
       fail-fast: false
@@ -67,6 +69,7 @@ jobs:
       - name: Verify offline compiler isolation
         run: node --experimental-strip-types tests/latex-sandbox.ts
       - run: npm run smoke
+        timeout-minutes: 2
       - name: Verify packaged OAuth browser handoff and cancellation
         run: node --experimental-strip-types tests/auth-smoke.ts
       - name: Uninstall on Windows and preserve data
@@ -96,6 +99,10 @@ jobs:
         run: node --experimental-strip-types tests/discovery-smoke.ts
       - name: Verify letters and sandboxed CV workspace
         run: node --experimental-strip-types tests/documents-smoke.ts
+      - name: Verify backup export and restore
+        run: node --experimental-strip-types tests/backup-smoke.ts
+      - name: Audit accessibility and keyboard navigation
+        run: node --experimental-strip-types tests/accessibility-smoke.ts
       - uses: actions/upload-artifact@v7
         if: always()
         with:

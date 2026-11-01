@@ -18,7 +18,7 @@ window.addEventListener('message', event => {
   if (port) disconnect();
   port = event.ports[0];
   port.onmessage = ({ data }) => {
-    if (data.event) { void queryClient.invalidateQueries({ queryKey: [data.event] }); if (data.event === 'update') void queryClient.invalidateQueries({ queryKey: ['diagnostics'] }); return; }
+    if (data.event) { void queryClient.invalidateQueries({ queryKey: [data.event] }); if (['update','ai','tasks','scan','cv'].includes(data.event)) void queryClient.invalidateQueries({ queryKey: ['diagnostics'] }); return; }
     const item = pending.get(data.id); if (!item) return;
     clearTimeout(item.timer); pending.delete(data.id);
     if (data.error) item.reject(new Error(data.error.message)); else item.resolve(data.result as never);
@@ -30,7 +30,7 @@ export async function call<K extends keyof Api>(method: K, params: ApiParams<K>)
   await ready;
   return new Promise((resolve, reject) => {
     const id = ++sequence;
-    const timer = setTimeout(() => { pending.delete(id); reject(new Error('The action timed out. Try again.')); }, 30000);
+    const timer = setTimeout(() => { pending.delete(id); reject(new Error('The action timed out. Try again.')); }, method.startsWith('backup.')?120000:30000);
     pending.set(id, { resolve, reject, timer }); port!.postMessage({ id, method, params });
   });
 }

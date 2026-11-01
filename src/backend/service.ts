@@ -13,6 +13,9 @@ import { Jobs } from './sources/jobs.ts';
 import { Sources } from './sources/service.ts';
 import {Letters} from './letters/store.ts';
 import {Cv} from './cv/store.ts';
+import {Backups} from './backup/store.ts';
+import {MAX_ZIP_BYTES} from './backup/archive.ts';
+import {findTectonic} from './cv/runtime.ts';
 import type { Api, ApiParams, ApiResult, BackendInit, Diagnostics, Events, Settings, UpdateState } from '../shared/api.ts';
 
 export class Service {
@@ -24,7 +27,7 @@ export class Service {
   queue: ModelQueue;
   assistant: Assistant;
   jobs:Jobs;sources:Sources;
-  letters:Letters;cv:Cv;
+  letters:Letters;cv:Cv;backups:Backups;activeEdits=0;
   emit: <K extends keyof Events>(event: K, data: Events[K]) => void;
   constructor(init: BackendInit, emit: Service['emit']) {
     this.init = init; this.emit = emit; this.store = new Store(init.dataDir);
@@ -39,6 +42,7 @@ export class Service {
     this.assistant = new Assistant(this.store, this.profiles, this.ai, this.queue, init.dataDir, () => this.emit('assistant', undefined));
     this.assistant.jobs=this.jobs;
     this.assistant.letters=this.letters;this.assistant.cv=this.cv;
+    this.backups=new Backups(this);
     this.ai.connected = () => this.queue.resume();
     queueMicrotask(() => this.queue.kick());
     if (init.previousExit !== undefined) this.store.event('warn', 'backend', `Backend restarted after exit ${init.previousExit}.`);
@@ -54,12 +58,15 @@ export class Service {
       sqlite: String(db.prepare('SELECT sqlite_version() AS v').get()?.v), fts5: true,
       schema: Number(db.prepare('PRAGMA user_version').get()?.user_version), databaseBytes: size,
       system: this.init.system, dataFolder: this.init.dataDir.replace(homedir(), '~'),
+      model:this.ai.state.model,reasoning:this.ai.state.reasoning,modelWork:this.store.get('aiPause','')|| (this.queue.running?'Running':`${this.queue.list().filter(t=>t.state==='queued').length} queued`),compiler:findTectonic()?(this.cv.active?'Compiling':'Available'):'Unavailable',lastScanAt:this.sources.state().lastScanAt,nextScanAt:this.sources.state().nextScanAt,
       backend: 'running', startedAt: this.startedAt, restartCount: this.init.restartCount, update: this.update(),
       events: db.prepare("SELECT at,level,scope,message FROM events WHERE level IN ('warn','error') ORDER BY id DESC LIMIT 20").all() as Diagnostics['events'],
     };
   }
   async call<K extends keyof Api>(method: K, params: ApiParams<K>): Promise<ApiResult<K>> {
     const handlers: { [P in keyof Api]: (input: unknown) => ReturnType<Api[P]> | Promise<ReturnType<Api[P]>> } = {
+      'backup.export':()=>this.backups.export(),
+      'backup.restore':input=>this.backups.restore(z.object({bytes:z.instanceof(Uint8Array).refine(b=>b.length<=MAX_ZIP_BYTES)}).strict().parse(input).bytes),
       'settings.get': () => this.settings(),
       'settings.set': (input) => { const value = z.object({ appearance: z.enum(['system','light','dark']).optional(),scanInterval:z.union([z.literal(0),z.literal(4),z.literal(12)]).optional() }).strict().parse(input); if(value.appearance)this.store.set('appearance', value.appearance);if(value.scanInterval!==undefined)this.sources.schedule(value.scanInterval); this.emit('settings', undefined); return this.settings(); },
       'diagnostics.get': () => this.diagnostics(),
@@ -105,7 +112,9 @@ export class Service {
       'cv.pdf':input=>this.cv.pdf(z.object({version:z.number().int().positive()}).strict().parse(input).version),
     };
     if (!Object.hasOwn(handlers, method)) throw new Error('Unknown action.');
-    return await handlers[method](params) as ApiResult<K>;
+    const edit=!/\.(?:get|list|pdf|overlap)$/.test(method)&&!method.startsWith('backup.');
+    if(edit)this.activeEdits++;
+    try{return await handlers[method](params) as ApiResult<K>;}finally{if(edit)this.activeEdits--;}
   }
   close() { this.sources.close();this.queue.close();this.assistant.close();this.cv.close(); void this.ai.cancel(); this.store.close(); }
 }

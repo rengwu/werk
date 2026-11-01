@@ -1,0 +1,6 @@
+{
+  "result": "Passed",
+  "scenarios": [
+    "Native ZIP export, failed-import recovery, overwrite restore, reload confirmation, preserved appearance and latest saved letter"
+  ]
+}

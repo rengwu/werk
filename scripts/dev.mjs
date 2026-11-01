@@ -22,7 +22,7 @@ const start = () => {
 const ctx = await context({
   entryPoints: { main: 'src/main/index.ts', preload: 'src/preload/index.ts', backend: 'src/backend/index.ts' },
   outdir: 'out', outExtension: { '.js': '.cjs' }, bundle: true, platform: 'node', format: 'cjs', target: 'node24',
-  external: ['electron'], define: { WERK_TEST_BUILD: 'false' }, sourcemap: true,
+  external: ['electron', '@earendil-works/pi-coding-agent'], define: { WERK_TEST_BUILD: 'false' }, sourcemap: true,
   plugins: [openAiOAuth, { name: 'restart', setup(build) { build.onEnd(async (result) => {
     if (result.errors.length) return;
     restarting = true;

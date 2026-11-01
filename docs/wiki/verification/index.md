@@ -13,3 +13,5 @@ updated: 2026-11-01
 - [Embedded pi session](runs/2026-11-01-pi-session.md)
 
 - [M4 letters and CV](runs/2026-11-01-m4-documents.md)
+
+- [M5 backups and delivery](runs/2026-11-01-m5-delivery.md)

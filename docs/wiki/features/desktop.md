@@ -32,3 +32,11 @@ The smoke driver verifies close/reopen through Electron and a second OS process.
 ## Verification history
 
 - [M1 verification](../verification/runs/2026-11-01-m1-shell.md).
+
+## Final rebuild polish
+
+The application and Windows tray use the chosen light monogram and green match dot. `resources/icon.svg` contains an original hand-drawn path, with no font glyphs. PNG exports are committed; electron-builder creates platform icons. Diagnostics includes model/reasoning, current model work, compiler availability and scan times as well as database/runtime/backend details. Copy diagnostics uses native clipboard IPC.
+
+Settings, Inbox and posting tabs support Arrow Left/Right, Home/End and one tab stop for the selected tab. Job rows retain native button semantics inside a list. Sidebar names include their visible counts. LaTeX syntax colors follow the active theme. The assistant retains its fixed overlay, Escape and focus-return behavior.
+
+`tests/accessibility-smoke.ts` audits Settings, Inbox, Saved, Profile, CV and the assistant in light/dark mode with axe WCAG A/AA rules, then checks keyboard tab selection and focus return. Electron blocks extra browser windows, so the driver uses axe's existing-page mode; built-in PDF viewer internals are outside that DOM audit. Automated checks do not establish complete assistive-technology coverage. See [M5 verification](../verification/runs/2026-11-01-m5-delivery.md).

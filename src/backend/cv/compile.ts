@@ -57,29 +57,19 @@ function executable() {
 }
 export function macSandbox(work: string, cache: string, bin: string) {
   const quoted = (value: string) => JSON.stringify(value);
-  // Leave OS runtime/cache reads available (including dyld on newer macOS),
-  // while denying private user, volume, temporary, project and appdata trees.
-  const privatePaths = [
-    "/Users",
-    "/Volumes",
-    "/private/var",
-    "/private/tmp",
-    "/tmp",
-    "/var",
-    "/config",
-    ...(process.cwd() === '/' ? [] : [process.cwd()]),
-    resolve(process.env.WERK_DATA_DIR || ".local-data"),
-  ];
+  // Read only the isolated document/cache and the system runtime/fonts.
+  // Denying all other data reads also covers nonstandard home/data locations.
+  const runtimePaths=['/System','/usr/lib','/usr/share','/Library/Fonts','/Library/Apple/System/Library','/private/var/db/dyld'];
   return `(version 1)
     (allow default)
     (deny network*)
     (deny file-write*)
-    (deny file-read* ${privatePaths.map((p) => `(subpath ${quoted(p)})`).join(" ")})
+    (deny file-read*)
     (deny process-exec)
     (allow process-exec (literal ${quoted(bin)}))
     (allow sysctl-read mach-lookup)
     (allow file-read-metadata)
-    (allow file-read* ${[work, cache, "/private/var/db"].map((p) => `(subpath ${quoted(p)})`).join(" ")} (literal ${quoted(bin)}))
+    (allow file-read* ${[work, cache, ...runtimePaths].map((p) => `(subpath ${quoted(p)})`).join(" ")} (literal ${quoted(bin)}) (literal "/") (literal "/dev/random") (literal "/dev/urandom") (literal "/dev/null"))
     (allow file-write* (subpath ${quoted(work)}) (literal "/dev/null"))`;
 }
 let running = false;
@@ -92,7 +82,7 @@ export async function compileLatex(
       [],
       409,
     );
-  if(source.length>2*1024*1024)throw new LatexCompileError("The LaTeX source exceeds 2 MB.");
+  if(Buffer.byteLength(source)>2*1024*1024)throw new LatexCompileError("The LaTeX source exceeds 2 MB.");
   signal?.throwIfAborted();
   running = true;
   let work: string | undefined;

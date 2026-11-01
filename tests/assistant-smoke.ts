@@ -40,5 +40,5 @@ try{
  results.scenarios.push('Conversation, tool history and unsent draft survive a renderer reload');
  await page.screenshot({path:join(output,'assistant.png')});results.result='Passed';
 }catch(error){results.error=error instanceof Error?error.message:String(error);await (await app.firstWindow()).screenshot({path:join(output,'failure.png')}).catch(()=>{});throw error;}
-finally{await writeFile(join(output,'results.json'),JSON.stringify(results,null,2));await app.close();await new Promise<void>(resolve=>server.close(()=>resolve()));await rm(dir,{recursive:true,force:true});}
+finally{await writeFile(join(output,'results.json'),JSON.stringify(results,null,2));await app.evaluate(({dialog})=>{dialog.showMessageBoxSync=()=>1;}).catch(()=>{});await app.close();await new Promise<void>(resolve=>server.close(()=>resolve()));await rm(dir,{recursive:true,force:true});}
 console.log(JSON.stringify(results,null,2));
