@@ -23,7 +23,8 @@ function LetterEditor({job}:{job:JobRecord}) {
  const [view,setView]=useState<number|null>(null),[body,setBody]=useState(''),[base,setBase]=useState({version:0,body:''}),[notice,setNotice]=useState('');
  const dirty=body!==base.body;useDirty(dirty);
  const shown=(view?data?.versions.find(v=>v.version===view):data?.current)||null;
- useEffect(()=>{if(!dirty&&shown){setBody(shown.body);setBase({version:shown.version,body:shown.body});}},[shown?.version,dirty]);
+ // Saving already advances the editor base; an older query must not reset it.
+ useEffect(()=>{if(!dirty&&shown&&shown.version>=base.version){setBody(shown.body);setBase({version:shown.version,body:shown.body});}},[shown?.version]);
  const save=useMutation({mutationFn:()=>call('letters.edit',{id:job.id,body,expectedVersion:base.version}),onSuccess:v=>{setBody(v.body);setBase({version:v.version,body:v.body});setView(null);setNotice('Saved');}});
  const generate=useMutation({mutationFn:()=>call('letters.generate',{id:job.id})});
  const restore=useMutation({mutationFn:()=>call('letters.restore',{id:job.id,version:view!,expectedVersion:data?.current?.version||0}),onSuccess:v=>{setBody(v.body);setBase({version:v.version,body:v.body});setView(null);}});

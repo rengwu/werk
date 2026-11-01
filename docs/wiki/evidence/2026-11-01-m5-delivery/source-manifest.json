@@ -1,5 +1,5 @@
 {
-  "fingerprint": "f22eae44ed3bb7250fab4639d95159f9417b53680c0400bed5284ba8120b2a09",
+  "fingerprint": "cfd7f9f02774bbad6e64510a13a3d997ff1da84cf791b8b4cf8ab7bcbf3dd75c",
   "files": [
     {
       "path": ".github/workflows/build.yml",
@@ -315,7 +315,7 @@
     },
     {
       "path": "src/renderer/CvPage.tsx",
-      "sha256": "fa41701a801bfa4b18590accd84ad6f51fb976ede347f68e51bce53fe672c5a4"
+      "sha256": "642f772a9279f20d3ccb550b096f4e9c1d2c81a682d74f13274add4f2ae2d967"
     },
     {
       "path": "src/renderer/JobsPage.tsx",
@@ -327,7 +327,7 @@
     },
     {
       "path": "src/renderer/SavedWorkspace.tsx",
-      "sha256": "9b59ce3d720b1635ece8f0e0087749a00230dfb93095e0eb6871a23f01938005"
+      "sha256": "ca8ca93ebc09201b39b7d344f395a94e3ba14397d785b881c8d07a52decccf17"
     },
     {
       "path": "src/renderer/SourcesSettings.tsx",
@@ -415,7 +415,7 @@
     },
     {
       "path": "tests/documents-smoke.ts",
-      "sha256": "ffa56b6e27e3f998875fb47ce80d459d78a22cb18acb4264d8c016d79b0a3b19"
+      "sha256": "d1575893f6da11a445911f9921ededfa476c358b8273113a20cd91ad115fa007"
     },
     {
       "path": "tests/documents.test.ts",
