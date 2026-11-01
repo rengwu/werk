@@ -1,0 +1,13 @@
+{
+  "revision": "6039b02f2e846df3955da055c99632522c8f1f06",
+  "environment": "macOS arm64; isolated Electron development copy; production renderer/main and simulated-inference backend",
+  "result": "Passed",
+  "scenarios": [
+    "Settings exposes factory reset; native confirmation defaults to Cancel; cancellation preserves records and sign-in",
+    "Confirmed reset clears records, copied files, credentials, drafts, cookies, logs and custom settings/sources; originals and exports survive",
+    "Fresh setup, sign-out and defaults persist after quitting and reopening",
+    "Storage failure leaves a pending reset; next launch completes it before opening the backend or old UI",
+    "Factory reset remains available after a corrupt database stops the backend and restores a working first-run app",
+    "Reset aborts a real running pi shell command before its delayed write and prevents old work from returning"
+  ]
+}
