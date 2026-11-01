@@ -1,0 +1,47 @@
+% Format inspired by sb2nov/resume, MIT; see LICENSE-sb2nov.txt.
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=18mm,top=16mm,bottom=17mm]{geometry}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{lmodern}
+\else
+  \usepackage{fontspec}
+  \setmainfont{lmroman10-regular.otf}[
+    BoldFont=lmroman10-bold.otf,
+    ItalicFont=lmroman10-italic.otf,
+    BoldItalicFont=lmroman10-bolditalic.otf,
+    SmallCapsFont=lmromancaps10-regular.otf,
+    Ligatures=NoCommon]
+\fi
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage[hidelinks]{hyperref}
+\ifPDFTeX
+  \input{glyphtounicode}
+  \pdfgentounicode=1
+  \DisableLigatures{encoding = *, family = *}
+\fi
+\hypersetup{pdftitle={Resume}}
+\urlstyle{same}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\emergencystretch}{2em}
+\raggedright
+\raggedbottom
+\pagestyle{empty}
+\titleformat{\section}{\large\scshape}{}{0pt}{}[\vspace{1pt}\titlerule]
+\titlespacing*{\section}{0pt}{10pt}{5pt}
+\newlist{entries}{itemize}{1}
+\setlist[entries]{leftmargin=11pt,label=\textbullet,itemsep=6pt,topsep=2pt,parsep=0pt,partopsep=0pt}
+\newlist{details}{itemize}{1}
+\setlist[details]{leftmargin=15pt,label=\textopenbullet,itemsep=2pt,topsep=3pt,parsep=0pt,partopsep=0pt,font=\normalfont}
+\newcommand{\role}[4]{\item {\bfseries #1}\hfill #2\par\nopagebreak{\itshape\small #3\hfill #4}\par\nopagebreak}
+\newcommand{\project}[3]{\item {\bfseries\href{#2}{#1}}\hfill{\small #3}\par\nopagebreak}
+
+\begin{document}
+\section{Resume}
+Edit your resume here.
+\end{document}

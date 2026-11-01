@@ -5,9 +5,15 @@ updated: 2026-11-01
 ---
 # Decisions
 
-Current decisions for werk. The user made each one in a grill-form round; the transcripts hold the exact wording and the options offered: [round 1](../journal/2026-11-01-grill-2429f43a2dda41cdf1aaa20116f739b4.md), [round 2](../journal/2026-11-01-grill-8310ced881c9d8f1fe6b9c2f5277b081.md), [round 3](../journal/2026-11-01-grill-28a582f50b30795a161c06d0221e222e.md), [round 4](../journal/2026-11-01-grill-79bc64157692f581ef75d39f3c59308f.md), [round 5](../journal/2026-11-01-grill-9472293cf4bb700313881eac8d7833b7.md). The [rebuild plan](../journal/2026-11-01-rebuild.md) records the findings behind them, and the [handoff](../journal/2026-11-01-werk-handoff.md) turns them into an implementation plan. The user's boundaries are in `AGENTS.md`.
+Current decisions for werk. The initial decisions came from grill-form rounds; later direct instructions are recorded below. the transcripts hold the exact wording and the options offered: [round 1](../journal/2026-11-01-grill-2429f43a2dda41cdf1aaa20116f739b4.md), [round 2](../journal/2026-11-01-grill-8310ced881c9d8f1fe6b9c2f5277b081.md), [round 3](../journal/2026-11-01-grill-28a582f50b30795a161c06d0221e222e.md), [round 4](../journal/2026-11-01-grill-79bc64157692f581ef75d39f3c59308f.md), [round 5](../journal/2026-11-01-grill-9472293cf4bb700313881eac8d7833b7.md). The [rebuild plan](../journal/2026-11-01-rebuild.md) records the findings behind them, and the [handoff](../journal/2026-11-01-werk-handoff.md) turns them into an implementation plan. The user's boundaries are in `AGENTS.md`.
 
 “Differs” marks a choice other than the recommendation offered.
+
+## Assistant revision after implementation feedback
+
+**REB-pi-session (2026-11-01):** The user requested interruption, dropped files, local-file access and visible network/tool capabilities, then clarified: “it is essentially just another pi session running on the user's computer with full permissions”. This supersedes the earlier bounded-action and supplied-URL restrictions. Embed pi's actual session runtime with unrestricted local read/write/edit/shell and network tools, persistent context, streamed replies, visible tool results, steering, interrupt-and-send and queued follow-ups. Keep the same app-owned ChatGPT subscription, model and reasoning level. Keep attributed, versioned app tools so profile, letter and CV changes remain reviewable. Validation errors return to pi for correction within the run.
+
+The no-application/no-engagement product rules remain assistant instructions. With full shell and network access they are **not a capability-enforced security boundary**. Automated discovery retains its destination restrictions. werk's CV compilation tool still uses the OS sandbox. See [assistant behavior and verification](../features/assistant.md).
 
 ## Product
 

@@ -18,7 +18,7 @@ const env={...process.env,WERK_DATA_DIR:dir,WERK_FAKE_AI:'1',WERK_AI_FIXTURES:re
 const app=await electron.launch({executablePath:exe,env,timeout:20000});
 const results:{result:string;scenarios:string[];error?:string}={result:'Failed',scenarios:[]};
 try{
-  const page=await app.firstWindow();await page.getByRole('heading',{name:'Set up werk',exact:true}).waitFor();
+  const page=await app.firstWindow();page.setDefaultTimeout(20000);await page.getByRole('heading',{name:'Set up werk',exact:true}).waitFor();
   const before=await page.locator('main').boundingBox();
   await page.getByRole('button',{name:'Open assistant',exact:true}).first().click();
   const pane=page.getByRole('complementary',{name:'Assistant'});assert.equal((await pane.boundingBox())?.width,520);assert.deepEqual(await page.locator('main').boundingBox(),before);

@@ -58,6 +58,8 @@ jobs:
         run: '"WERK_EXE=$pwd\release\win-unpacked\werk.exe" | Out-File -Append $env:GITHUB_ENV'
       - name: Verify profile and assistant with fictional data
         run: node --experimental-strip-types tests/profile-smoke.ts
+      - name: Verify pi tools, dropped files, steering and interruption
+        run: node --experimental-strip-types tests/assistant-smoke.ts
       - name: Verify discovery and keyboard triage with recorded responses
         run: node --experimental-strip-types tests/discovery-smoke.ts
       - uses: actions/upload-artifact@v7

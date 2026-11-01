@@ -6,7 +6,7 @@ import type { AiState, InferenceImage } from '../../shared/ai.ts';
 
 export class AiUnavailable extends Error {}
 export function inferenceError(message: string) {
-  if (/subscription_sharing_usage_limit|usage.limit|rate.limit|quota|429/i.test(message)) return 'Your ChatGPT subscription allowance is unavailable. Retry after it resets.';
+  if (/subscription_sharing_usage_limit|usage.limit|rate.limit|allowance|quota|429/i.test(message)) return 'Your ChatGPT subscription allowance is unavailable. Retry after it resets.';
   if (/model.*(?:not|unavail|access)|model_not_found/i.test(message)) return 'The requested model is unavailable through this ChatGPT subscription. No fallback was used.';
   if (/401|403|auth|token|credential|sign.in/i.test(message)) return 'The ChatGPT connection is unavailable. Sign in again in Settings → AI.';
   return 'The model request did not complete. Check the ChatGPT connection and retry.';

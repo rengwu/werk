@@ -79,6 +79,31 @@ CREATE VIRTUAL TABLE jobs_fts USING fts5(title, company, location, description, 
 CREATE TRIGGER jobs_ai AFTER INSERT ON jobs BEGIN INSERT INTO jobs_fts(rowid,title,company,location,description) VALUES(new.id,new.title,new.company,new.location,new.description); END;
 CREATE TRIGGER jobs_ad AFTER DELETE ON jobs BEGIN INSERT INTO jobs_fts(jobs_fts,rowid,title,company,location,description) VALUES('delete',old.id,old.title,old.company,old.location,old.description); END;
 CREATE TRIGGER jobs_au AFTER UPDATE OF title,company,location,description ON jobs BEGIN INSERT INTO jobs_fts(jobs_fts,rowid,title,company,location,description) VALUES('delete',old.id,old.title,old.company,old.location,old.description); INSERT INTO jobs_fts(rowid,title,company,location,description) VALUES(new.id,new.title,new.company,new.location,new.description); END;
+`, `
+CREATE TABLE cover_letter_versions (
+  job_id INTEGER NOT NULL REFERENCES jobs(id) ON DELETE CASCADE,
+  version INTEGER NOT NULL,
+  body TEXT NOT NULL,                        -- plain text: greeting, paragraphs, sign-off
+  review_notes TEXT NOT NULL DEFAULT '[]' CHECK (json_valid(review_notes)),
+  created_by TEXT NOT NULL CHECK (created_by IN ('generated', 'user', 'assistant', 'restore')),
+  profile_revision INTEGER,
+  created_at TEXT NOT NULL,
+  PRIMARY KEY (job_id, version)
+) STRICT;
+CREATE TABLE cv_versions (
+  version INTEGER PRIMARY KEY,
+  source TEXT NOT NULL,                      -- LaTeX
+  created_by TEXT NOT NULL CHECK (created_by IN ('generated', 'user', 'assistant', 'restore')),
+  profile_revision INTEGER,
+  compile_status TEXT CHECK (compile_status IN ('ok', 'failed')),
+  compile_log TEXT,
+  created_at TEXT NOT NULL
+) STRICT;                                    -- PDF at <data>/cv/<version>.pdf
+`, `
+CREATE TABLE assistant_evidence (
+  chat_id TEXT NOT NULL, id TEXT NOT NULL, text TEXT NOT NULL, name TEXT, url TEXT,
+  PRIMARY KEY(chat_id,id)
+) STRICT;
 ` ];
 export function migrate(db: DatabaseSync) {
   let version = Number(db.prepare('PRAGMA user_version').get()?.user_version || 0);

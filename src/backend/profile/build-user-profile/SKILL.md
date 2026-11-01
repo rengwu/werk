@@ -5,17 +5,17 @@ description: Guide werk users through building, completing and correcting their 
 
 # Build a user profile
 
-Use the supplied canonical profile, readiness checklist, conversation and latest user message. Return the application's structured reply and field edits. The application supplies the output schema and applies validated edits atomically.
+Read the canonical profile and its schema through read_profile, then follow the user's current intent. Use edit_profile for versioned, attributed changes. Read local files, attachments and public references directly with the session's tools.
 
 ## Conversation
 
-Start from what is already known. Do not repeat answered questions. Ask one to three targeted questions per turn, prioritizing missing readiness fields: name, current city/country, target roles, career background, and work arrangements. A new graduate can be ready through education, learning or projects; employment is not required.
+Start from what is already known. Do not repeat answered questions or force an interview after every message. Complete the requested import, research, correction or editing task before asking for missing information. Ask only questions needed to make progress. Readiness fields are name, current city/country, target roles, career background, and work arrangements. A new graduate can be ready through education, learning or projects; employment is not required.
 
 During profile setup, a user supplying their résumé is asking you to build their profile from it. Read the supplied attachment and save its supported facts, then ask only for missing essentials. If ownership or purpose is unclear, ask once. A natural follow-up such as "yeah that's my profile" resolves ownership and continues that setup request. Do not require a prescribed phrase, a second import command, or confirmation of each fact already supported by the résumé. An explicit request only to read, explain or review a file does not authorize profile changes.
 
-Once those essentials are present, progressively clarify actual skills and their basis, employers versus clients, titles, responsibilities, dates, achievements, projects and upstream attribution, qualifications, citizenship, current work authorizations, relocation willingness, compensation preferences and availability. These refinements should not block useful discovery. Accept unknown, declined or not applicable answers; record uncertainty rather than guessing. Never insist on contact details or sensitive identification documents.
+Capture supported details available in supplied files and research: skills and their basis, employers versus clients, titles, responsibilities, dates, achievements, projects and upstream attribution, qualifications and stated preferences. Missing refinements do not block useful discovery. Accept unknown, declined or not applicable answers; record uncertainty rather than guessing. Never insist on contact details or sensitive identification documents.
 
-Explain concisely what changed and ask the next useful question. If the essentials are complete, say the profile is ready for discovery; the application controls scanning and respects the schedule setting. Do not claim a scan, application, email or outreach was performed.
+Explain concisely what changed. Ask a follow-up only when necessary for the user's request. If relevant and the essentials are complete, say the profile is ready for discovery; the application controls scanning and respects the schedule setting. Do not claim a scan, application, email or outreach was performed.
 
 ## Evidence and updates
 
@@ -35,4 +35,4 @@ Use criteria.targetRoles (string array) for target roles, criteria.arrangements 
 
 ## Scope
 
-Use supplied evidence and public references fetched through the app-wide assistant's bounded read_reference action when available. The app-wide assistant can also edit actual CV documents and cover letters through its documented actions; preserve a user's CV-editing intent across follow-up messages. A profile change alone does not update the independent LaTeX CV. Never claim it does. No shell, unrestricted browser, employer contact, applications, arbitrary file access, or external delivery. Do not request API keys, passwords, identity-document numbers or authentication secrets. Changes go through application validation; never claim a failed change was saved. The fact sheet renders the canonical facts, not a second document to edit.
+Use the session's local file, shell and network tools as needed. Read a supplied local path directly, including ~ paths; do not ask the user to attach a readable local file. Research public project evidence through read_url and web_search, following links as needed. Keep authorship and upstream attribution clear. App record changes go through werk's versioned tools. The assistant can also edit the actual CV and cover letters; preserve that intent across follow-up messages. A profile change alone does not update the independent LaTeX CV. Never claim it does. No employer contact, application submission, or external delivery of application materials. Do not request passwords, identity-document numbers or authentication secrets. Never claim a failed change was saved. The fact sheet renders the canonical facts, not a second document to edit.

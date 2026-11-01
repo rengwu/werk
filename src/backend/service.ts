@@ -11,6 +11,8 @@ import { ModelQueue } from './ai/queue.ts';
 import { Assistant } from './assistant/service.ts';
 import { Jobs } from './sources/jobs.ts';
 import { Sources } from './sources/service.ts';
+import {Letters} from './letters/store.ts';
+import {Cv} from './cv/store.ts';
 import type { Api, ApiParams, ApiResult, BackendInit, Diagnostics, Events, Settings, UpdateState } from '../shared/api.ts';
 
 export class Service {
@@ -22,6 +24,7 @@ export class Service {
   queue: ModelQueue;
   assistant: Assistant;
   jobs:Jobs;sources:Sources;
+  letters:Letters;cv:Cv;
   emit: <K extends keyof Events>(event: K, data: Events[K]) => void;
   constructor(init: BackendInit, emit: Service['emit']) {
     this.init = init; this.emit = emit; this.store = new Store(init.dataDir);
@@ -30,9 +33,12 @@ export class Service {
     this.profiles.onSave=profile=>{this.jobs.reassess(profile);this.store.db.exec('DELETE FROM http_validators');};
     this.sources=new Sources(this.store,this.profiles,this.jobs,()=>{this.emit('sources',undefined);this.emit('scan',undefined);});
     this.ai = new AiRuntime(init.dataDir, () => this.emit('ai', undefined));
-    this.queue = new ModelQueue(this.store, () => { this.emit('tasks', undefined); this.emit('assistant', undefined); this.emit('ai', undefined); });
+    this.queue = new ModelQueue(this.store, () => { this.emit('tasks', undefined); this.emit('assistant', undefined); this.emit('ai', undefined);this.emit('letters',undefined);this.emit('jobs',undefined); });
+    this.letters=new Letters(this.store,this.jobs,this.profiles,this.queue,this.ai,()=>{this.emit('letters',undefined);this.emit('jobs',undefined);});
+    this.cv=new Cv(this.store,this.profiles,init.dataDir,()=>this.emit('cv',undefined));
     this.assistant = new Assistant(this.store, this.profiles, this.ai, this.queue, init.dataDir, () => this.emit('assistant', undefined));
     this.assistant.jobs=this.jobs;
+    this.assistant.letters=this.letters;this.assistant.cv=this.cv;
     this.ai.connected = () => this.queue.resume();
     queueMicrotask(() => this.queue.kick());
     if (init.previousExit !== undefined) this.store.event('warn', 'backend', `Backend restarted after exit ${init.previousExit}.`);
@@ -68,11 +74,12 @@ export class Service {
       'ai.cancel': async () => { await this.ai.cancel(); return true; },
       'ai.logout': async () => { this.queue.running?.controller.abort(); await this.ai.logout(); return true; },
       'tasks.retry': input => { this.queue.retry(z.object({id:z.number().int().positive()}).strict().parse(input).id); return true; },
-      'tasks.stop': input => { this.queue.stop(z.object({id:z.number().int().positive()}).strict().parse(input).id); return true; },
+      'tasks.stop': async input => { const id=z.object({id:z.number().int().positive()}).strict().parse(input).id; if(this.queue.list().find(t=>t.id===id)?.kind==='assistant_turn') await this.assistant.stop();else this.queue.stop(id);return true; },
       'assistant.get': () => this.assistant.state(),
-      'assistant.send': input => { const p=z.object({text:z.string().trim().min(1).max(40000),attachments:z.array(z.string().uuid()).max(5),context:z.object({page:z.string().max(100),jobId:z.number().int().positive().optional(),document:z.enum(['cv','letter','profile']).optional(),dirty:z.boolean().optional()}).strict(),clientId:z.string().uuid()}).strict().parse(input);return this.assistant.send(p.text,p.attachments,p.context,p.clientId); },
+      'assistant.send': input => { const p=z.object({text:z.string().trim().max(100000),attachments:z.array(z.string().uuid()).max(10),context:z.object({page:z.string().max(100),jobId:z.number().int().positive().optional(),document:z.enum(['cv','letter','profile']).optional(),dirty:z.boolean().optional()}).strict(),clientId:z.string().uuid(),mode:z.enum(['steer','interrupt','followUp']).optional()}).strict().refine(p=>p.text.length||p.attachments.length).parse(input);return this.assistant.send(p.text,p.attachments,p.context,p.clientId,p.mode); },
+      'assistant.stop': () => this.assistant.stop(),
       'assistant.new': () => this.assistant.newChat(),
-      'attachments.add': async input => { const p=z.object({name:z.string().max(250),bytes:z.instanceof(Uint8Array).refine(b=>b.byteLength<=10*1024*1024)}).strict().parse(input);return this.assistant.attachments.add(this.assistant.chatId(),p.name,p.bytes); },
+      'attachments.add': async input => { const p=z.object({name:z.string().max(250),bytes:z.instanceof(Uint8Array).refine(b=>b.byteLength<=32*1024*1024)}).strict().parse(input);return this.assistant.attachments.add(this.assistant.chatId(),p.name,p.bytes); },
       'attachments.remove': async input => { await this.assistant.attachments.remove(z.object({id:z.string().uuid()}).strict().parse(input).id,this.assistant.chatId());return true; },
       'sources.get':()=>this.sources.list(),
       'sources.enable':input=>{const p=z.object({id:z.number().int().positive(),enabled:z.boolean()}).strict().parse(input);return this.sources.enable(p.id,p.enabled);},
@@ -86,9 +93,19 @@ export class Service {
       'jobs.notes':input=>{const p=z.object({id:z.number().int().positive(),notes:z.string().max(40000)}).strict().parse(input);return this.jobs.notes(p.id,p.notes);},
       'jobs.description':input=>{const p=z.object({id:z.number().int().positive(),description:z.string().trim().min(80).max(150000)}).strict().parse(input);return this.jobs.description(p.id,p.description);},
       'jobs.hideCompany':input=>this.jobs.hideCompany(z.object({id:z.number().int().positive()}).strict().parse(input).id),
+      'letters.get':input=>this.letters.state(z.object({id:z.number().int().positive()}).strict().parse(input).id),
+      'letters.edit':input=>{const p=z.object({id:z.number().int().positive(),body:z.string().trim().min(1).max(40000),expectedVersion:z.number().int().nonnegative()}).strict().parse(input);return this.letters.edit(p.id,p.body,p.expectedVersion);},
+      'letters.restore':input=>{const p=z.object({id:z.number().int().positive(),version:z.number().int().positive(),expectedVersion:z.number().int().nonnegative()}).strict().parse(input);return this.letters.restore(p.id,p.version,p.expectedVersion);},
+      'letters.generate':input=>this.letters.enqueue(z.object({id:z.number().int().positive()}).strict().parse(input).id),
+      'cv.get':()=>this.cv.state(),
+      'cv.generate':input=>this.cv.generate(z.object({expectedVersion:z.number().int().nonnegative()}).strict().parse(input).expectedVersion),
+      'cv.edit':input=>{const p=z.object({source:z.string().min(1).max(2*1024*1024),expectedVersion:z.number().int().nonnegative()}).strict().parse(input);return this.cv.edit(p.source,p.expectedVersion);},
+      'cv.restore':input=>{const p=z.object({version:z.number().int().positive(),expectedVersion:z.number().int().nonnegative()}).strict().parse(input);return this.cv.restore(p.version,p.expectedVersion);},
+      'cv.compile':input=>this.cv.compile(z.object({version:z.number().int().positive()}).strict().parse(input).version),
+      'cv.pdf':input=>this.cv.pdf(z.object({version:z.number().int().positive()}).strict().parse(input).version),
     };
     if (!Object.hasOwn(handlers, method)) throw new Error('Unknown action.');
     return await handlers[method](params) as ApiResult<K>;
   }
-  close() { this.sources.close();this.queue.close(); void this.ai.cancel(); this.store.close(); }
+  close() { this.sources.close();this.queue.close();this.assistant.close();this.cv.close(); void this.ai.cancel(); this.store.close(); }
 }

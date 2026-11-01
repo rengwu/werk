@@ -9,7 +9,7 @@ werk is a clean rebuild of the previous app, ununemploy, which is archived on th
 - Never automatically submit an application, upload a CV to an employer or job board, fill an application form, or initiate engagement on the user's behalf.
 - Never contact employers or recruiters, send outreach/email/DMs, post comments or replies, follow accounts, or react to posts. Do not implement application-submission or engagement capabilities, including an approval-to-send workflow.
 - Notifications stay inside the app.
-- Read-only discovery requests, the GitHub release check and configured model-inference requests are compatible with these boundaries. Enforce restrictions by capability and destination, not HTTP verb.
+- Read-only discovery requests, the GitHub release check and configured model-inference requests are compatible with these boundaries. Automated discovery enforces restrictions by capability and destination, not HTTP verb. The assistant is a full-permission pi session by the user's later explicit decision; its no-engagement rules are instructions, not a technical sandbox guarantee.
 - Drafts are reviewed, edited and copied by the user. An employer's application URL is an ordinary link the user may open. Marking a job applied is a manual record only.
 - The Muse is out of scope. Reddit is deferred.
 
@@ -28,14 +28,14 @@ werk is a clean rebuild of the previous app, ununemploy, which is archived on th
 - Follow the decision register and the designs in `design/werk/`. Cursor/Clarity-derived tokens, native semantics, and unstyled Base UI primitives where a native control is insufficient.
 - No ornamental labels, captions, subtitles or flourishes. Every visible string identifies content, explains a necessary state or supports an action. Use literal action labels.
 - Navigation: Inbox (triage of new jobs), Saved, Profile, CV; Sources, AI, Backup and Diagnostics live in Settings.
-- The assistant is a 520 px overlay on the right that never resizes the page, keeps its conversation across navigation, supports Escape and focus return, and can only use the bounded actions in `src/backend/assistant`. No unrestricted shell, filesystem or external-write capability.
+- The assistant is a 520 px overlay on the right that never resizes the page, keeps its conversation across navigation, and supports Escape and focus return. It is an embedded pi session with full local file, shell and network permissions, streaming replies, visible tool calls, steering, interruption and dropped files. This supersedes the handoff's bounded-action restriction. Use versioned werk tools for app records and retain the no-engagement instructions.
 - The CV is LaTeX compiled to PDF, generated from the profile on request and then editable. Cover letters are plain text with versions; no letter PDF.
 - LaTeX source is untrusted input: the assistant edits it after reading untrusted postings, and Tectonic alone can read and write any file the user can. Compile it only inside the OS sandbox (`sandbox-exec` on macOS, the Go AppContainer helper in `tools/texsandbox` on Windows), never with shell escape, and never fall back to an unsandboxed compile.
 - System appearance by default; explicit Light/Dark choices persist.
 
 ## AI runtime
 
-- Use pi-ai with the user's ChatGPT subscription, `gpt-5.6-sol`, and high reasoning. Persist app-owned credentials under the data folder's `pi-auth` using the SDK's authentication and refresh flow. Do not implement custom OAuth refresh or silently switch models or billing methods.
+- Use pi-coding-agent sessions and pi-ai with the user's ChatGPT subscription, `gpt-5.6-sol`, and high reasoning. Persist app-owned credentials under the data folder's `pi-auth` using the SDK's authentication and refresh flow. Do not implement custom OAuth refresh or silently switch models or billing methods.
 - Serialize model work. Pause and report unavailable authentication, model access, or subscription allowance; preserve saved jobs and queued drafts.
 
 ## Platform and delivery

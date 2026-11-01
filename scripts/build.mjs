@@ -7,7 +7,7 @@ export const testBuild = process.argv.includes('--test');
 export const options = {
   entryPoints: { main: 'src/main/index.ts', preload: 'src/preload/index.ts', backend: 'src/backend/index.ts' },
   outdir: 'out', outExtension: { '.js': '.cjs' }, bundle: true,
-  platform: 'node', format: 'cjs', target: 'node24', external: ['electron'],
+  platform: 'node', format: 'cjs', target: 'node24', external: ['electron', '@earendil-works/pi-coding-agent'],
   define: { WERK_TEST_BUILD: String(testBuild) }, sourcemap: true,
   plugins: [openAiOAuth],
 };

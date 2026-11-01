@@ -2,7 +2,7 @@
 title: M3 discovery and triage verification
 section: Verification
 updated: 2026-11-01
-result: Untested
+result: Passed
 ---
 # M3 discovery and triage verification
 
@@ -22,7 +22,7 @@ Base `5e9f923540de25a30a8ef746300faee5f84a37e7`, dirty implementation; fingerpri
 | Evidence, notes and company hiding | Exact highlights, autosave, new profile revision, saved preservation | All assertions passed | Passed | [Results](../../evidence/2026-11-01-m3-discovery/results.json) |
 | Source state | Live kept/saved counters and manual default | Counters updated after hiding; 12-hour schedule selected | Passed | [Sources](../../evidence/2026-11-01-m3-discovery/sources.png) |
 | Bounded live discovery | One public read, fictional profile, compact storage | Remotive: 1 request, 8 kept, 5 fingerprints, 894,048 database/WAL bytes | Passed | [Live metrics](../../evidence/2026-11-01-m3-discovery/live.json) |
-| Windows packaged discovery | Same fixture journey on installed/test packages | Awaiting this milestone's CI | Untested | [CI recipe](../setup.md#windows-ci) |
+| Windows packaged discovery | Same fixture journey on installed/test packages | Both OSes passed at `54aa41fa56830d706e88e95d4600ce9b6fc13743` | Passed | [CI run](https://github.com/rengwu/ununemploy/actions/runs/41278538451) |
 
 ## Findings and limits
 
@@ -30,4 +30,4 @@ Visual review found source counters retained their pre-triage values because job
 
 Dependency audit required sanitize-html 2.18.1 rather than the initial legacy-era pin; the [upstream advisory](https://github.com/advisories/GHSA-x3q4-9hxx-gx8m) describes the fixed parser issue. Only build-tool moderate findings remain. Descriptions render as text, with no raw HTML or remote images.
 
-Overall Untested until Windows CI completes. No real candidate facts, raw public scan bodies or credentials are stored in the wiki. Matching is deterministic and conservative; it does not establish legal eligibility. All-provider live availability and release testing on the user's Windows PC are outside this run.
+The initial CI attempt at `92a5c9e` failed because an attention indicator changed the Settings button’s accessible name. An explicit navigation aria-label fixed it; CI passed on both platforms at `54aa41f`. No real candidate facts, raw public scan bodies or credentials are stored in the wiki. Matching is deterministic and conservative; it does not establish legal eligibility. All-provider live availability and release testing on the user's Windows PC are outside this run.

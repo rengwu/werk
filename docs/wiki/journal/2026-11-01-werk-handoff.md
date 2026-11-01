@@ -6,6 +6,9 @@ status: Ready for implementation
 ---
 # werk implementation handoff — 1 November 2026
 
+Implementation update: [REB-pi-session](../decisions/index.md#assistant-revision-after-implementation-feedback) supersedes this handoff's bounded assistant and supplied-URL restrictions. The assistant now embeds pi with full local file, shell and network permissions. Current behavior is in [Assistant and ChatGPT connection](../features/assistant.md). The earlier restrictions below remain historical specification, not current assistant permissions.
+
+
 This is the specification for the next implementing agent. **werk** is a clean rebuild of ununemploy. The user's decisions are in the [decision register](../decisions/index.md), which links the four answer transcripts; the [rebuild plan](2026-11-01-rebuild.md) has the findings behind them. This page turns them into an implementation plan. The user answered every question that blocked implementation before this handoff, so it is ready to work from.
 
 Labels used below:

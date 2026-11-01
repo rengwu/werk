@@ -11,7 +11,7 @@ function safeValue(value: unknown, depth = 0) {
 export function applyProfileEdits(profile: Profile, raw: unknown, evidence: Evidence[]) {
   const edits = profileEditsSchema.parse(raw), next = structuredClone(profile);
   for (const edit of edits) {
-    if (!evidence.some(e => e.text.includes(edit.evidenceQuote))) throw new Error('A profile change has no supporting quote. No facts were changed.');
+    if (!evidence.some(e => e.text.includes(edit.evidenceQuote))) throw new Error(`A profile change has no supporting quote for ${edit.path}: ${JSON.stringify(edit.evidenceQuote.slice(0,180))}. Read the source again and use its exact text. No facts were changed.`);
     const parts = edit.path.split('/').slice(1).map(p => p.replace(/~1/g,'/').replace(/~0/g,'~'));
     if (!edit.path.startsWith('/') || parts.length < 2 || parts.length > 8 || parts.some(p => !p || forbidden.has(p)) || !['basics','criteria','experience','projects','education','awards','facts','preferences','openItems'].includes(parts[0]) || (parts[0] === 'basics' && parts[1] === 'sources')) throw new Error('Unsupported profile change.');
     if (parts[0] === 'facts' && !next.facts) next.facts = [];

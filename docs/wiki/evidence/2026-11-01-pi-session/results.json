@@ -1,0 +1,10 @@
+{
+  "result": "Passed",
+  "scenarios": [
+    "Full-access tools are visible; drag and drop accepts arbitrary files; attachments can be sent without text",
+    "Actual local-file and HTTP tools execute inside packaged pi; expandable tool inputs and results persist",
+    "Composer remains enabled and steering reaches the running pi session",
+    "Interrupt-and-send aborts an executing shell command and runs the replacement request",
+    "Conversation, tool history and unsent draft survive a renderer reload"
+  ]
+}
