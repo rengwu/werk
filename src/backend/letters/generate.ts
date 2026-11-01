@@ -20,5 +20,7 @@ export function validateGeneration(raw:unknown,profile:Profile,job:Pick<JobRecor
   if(!generation.paragraphs.some(p=>p.evidenceIds.some(id=>id!=='job')))throw new Error('The letter needs candidate evidence.');
   const count=generation.paragraphs.map(p=>p.text).join(' ').split(/\s+/).length;if(count>600)throw new Error('Generated cover letter exceeds 600 words.');
   const greeting=job.description.match(/(?:address (?:your |the )?(?:cover )?letter to|salutation\s*:)\s*(Dear [A-Za-z .'-]{2,80},)/i)?.[1]||'Dear hiring team,';
-  return {body:[greeting,...generation.paragraphs.map(p=>p.text),'Best regards,',profile.basics.name].join('\n\n'),reviewNotes:[...new Set([...profile.openItems.map(i=>i.question),...generation.reviewNotes,...(count<250||count>350?[`This letter has ${count} words in its paragraphs; the target is 250–350. Review the length.`]:[])])],evidence:generation};
+  const body=[greeting,...generation.paragraphs.map(p=>p.text),'Best regards,',profile.basics.name].join('\n\n');
+  if(body.trim().split(/\s+/).length>600)throw new Error('Generated cover letter exceeds 600 words.');
+  return {body,reviewNotes:[...new Set([...profile.openItems.map(i=>i.question),...generation.reviewNotes,...(count<250||count>350?[`This letter has ${count} words in its paragraphs; the target is 250–350. Review the length.`]:[])])],evidence:generation};
 }

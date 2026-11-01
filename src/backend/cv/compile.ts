@@ -67,7 +67,7 @@ export function macSandbox(work: string, cache: string, bin: string) {
     "/tmp",
     "/var",
     "/config",
-    process.cwd(),
+    ...(process.cwd() === '/' ? [] : [process.cwd()]),
     resolve(process.env.WERK_DATA_DIR || ".local-data"),
   ];
   return `(version 1)
@@ -196,7 +196,7 @@ export async function compileLatex(
         const diagnostics = parseLatexDiagnostics(log);
         if (reason || code !== 0) {
           if (
-            /Landlock support|create sandbox|activate sandbox|disable compiler networking|Windows LaTeX sandbox:/.test(
+            /create sandbox|activate sandbox|disable compiler networking|Windows LaTeX sandbox:/.test(
               log,
             )
           ) {
@@ -204,7 +204,7 @@ export async function compileLatex(
               new LatexCompileError(
                 process.platform === "win32"
                   ? "The Windows LaTeX sandbox could not run. Saved source is preserved."
-                  : "LaTeX sandbox unavailable in this Linux runtime. Native Linux with Landlock is required; saved source is preserved.",
+                  : "The macOS LaTeX sandbox could not run. Saved source is preserved.",
                 [{ severity: "error", message: log.trim().slice(-2000) }],
                 503,
               ),

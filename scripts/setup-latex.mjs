@@ -36,7 +36,7 @@ const starter=await readFile(resolve('resources/latex/starter.tex'),'utf8');
 // sandboxed file access. This path is never bundled into the application.
 if(process.platform==='darwin'){
   const work=await realpath(await mkdtemp(join(tmpdir(),'werk-package-setup-')));
-  try{const trustedSource=starter.replace('Edit your resume here.','Compiler package preparation.');
+  try{const trustedSource=starter.replace('Edit your resume here.',String.raw`Compiler package preparation. \textbf{Bold} \textit{Italic} \textbf{\textit{Both}} \textbar{} \textbackslash{} \textasciitilde{} \textasciicircum{} \section{Experience} \begin{entries} \role{Engineer}{2020 -- Present}{Example Studio}{Remote} \begin{details} \item Built accessible components. \end{details} \project{Planner}{https://example.com}{TypeScript} \end{entries}`);
     const profile=macSandbox(work,await realpath(cache),await realpath(binary)).replace('(deny network*)','').replace('(deny file-write*)',`(deny file-write*)\n (allow file-write* (subpath ${JSON.stringify(await realpath(cache))}))`);
     for(const size of [10,11,12]){await writeFile(join(work,'starter.tex'),trustedSource.replace('[11pt,a4paper]',`[${size}pt,a4paper]`));await run('/usr/bin/sandbox-exec',['-p',profile,binary,'--untrusted','starter.tex'],work,{PATH:'/usr/bin:/bin',HOME:work,TMPDIR:work,TECTONIC_CACHE_DIR:cache,XDG_CACHE_HOME:cache,TECTONIC_UNTRUSTED_MODE:'1',LANG:'en_US.UTF-8'});}
   }finally{await rm(work,{recursive:true,force:true});}

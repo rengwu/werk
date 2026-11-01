@@ -1,0 +1,16 @@
+{
+  "result": "Passed",
+  "scenarios": [
+    "Offline master CV compiles and contains only the fictional profile",
+    "absolute input denied",
+    "indirect input denied",
+    "relative traversal denied",
+    "PDF image read denied",
+    "openin cannot read private data",
+    "Absolute and relative openout cannot change external files",
+    "Private font file read denied",
+    "Shell escape cannot execute an external write",
+    "Invalid LaTeX returns diagnostics",
+    "Cancellation stops a looping compiler"
+  ]
+}

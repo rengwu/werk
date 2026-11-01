@@ -6,7 +6,23 @@ on:
 permissions:
   contents: read
 jobs:
+  latex-cache:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run setup:latex
+      - uses: actions/upload-artifact@v7
+        with:
+          name: latex-cache
+          path: resources/runtime/cache
+          retention-days: 7
   build:
+    needs: latex-cache
     strategy:
       fail-fast: false
       matrix:
@@ -21,6 +37,20 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
+      - uses: actions/setup-go@v6
+        if: runner.os == 'Windows'
+        with:
+          go-version: '1.24'
+          cache-dependency-path: tools/texsandbox/go.sum
+      - uses: actions/download-artifact@v8
+        with:
+          name: latex-cache
+          path: resources/runtime/cache
+      - run: npm run setup:latex
+      - name: Verify Windows AppContainer boundaries
+        if: runner.os == 'Windows'
+        working-directory: tools/texsandbox
+        run: go test ./...
       - run: npm run check
       - run: npm test
       - run: npm run package
@@ -34,6 +64,8 @@ jobs:
       - name: Locate app on macOS
         if: runner.os == 'macOS'
         run: echo "WERK_EXE=$PWD/release/mac-arm64/werk.app/Contents/MacOS/werk" >> "$GITHUB_ENV"
+      - name: Verify offline compiler isolation
+        run: node --experimental-strip-types tests/latex-sandbox.ts
       - run: npm run smoke
       - name: Verify packaged OAuth browser handoff and cancellation
         run: node --experimental-strip-types tests/auth-smoke.ts
@@ -62,6 +94,8 @@ jobs:
         run: node --experimental-strip-types tests/assistant-smoke.ts
       - name: Verify discovery and keyboard triage with recorded responses
         run: node --experimental-strip-types tests/discovery-smoke.ts
+      - name: Verify letters and sandboxed CV workspace
+        run: node --experimental-strip-types tests/documents-smoke.ts
       - uses: actions/upload-artifact@v7
         if: always()
         with:
@@ -81,6 +115,7 @@ jobs:
       - uses: actions/download-artifact@v8
         with:
           path: dist
+          pattern: werk-*
       - env:
           GH_TOKEN: ${{ github.token }}
         run: gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --draft --title "werk $GITHUB_REF_NAME" --notes "" dist/*/*.dmg dist/*/*-setup.exe

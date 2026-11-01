@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu, MessageChannelMain, Tray, ipcMain, nativeTheme, shell, utilityProcess, dialog } from 'electron';
+import { app, BrowserWindow, Menu, MessageChannelMain, Tray, ipcMain, nativeTheme, shell, utilityProcess, dialog, clipboard } from 'electron';
 import type { UtilityProcess, IpcMainEvent, IpcMainInvokeEvent } from 'electron';
 import { appendFileSync, mkdirSync, renameSync, statSync } from 'node:fs';
 import { writeFile } from 'node:fs/promises';
@@ -104,6 +104,10 @@ ipcMain.handle('werk:save-file', async (event, file: FileDownload) => {
   const result = await dialog.showSaveDialog(win!, { defaultPath: file.name });
   if (result.canceled || !result.filePath) return false;
   await writeFile(result.filePath, file.bytes); return true;
+});
+ipcMain.handle('werk:copy-text', (event, text: string) => {
+  if (!trusted(event) || typeof text !== 'string' || text.length > 2*1024*1024) throw new Error('Invalid clipboard text.');
+  return clipboard.writeText(text);
 });
 app.on('second-instance', showWindow);
 app.on('activate', showWindow);

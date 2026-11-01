@@ -17,7 +17,8 @@
     "check": "tsc --noEmit",
     "test": "node --experimental-strip-types --test tests/*.test.ts",
     "package": "node scripts/package.mjs",
-    "smoke": "node --experimental-strip-types tests/smoke.ts"
+    "smoke": "node --experimental-strip-types tests/smoke.ts",
+    "setup:latex": "node --experimental-strip-types scripts/setup-latex.mjs"
   },
   "devDependencies": {
     "@codemirror/commands": "6.8.1",
@@ -73,6 +74,14 @@
       {
         "from": "resources/geography",
         "to": "geography"
+      },
+      {
+        "from": "resources/latex",
+        "to": "latex"
+      },
+      {
+        "from": "resources/runtime",
+        "to": "runtime"
       }
     ],
     "mac": {
@@ -85,6 +94,7 @@
         }
       ],
       "category": "public.app-category.productivity",
+      "signIgnore": ["/Contents/Resources/runtime/cache/"],
       "identity": "-"
     },
     "win": {

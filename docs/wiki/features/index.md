@@ -11,4 +11,6 @@ updated: 2026-11-01
 
 - [Discovery and Inbox](discovery.md) — FEAT-discovery, FEAT-inbox
 
+- [Saved letters and master CV](documents.md) — FEAT-letters, FEAT-cv
+
 The remaining rebuild scope is in the [handoff milestones](../journal/2026-11-01-werk-handoff.md#milestones).

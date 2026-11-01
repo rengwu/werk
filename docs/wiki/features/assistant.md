@@ -33,4 +33,4 @@ Small live checks use only fictional data and the app-owned ChatGPT sign-in. Cre
 
 - [M2 run](../verification/runs/2026-11-01-m2-profile.md): original bounded implementation, retained as historical evidence.
 - [Pi session run](../verification/runs/2026-11-01-pi-session.md): full-permission replacement.
-- CV and saved-letter workspaces remain M4 work in progress; the session's record tools have been connected to that storage.
+- [Saved letters and master CV](documents.md): the session uses the same versioned storage and sandboxed compiler as the workspaces.

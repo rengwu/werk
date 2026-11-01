@@ -8,6 +8,7 @@ import { AiSettings } from './AiSettings.tsx';
 import { hasDirtyEdits } from './editing.ts';
 import { JobsPage } from './JobsPage.tsx';
 import { SourcesSettings } from './SourcesSettings.tsx';
+import {CvPage} from './CvPage.tsx';
 
 export function App() {
   const [page, setPage] = useState('Inbox');
@@ -32,9 +33,9 @@ export function App() {
       <nav><button aria-label="Settings" aria-current={page === 'Settings' ? 'page' : undefined} onClick={() => navigate('Settings')}>Settings{(sources?.some(s=>s.enabled&&s.lastError)||['signed_out','unavailable'].includes(ai?.connection.state||''))&&<span className="attention-dot" aria-label="Needs attention"/>}</button></nav>
     </aside>
     <main><header><b>{page}</b><span className="grow"/><button ref={assistantButton} aria-label="Open assistant" onClick={()=>setAssistantOpen(true)}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg></button></header>
-      {connection.state === 'failed' ? <div className="empty" role="alert"><p>The backend could not restart.</p><button onClick={() => void navigator.clipboard.writeText(JSON.stringify(connection, null, 2))}>Copy diagnostics</button> <button onClick={() => { setConnection({ state: 'connecting' }); window.werk.connect(); }}>Restart</button></div> : <>
+      {connection.state === 'failed' ? <div className="empty" role="alert"><p>The backend could not restart.</p><button onClick={() => void window.werk.copyText(JSON.stringify(connection, null, 2))}>Copy diagnostics</button> <button onClick={() => { setConnection({ state: 'connecting' }); window.werk.connect(); }}>Restart</button></div> : <>
       {connection.state === 'restarting' && <div role="status" className="notice">Restarting the backend…</div>}
-      {page === 'Settings' ? <SettingsPage tab={settingsTab} setTab={setSettingsTab}/> : page==='Profile'?<ProfilePage openAssistant={()=>setAssistantOpen(true)}/>:page==='Inbox'&&!scan?.firstScanCompleted?<Setup openAssistant={()=>setAssistantOpen(true)} openProfile={()=>navigate('Profile')} openAi={()=>{setSettingsTab('AI');navigate('Settings');}} openSources={()=>{setSettingsTab('Sources');navigate('Settings');}}/>:page==='Inbox'||page==='Saved'?<JobsPage key={page} saved={page==='Saved'} selected={selected} setSelected={setSelected} shortcuts={!assistantOpen}/>:<div className="empty">No CV yet.</div>}
+      {page === 'Settings' ? <SettingsPage tab={settingsTab} setTab={setSettingsTab}/> : page==='Profile'?<ProfilePage openAssistant={()=>setAssistantOpen(true)}/>:page==='Inbox'&&!scan?.firstScanCompleted?<Setup openAssistant={()=>setAssistantOpen(true)} openProfile={()=>navigate('Profile')} openAi={()=>{setSettingsTab('AI');navigate('Settings');}} openSources={()=>{setSettingsTab('Sources');navigate('Settings');}}/>:page==='Inbox'||page==='Saved'?<JobsPage key={page} saved={page==='Saved'} selected={selected} setSelected={setSelected} shortcuts={!assistantOpen}/>:<CvPage/>}
       </>}
     </main>
     <AssistantPane open={assistantOpen} onClose={closeAssistant} context={{page,jobId:['Inbox','Saved'].includes(page)?selected||undefined:undefined,document:page==='Profile'?'profile':page==='CV'?'cv':page==='Saved'?'letter':undefined,dirty}}/>
@@ -61,5 +62,5 @@ function DiagnosticsPage() {
   if (error) return <p role="alert">{error.message}</p>;
   if (!data) return <p role="status">Loading diagnostics…</p>;
   const rows: [string, string | number][] = [ ['werk', data.version], ['Electron', data.electron], ['Chromium', data.chromium], ['Node', data.node], ['SQLite', data.sqlite], ['FTS5', data.fts5 ? 'Available' : 'Unavailable'], ['Schema', data.schema], ['Database size', `${data.databaseBytes.toLocaleString()} bytes`], ['System', data.system], ['Data folder', data.dataFolder], ['Backend', data.backend], ['Started', data.startedAt], ['Restarts', data.restartCount], ['Update', data.update.state], ['Last checked', data.update.checkedAt || 'Not checked'] ];
-  return <><div className="actions"><button onClick={async () => { await navigator.clipboard.writeText(rows.map(([k,v]) => `${k}: ${v}`).join('\n') + '\n' + data.events.map(e => `${e.at} ${e.level} ${e.scope}: ${e.message}`).join('\n')); setCopied(true); }}>Copy diagnostics</button>{copied && <span role="status">Copied</span>}</div><dl className="diagnostics">{rows.map(([name, value]) => <div key={name}><dt>{name}</dt><dd data-testid={`diagnostic-${name.toLowerCase().replaceAll(' ','-')}`}>{value}</dd></div>)}</dl>{data.events.length > 0 && <><h2>Recent warnings and errors</h2>{data.events.map((e,i) => <p key={i}>{e.at} · {e.scope} · {e.message}</p>)}</>}</>;
+  return <><div className="actions"><button onClick={async () => { await window.werk.copyText(rows.map(([k,v]) => `${k}: ${v}`).join('\n') + '\n' + data.events.map(e => `${e.at} ${e.level} ${e.scope}: ${e.message}`).join('\n')); setCopied(true); }}>Copy diagnostics</button>{copied && <span role="status">Copied</span>}</div><dl className="diagnostics">{rows.map(([name, value]) => <div key={name}><dt>{name}</dt><dd data-testid={`diagnostic-${name.toLowerCase().replaceAll(' ','-')}`}>{value}</dd></div>)}</dl>{data.events.length > 0 && <><h2>Recent warnings and errors</h2>{data.events.map((e,i) => <p key={i}>{e.at} · {e.scope} · {e.message}</p>)}</>}</>;
 }

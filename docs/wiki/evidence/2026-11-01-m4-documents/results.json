@@ -1,0 +1,7 @@
+{
+  "result": "Passed",
+  "scenarios": [
+    "Save generates one letter; edit and restore append versions; copy succeeds; Applied is a manual record",
+    "Profile-generated CV compiles offline in OS sandbox; PDF preview/download work; dirty navigation is guarded; failed compilation preserves prior PDF; restore appends a new version"
+  ]
+}

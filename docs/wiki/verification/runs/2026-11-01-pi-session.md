@@ -2,7 +2,7 @@
 title: Embedded pi session verification
 section: Verification
 updated: 2026-11-01
-result: Untested
+result: Passed
 ---
 # Embedded pi session verification
 
@@ -23,10 +23,10 @@ Base `54aa41fa56830d706e88e95d4600ce9b6fc13743`, dirty tree fingerprint `df4381a
 | Persistence and allowance | Restore pi context, tool history and composer; pause without data loss | Restart/reload and simulated allowance checks passed | Passed | [Recipe](../../features/assistant.md#verification-recipe) |
 | Packaged PDF/profile regression | Same overlay, attachment, save and focus behavior | Packaged macOS driver passed | Passed | `tests/profile-smoke.ts` |
 | Real ChatGPT inference | Fixed model/high reasoning executes real read/profile tools | read, read_profile and edit_profile succeeded; fictional revision 1 ready | Passed | [Live result](../../evidence/2026-11-01-pi-session/live.json) |
-| Windows packaged pi | Same tools, PowerShell interruption and UI journey | Initial CI found a test-only dependency on the unbuilt out directory; corrected to read source skill files. Rerun pending | Untested | [CI recipe](../setup.md#windows-ci) |
+| Windows packaged pi | Same tools, PowerShell interruption and UI journey | Both packaged platforms passed, including PowerShell interruption and installer lifecycle; revision `4057deee560e75c948696e251caff808072fe868` | Passed | [CI run](https://github.com/rengwu/ununemploy/actions/runs/41281175516) |
 
 ## Findings and limits
 
-An initial integration test found SQLite null evidence URLs were passed into a schema expecting an optional string. Normalizing those fields fixed the issue. The quote-error regression verifies recovery rather than weakening evidence validation. Allowance classification was extended to recognize the explicit subscription allowance message.
+The initial CI attempt found a test-only dependency on the unbuilt out directory. Reading the source skill file removed that dependency; the rerun passed on both platforms. An initial integration test found SQLite null evidence URLs were passed into a schema expecting an optional string. Normalizing those fields fixed the issue. The quote-error regression verifies recovery rather than weakening evidence validation. Allowance classification was extended to recognize the explicit subscription allowance message.
 
 The first local UI-driver attempt accidentally launched Electron's default app; that driver was stopped, its explicit timeout added, and the correct werk builds were used. Full access is intentional: no-engagement and versioned-record rules are assistant instructions, not technical restrictions on arbitrary shell programs. Public search may be blocked by service challenges. CV/letter workspaces and backup remain separate M4/M5 work; this report does not claim they are finished. No candidate evidence, credentials or private logs are included.
