@@ -111,8 +111,8 @@ try {
     await selectLocation('Malaysia');await count(2);
     await locationSearch().fill('');
     if(theme==='dark') {
-      await app.evaluate(({BrowserWindow})=>BrowserWindow.getAllWindows()[0].setSize(900,600));
-      await page.waitForFunction(()=>window.innerWidth===900);
+      const contentSize=await app.evaluate(({BrowserWindow})=>{const win=BrowserWindow.getAllWindows()[0];win.setSize(900,600);return win.getContentSize();});
+      await page.waitForFunction(([width,height])=>window.innerWidth===width&&window.innerHeight===height,contentSize);
       await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
     }
     const audit=await new AxeBuilder({page}).setLegacyMode().withTags(['wcag2a','wcag2aa','wcag21a','wcag21aa']).analyze();
