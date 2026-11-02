@@ -2,7 +2,7 @@
 title: Profile layout
 section: Verification
 updated: 2026-11-02
-result: Untested
+result: Passed
 ---
 # Profile layout
 
@@ -10,7 +10,11 @@ Scope: [FEAT-profile](../../features/profile.md), the reported inset scrollbar a
 
 ## Build and environment
 
-Local baseline: `2b852ce`, macOS arm64 and Electron 44.9.1. The changed build differs only in `src/renderer/style.css`; its exact base and file hash are in the [manifest](../../evidence/2026-11-02-profile-layout/source-manifest.json). An isolated copy of the production development app was inspected with Playwright, first with an empty data folder, then with the fictional Alex Example profile. The renderer was rebuilt with Vite. No live inference, user profile or job scan was used.
+Local baseline: `2b852ce`, macOS arm64 and Electron 44.9.1. The changed build differs only in `src/renderer/style.css`; its exact base and file hash are in the [manifest](../../evidence/2026-11-02-profile-layout/source-manifest.json). An isolated copy of the production development app was inspected with Playwright, first with an empty data folder, then with the fictional Alex Example profile. The renderer was rebuilt with Vite. These layout checks used only fictional data, with no live inference or job scan.
+
+The fix was committed as `bcdb3edfffd365c711b9b1d786a56e49f6c6d97a`. A production build completed, and the existing development app's renderer was reloaded. Native visual inspection confirmed the aligned content and scrollbar at the right edge. No candidate records were changed, and only fictional screenshots were retained as verification evidence.
+
+[CI run 41418441801](https://github.com/rengwu/werk/actions/runs/41418441801) passed on macOS arm64 and Windows x64 at that exact revision. The [check results](../../evidence/2026-11-02-profile-layout/ci.json) include production packaging/launch, all 42 domain tests, and existing fixture-package UI drivers.
 
 ## Recipe and observations
 
@@ -23,7 +27,7 @@ Open Profile with empty and fictional populated data. Resize the window's conten
 | Scrolling and editing | Reach the last section; preserve fixed header; form fits | Missing was visible at the bottom; document scroll remained zero; the narrow Basics form fit and Cancel restored the fictional name | Passed | [Measurements](../../evidence/2026-11-02-profile-layout/layout.json), [Edit narrow](../../evidence/2026-11-02-profile-layout/edit-narrow.png) |
 | Assistant overlay | Retain the page bounds and 520 px overlay | Page stayed 680 × 556 at the minimum window size; overlay was 520 px wide | Passed | [Measurements](../../evidence/2026-11-02-profile-layout/layout.json) |
 | Typecheck | Styles leave TypeScript valid | Passed | Passed | `npm run check` |
-| Packaged regression checks | Existing profile and accessibility flows pass on macOS and Windows | Pending CI | Untested | Build workflow |
+| Packaged regression checks | Existing profile and accessibility flows pass on macOS and Windows | Profile edit/restore, overlay behavior and accessibility checks passed on both platforms; full CI passed | Passed | [CI checks](../../evidence/2026-11-02-profile-layout/ci.json) |
 
 ## Limits
 
