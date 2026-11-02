@@ -5,6 +5,7 @@ updated: 2026-11-02
 ---
 # Verification
 
+- [Profile layout](runs/2026-11-02-profile-layout.md)
 - [Stable source ordering](runs/2026-11-02-source-order.md)
 - [Source expansion](runs/2026-11-02-source-expansion.md)
 - [Factory reset](runs/2026-11-02-factory-reset.md)

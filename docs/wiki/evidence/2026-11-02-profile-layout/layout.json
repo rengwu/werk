@@ -1,0 +1,355 @@
+[
+  {
+    "name": "before-wide",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "main": {
+      "x": 220,
+      "y": 0,
+      "width": 1220,
+      "height": 900,
+      "top": 0,
+      "right": 1440,
+      "bottom": 900,
+      "left": 220
+    },
+    "profile": {
+      "x": 220,
+      "y": 44,
+      "width": 1000,
+      "height": 856,
+      "top": 44,
+      "right": 1220,
+      "bottom": 900,
+      "left": 220
+    },
+    "toolbar": {
+      "x": 252,
+      "y": 64,
+      "width": 921,
+      "height": 26,
+      "top": 64,
+      "right": 1173,
+      "bottom": 90,
+      "left": 252
+    },
+    "section": {
+      "x": 252,
+      "y": 145.5,
+      "width": 760,
+      "height": 175.5,
+      "top": 145.5,
+      "right": 1012,
+      "bottom": 321,
+      "left": 252
+    },
+    "notice": {
+      "x": 252,
+      "y": 110,
+      "width": 921,
+      "height": 35.5,
+      "top": 110,
+      "right": 1173,
+      "bottom": 145.5,
+      "left": 252
+    },
+    "scrollWidth": 985,
+    "clientWidth": 985
+  },
+  {
+    "name": "empty-wide",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "main": {
+      "x": 220,
+      "y": 0,
+      "width": 1220,
+      "height": 900,
+      "top": 0,
+      "right": 1440,
+      "bottom": 900,
+      "left": 220
+    },
+    "profile": {
+      "x": 220,
+      "y": 44,
+      "width": 1220,
+      "height": 856,
+      "top": 44,
+      "right": 1440,
+      "bottom": 900,
+      "left": 220
+    },
+    "toolbar": {
+      "x": 442.5,
+      "y": 64,
+      "width": 760,
+      "height": 26,
+      "top": 64,
+      "right": 1202.5,
+      "bottom": 90,
+      "left": 442.5
+    },
+    "section": {
+      "x": 442.5,
+      "y": 145.5,
+      "width": 760,
+      "height": 175.5,
+      "top": 145.5,
+      "right": 1202.5,
+      "bottom": 321,
+      "left": 442.5
+    },
+    "notice": {
+      "x": 442.5,
+      "y": 110,
+      "width": 760,
+      "height": 35.5,
+      "top": 110,
+      "right": 1202.5,
+      "bottom": 145.5,
+      "left": 442.5
+    },
+    "scrollWidth": 1205,
+    "clientWidth": 1205
+  },
+  {
+    "name": "empty-narrow",
+    "viewport": {
+      "width": 900,
+      "height": 600
+    },
+    "main": {
+      "x": 220,
+      "y": 0,
+      "width": 680,
+      "height": 600,
+      "top": 0,
+      "right": 900,
+      "bottom": 600,
+      "left": 220
+    },
+    "profile": {
+      "x": 220,
+      "y": 44,
+      "width": 680,
+      "height": 556,
+      "top": 44,
+      "right": 900,
+      "bottom": 600,
+      "left": 220
+    },
+    "toolbar": {
+      "x": 252,
+      "y": 64,
+      "width": 601,
+      "height": 26,
+      "top": 64,
+      "right": 853,
+      "bottom": 90,
+      "left": 252
+    },
+    "section": {
+      "x": 252,
+      "y": 165,
+      "width": 601,
+      "height": 175.5,
+      "top": 165,
+      "right": 853,
+      "bottom": 340.5,
+      "left": 252
+    },
+    "notice": {
+      "x": 252,
+      "y": 110,
+      "width": 601,
+      "height": 55,
+      "top": 110,
+      "right": 853,
+      "bottom": 165,
+      "left": 252
+    },
+    "scrollWidth": 665,
+    "clientWidth": 665
+  },
+  {
+    "name": "scroll-to-last-section",
+    "profileScroll": 719,
+    "documentScroll": 0,
+    "headerTop": 0,
+    "lastBottom": 580,
+    "viewportBottom": 600
+  },
+  {
+    "name": "filled-wide",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "main": {
+      "x": 220,
+      "y": 0,
+      "width": 1220,
+      "height": 900,
+      "top": 0,
+      "right": 1440,
+      "bottom": 900,
+      "left": 220
+    },
+    "profile": {
+      "x": 220,
+      "y": 44,
+      "width": 1220,
+      "height": 856,
+      "top": 44,
+      "right": 1440,
+      "bottom": 900,
+      "left": 220
+    },
+    "toolbar": {
+      "x": 442.5,
+      "y": 64,
+      "width": 760,
+      "height": 26,
+      "top": 64,
+      "right": 1202.5,
+      "bottom": 90,
+      "left": 442.5
+    },
+    "section": {
+      "x": 442.5,
+      "y": 110,
+      "width": 760,
+      "height": 175.5,
+      "top": 110,
+      "right": 1202.5,
+      "bottom": 285.5,
+      "left": 442.5
+    },
+    "scrollWidth": 1205,
+    "clientWidth": 1205
+  },
+  {
+    "name": "filled-narrow",
+    "viewport": {
+      "width": 900,
+      "height": 600
+    },
+    "main": {
+      "x": 220,
+      "y": 0,
+      "width": 680,
+      "height": 600,
+      "top": 0,
+      "right": 900,
+      "bottom": 600,
+      "left": 220
+    },
+    "profile": {
+      "x": 220,
+      "y": 44,
+      "width": 680,
+      "height": 556,
+      "top": 44,
+      "right": 900,
+      "bottom": 600,
+      "left": 220
+    },
+    "toolbar": {
+      "x": 252,
+      "y": 64,
+      "width": 601,
+      "height": 26,
+      "top": 64,
+      "right": 853,
+      "bottom": 90,
+      "left": 252
+    },
+    "section": {
+      "x": 252,
+      "y": 110,
+      "width": 601,
+      "height": 175.5,
+      "top": 110,
+      "right": 853,
+      "bottom": 285.5,
+      "left": 252
+    },
+    "scrollWidth": 665,
+    "clientWidth": 665
+  },
+  {
+    "name": "edit-narrow",
+    "viewport": {
+      "width": 900,
+      "height": 600
+    },
+    "main": {
+      "x": 220,
+      "y": 0,
+      "width": 680,
+      "height": 600,
+      "top": 0,
+      "right": 900,
+      "bottom": 600,
+      "left": 220
+    },
+    "profile": {
+      "x": 220,
+      "y": 44,
+      "width": 680,
+      "height": 556,
+      "top": 44,
+      "right": 900,
+      "bottom": 600,
+      "left": 220
+    },
+    "toolbar": {
+      "x": 252,
+      "y": 64,
+      "width": 601,
+      "height": 26,
+      "top": 64,
+      "right": 853,
+      "bottom": 90,
+      "left": 252
+    },
+    "section": {
+      "x": 252,
+      "y": 110,
+      "width": 601,
+      "height": 175.5,
+      "top": 110,
+      "right": 853,
+      "bottom": 285.5,
+      "left": 252
+    },
+    "scrollWidth": 665,
+    "clientWidth": 665
+  },
+  {
+    "name": "assistant-overlay",
+    "profileBefore": {
+      "x": 220,
+      "y": 44,
+      "width": 680,
+      "height": 556
+    },
+    "profileAfter": {
+      "x": 220,
+      "y": 44,
+      "width": 680,
+      "height": 556
+    },
+    "assistant": {
+      "x": 380,
+      "y": 0,
+      "width": 520,
+      "height": 600
+    }
+  }
+]

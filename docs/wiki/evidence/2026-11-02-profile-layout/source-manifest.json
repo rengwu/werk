@@ -1,0 +1,10 @@
+{
+  "baseRevision": "2b852ce1d1c43e5b3a930c5d1df6237d80185a68",
+  "dirty": true,
+  "files": [
+    {
+      "path": "src/renderer/style.css",
+      "sha256": "d6b9cf498f09c00e06d21d12b65b0c84fb9a0898142323e766d94053c4594e65"
+    }
+  ]
+}
