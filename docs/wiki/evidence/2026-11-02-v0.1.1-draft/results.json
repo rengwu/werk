@@ -1,0 +1,219 @@
+{
+  "observedAt": "2026-11-02T10:42:31.835Z",
+  "revision": "12be5ad61dc7b129aa5854d1af599d4487849069",
+  "tag": "v0.1.1",
+  "tagObject": "a326e1bf6244b43f1c2b3e4b0890435e58600ada",
+  "workflow": {
+    "url": "https://github.com/rengwu/werk/actions/runs/41429401960",
+    "attempt": 1,
+    "status": "completed",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "name": "latex-cache",
+        "url": "https://github.com/rengwu/werk/actions/runs/41429401960/job/125223905984",
+        "conclusion": "success",
+        "checks": [
+          {
+            "name": "Run npm ci",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run npm run setup:latex",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "name": "build (windows-latest)",
+        "url": "https://github.com/rengwu/werk/actions/runs/41429401960/job/125224617744",
+        "conclusion": "success",
+        "checks": [
+          {
+            "name": "Run npm ci",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run npm run setup:latex",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify Windows AppContainer boundaries",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run npm run check",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run npm test",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run npm run package",
+            "conclusion": "success"
+          },
+          {
+            "name": "Install on Windows",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify offline compiler isolation",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run npm run smoke",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify packaged OAuth browser handoff and cancellation",
+            "conclusion": "success"
+          },
+          {
+            "name": "Uninstall on Windows and preserve data",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify profile and assistant with fictional data",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify pi tools, dropped files, steering and interruption",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify discovery and keyboard triage with recorded responses",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify letters and sandboxed CV workspace",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify backup export and restore",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify factory reset and recovery",
+            "conclusion": "success"
+          },
+          {
+            "name": "Audit accessibility and keyboard navigation",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "name": "build (macos-latest)",
+        "url": "https://github.com/rengwu/werk/actions/runs/41429401960/job/125224617795",
+        "conclusion": "success",
+        "checks": [
+          {
+            "name": "Run npm ci",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run npm run setup:latex",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify Windows AppContainer boundaries",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Run npm run check",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run npm test",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run npm run package",
+            "conclusion": "success"
+          },
+          {
+            "name": "Install on Windows",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Verify offline compiler isolation",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run npm run smoke",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify packaged OAuth browser handoff and cancellation",
+            "conclusion": "success"
+          },
+          {
+            "name": "Uninstall on Windows and preserve data",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Verify profile and assistant with fictional data",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify pi tools, dropped files, steering and interruption",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify discovery and keyboard triage with recorded responses",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify letters and sandboxed CV workspace",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify backup export and restore",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify factory reset and recovery",
+            "conclusion": "success"
+          },
+          {
+            "name": "Audit accessibility and keyboard navigation",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "name": "release",
+        "url": "https://github.com/rengwu/werk/actions/runs/41429401960/job/125228085622",
+        "conclusion": "success",
+        "checks": []
+      }
+    ]
+  },
+  "release": {
+    "id": 431337461,
+    "tag": "v0.1.1",
+    "name": "werk v0.1.1",
+    "url": "https://github.com/rengwu/werk/releases/tag/untagged-7608a18f6230d6f52a0f",
+    "draft": true,
+    "prerelease": false,
+    "publishedAt": null,
+    "notes": "Changes since v0.1.0:\n\n- Added **Reset werk** in Settings → General. After confirmation, it clears app data, conversations, ChatGPT sign-in and preferences, then returns to setup. Original files and exports outside werk's storage are preserved.\n- Added 12 job boards and We Work Remotely's DevOps feed. The catalog now has 50 sources: 30 API/RSS feeds enabled by default and 20 optional scraped boards.\n- Existing installations receive new catalog entries while keeping previous source selections, custom boards and cooldowns.\n- Sources stay alphabetical when enabled or disabled, preserving scroll position and keyboard focus.\n- Profile now has a full-width scrolling area and aligned toolbar, notice and sections, including at the minimum window size.\n\nInstall `werk-0.1.1-arm64.dmg` on macOS Apple Silicon or `werk-0.1.1-setup.exe` on Windows 11 x64. Updating preserves existing app data. See the [installation instructions](https://github.com/rengwu/werk/blob/v0.1.1/README.md#install).\n",
+    "assets": [
+      {
+        "name": "werk-0.1.1-arm64.dmg",
+        "state": "uploaded",
+        "size": 177451036,
+        "sha256": "sha256:49be48c0ce0393b575bab8eac1f171c76889de635fffb6f490b263a27e4abf0a",
+        "url": "https://github.com/rengwu/werk/releases/download/untagged-7608a18f6230d6f52a0f/werk-0.1.1-arm64.dmg"
+      },
+      {
+        "name": "werk-0.1.1-setup.exe",
+        "state": "uploaded",
+        "size": 155726110,
+        "sha256": "sha256:63102b5a328ddd8275cfd648045976054eb9a442c4a8bf2d09f73a663df7fe37",
+        "url": "https://github.com/rengwu/werk/releases/download/untagged-7608a18f6230d6f52a0f/werk-0.1.1-setup.exe"
+      }
+    ]
+  }
+}

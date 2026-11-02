@@ -1,7 +1,7 @@
 ---
 title: Desktop shell and local backend
 section: Features
-updated: 2026-11-01
+updated: 2026-11-02
 ---
 # Desktop shell and local backend
 
@@ -33,6 +33,7 @@ The smoke driver verifies close/reopen through Electron and a second OS process.
 
 ## Verification history
 
+- [v0.1.1 draft release](../verification/runs/2026-11-02-v0.1.1-draft.md).
 - [M1 verification](../verification/runs/2026-11-01-m1-shell.md).
 - [Windows-PC trial and release asset preflight](../verification/runs/2026-11-01-release-preflight.md).
 - [v0.1.0 draft release](../verification/runs/2026-11-01-v0.1.0-draft.md).
