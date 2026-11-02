@@ -1,0 +1,9 @@
+{
+  "revision": "9be504a4bfe10eaad2b21c31d81b070ba0c7aced",
+  "url": "https://github.com/rengwu/werk/actions/runs/41410942963/job/125164157077",
+  "result": "Failed",
+  "step": "Run npm run smoke",
+  "error": "Shell startup took 3437 ms",
+  "startupLimitMs": 3000,
+  "sourceOrderCheck": "Untested: later steps were skipped"
+}
