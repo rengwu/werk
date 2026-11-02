@@ -5,6 +5,7 @@ updated: 2026-11-02
 ---
 # Verification
 
+- [Stable source ordering](runs/2026-11-02-source-order.md)
 - [Source expansion](runs/2026-11-02-source-expansion.md)
 - [Factory reset](runs/2026-11-02-factory-reset.md)
 

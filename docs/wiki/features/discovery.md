@@ -17,6 +17,7 @@ A ready [profile](profile.md) enables **Scan now** in setup or Inbox. Sources ar
 
 ## Expected outcomes
 
+- Settings → Sources stays alphabetical regardless of enabled state. Mouse and keyboard toggles preserve the row's position, scroll offset and checkbox focus, following [REB-source-order](../decisions/index.md).
 - Startup inserts missing catalog sources without replacing existing IDs, enabled choices, settings, cooldowns or custom boards. Restarting does not re-enable a source the user disabled. New feed entries follow the API/feed enabled default; scanning remains manual unless a schedule was already configured.
 - Feed parsing preserves explicit employer, job location and employment metadata. Posting accounts are not employers. Python's ambiguous comma-separated employer/title stays intact with employer unknown; Berlin titles use their explicit employer suffix. Literal CDATA wrappers are sanitized into readable text. NoDesk, Dev Remotely, Startup Jobs, Berlin and Elixir remain excerpts; missing country/work-authorization information is not inferred from a board's remote branding.
 
@@ -42,7 +43,7 @@ npx electron-builder --dir --publish never
 WERK_EXE="$PWD/release/mac-arm64/werk.app/Contents/MacOS/werk" node --experimental-strip-types tests/discovery-smoke.ts
 ```
 
-The driver seeds only the profile/source prerequisites, then uses setup Scan now, real adapter parsing, SQLite and keyboard/UI actions. It checks FTS, filters, highlights, notes, hiding, source counters and schedule, then enables MoAIJobs in Settings and verifies a matching job reaches Inbox through a recorded feed. Temporary data is removed; sanitized evidence remains in `smoke-output/discovery/`. For an authorized single public read: `node --experimental-strip-types scripts/check-live-discovery.ts` uses Remotive and an isolated fictional profile. `scripts/check-live-feeds.ts` accepts exact RSS source names and uses one bounded scan per named source; see [setup](../verification/setup.md#discovery-fixtures).
+The driver seeds only the profile/source prerequisites, then uses setup Scan now, real adapter parsing, SQLite and keyboard/UI actions. It checks FTS, filters, highlights, notes, hiding, source counters and schedule. It enables a source at the bottom of Settings with a mouse click, disables it with Space, and checks that row order, scrolling and focus stay stable. It then enables MoAIJobs and verifies a matching job reaches Inbox through a recorded feed. Temporary data is removed; sanitized evidence remains in `smoke-output/discovery/`. For an authorized single public read: `node --experimental-strip-types scripts/check-live-discovery.ts` uses Remotive and an isolated fictional profile. `scripts/check-live-feeds.ts` accepts exact RSS source names and uses one bounded scan per named source; see [setup](../verification/setup.md#discovery-fixtures).
 
 ## Coverage and limitations
 
@@ -50,5 +51,6 @@ Source tests port the relevant archived JSON, RSS, structured HTML and location 
 
 ## Verification history
 
+- [Stable source ordering](../verification/runs/2026-11-02-source-order.md).
 - [Source expansion](../verification/runs/2026-11-02-source-expansion.md).
 - [M3 discovery and triage](../verification/runs/2026-11-01-m3-discovery.md).

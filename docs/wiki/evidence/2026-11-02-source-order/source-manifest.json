@@ -1,0 +1,15 @@
+{
+  "baseRevision": "386690a5f51652c2065bc792bea4967da31821bd",
+  "dirty": true,
+  "patchSha256": "4b77fa4aaf97b67517fb619600574f7e47ab15d120f520ffc339cfefedce8b9d",
+  "files": [
+    {
+      "path": "src/backend/sources/service.ts",
+      "sha256": "03831d92e36fdef1388b61ba0b4fdacf27ad2a7121ae80928889d2b9f3b2cd6d"
+    },
+    {
+      "path": "tests/discovery-smoke.ts",
+      "sha256": "0c17f81cf74499ddd5f7a13d4d615f82ba7e5434e3a57217fca251b04db18631"
+    }
+  ]
+}

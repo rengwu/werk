@@ -1,0 +1,24 @@
+{
+  "result": "Failed",
+  "scenarios": [
+    "A recorded company-board scan keeps three qualifying jobs and fingerprints an unrelated role",
+    "J selects, S saves and X skips, selecting the next New job",
+    "Slash focuses FTS search, typing does not trigger triage, Escape clears, and All matches retains saved/skipped jobs",
+    "Filters narrow the current view, notes autosave and matched clauses are highlighted",
+    "Hide company appends a criteria revision, removes unsaved matches and preserves the saved job",
+    "Source counters and cooldown are visible; manual scheduling can be changed"
+  ],
+  "sourceToggle": {
+    "before": {
+      "scrollTop": 1509.5,
+      "rowIndex": 51,
+      "focused": false
+    },
+    "enabled": {
+      "scrollTop": 0,
+      "rowIndex": 2,
+      "focused": true
+    }
+  },
+  "error": "Enabling a source must preserve scroll position\n\n0 !== 1509.5\n"
+}
