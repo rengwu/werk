@@ -9,7 +9,7 @@ updated: 2026-11-02
 
 ## Entry points and expected outcomes
 
-Launch werk from its installed application. A fresh data folder creates schema 6 in SQLite with WAL and FTS5. Only the utility process owns the database. The sandboxed React renderer uses a typed, validated MessagePort API; it has no Node access or HTTP API server.
+Launch werk from its installed application. A fresh data folder creates schema 7 in SQLite with WAL and FTS5. Only the utility process owns the database. The sandboxed React renderer uses a typed, validated MessagePort API; it has no Node access or HTTP API server.
 
 Appearance defaults to System. Settings → General → Appearance offers System, Light and Dark; the selection persists and controls native chrome. Settings → Diagnostics shows runtime versions, SQLite and FTS5, database size, backend start/restart state, update status and the last 20 sanitized warnings/errors. Copy diagnostics excludes candidate facts, jobs and credentials.
 
@@ -33,6 +33,8 @@ The smoke driver verifies close/reopen through Electron and a second OS process.
 
 ## Verification history
 
+- [Restored browsing controls and app branding](../verification/runs/2026-11-02-job-filters.md).
+
 - [v0.1.1 draft release](../verification/runs/2026-11-02-v0.1.1-draft.md).
 - [M1 verification](../verification/runs/2026-11-01-m1-shell.md).
 - [Windows-PC trial and release asset preflight](../verification/runs/2026-11-01-release-preflight.md).
@@ -41,6 +43,8 @@ The smoke driver verifies close/reopen through Electron and a second OS process.
 ## Final rebuild polish
 
 The application and Windows tray use the chosen light monogram and green match dot. `resources/icon.svg` contains an original hand-drawn path, with no font glyphs. PNG exports are committed; electron-builder creates platform icons. Diagnostics includes model/reasoning, current model work, compiler availability and scan times as well as database/runtime/backend details. Copy diagnostics uses native clipboard IPC.
+
+[REB-app-branding](../decisions/index.md#product) also applies the packaged PNG to the BrowserWindow, macOS Dock and About panel, including during development. The Windows application identity matches `io.github.rengwu.werk`. Packaged bundle/executable metadata carries the lowercase name, current package version and chosen icon. The launch smoke test verifies runtime name/version/title, the bundled artwork, the packaged platform icon against stock Electron, and macOS bundle or Windows executable metadata; `smoke-output/app-icon.png` records the extracted platform icon. Development still runs through the Electron executable; distribute the packaged werk app/installer.
 
 Settings, Inbox and posting tabs support Arrow Left/Right, Home/End and one tab stop for the selected tab. Job rows retain native button semantics inside a list. Sidebar names include their visible counts. LaTeX syntax colors follow the active theme. The assistant retains its fixed overlay, Escape and focus-return behavior.
 

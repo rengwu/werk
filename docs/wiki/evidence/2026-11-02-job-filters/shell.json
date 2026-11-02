@@ -1,0 +1,39 @@
+{
+  "platform": "darwin",
+  "arch": "arm64",
+  "scenarios": [
+    "Fresh launch within 3 seconds",
+    "Packaged werk name, version, OS metadata and custom icon differ from Electron defaults",
+    "Sandboxed renderer, utility-process SQLite, FTS5, schema and diagnostics",
+    "Backend killed, restarted and queries reconnected",
+    "Repeated crashes stop automatic retries; explicit Restart recovers",
+    "Close hides window; second launch reopens the same instance",
+    "Appearance persists after quit and relaunch"
+  ],
+  "startupMs": 823,
+  "branding": {
+    "name": "werk",
+    "version": "0.1.1",
+    "title": "werk",
+    "metadata": {
+      "CFBundleDisplayName": "werk",
+      "CFBundleName": "werk",
+      "CFBundleIdentifier": "io.github.rengwu.werk",
+      "CFBundleExecutable": "werk",
+      "CFBundleShortVersionString": "0.1.1",
+      "CFBundleVersion": "0.1.1",
+      "CFBundleIconFile": "icon.icns"
+    },
+    "sourceIconSha256": "ca54c17646a81fd716a69524828adaa74b4c5b8c9ddc091fc333dcf5bb696fe7",
+    "osIconSha256": "74da97606c0c8d2b2ede744493e3a652bc17dc3818565e26813f2ebe62c89df7",
+    "differsFromElectronIcon": true
+  },
+  "result": "Passed",
+  "runtime": {
+    "electron": "44.9.1",
+    "chromium": "152.0.7977.167",
+    "node": "24.22.0",
+    "sqlite": "3.53.4",
+    "schema": 7
+  }
+}

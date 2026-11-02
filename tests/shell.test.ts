@@ -13,7 +13,7 @@ test('SQLite migrations, FTS5, settings persistence, validation and sanitized di
   const events: string[] = [];
   let service = new Service(init, event => events.push(event));
   try {
-    assert.equal(service.diagnostics().schema, 6); assert.equal(service.diagnostics().fts5, true);
+    assert.equal(service.diagnostics().schema, 7); assert.equal(service.diagnostics().fts5, true);
     assert.equal(service.settings().appearance, 'system');
     await assert.rejects(service.call('settings.set', { appearance: 'invalid' as never }));
     await assert.rejects(service.call('executeShell' as never, undefined as never));

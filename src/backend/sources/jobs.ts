@@ -5,7 +5,8 @@ import type { Profile } from '../../shared/profile.ts';
 import type { JobRecord, JobFilter, JobStatus, JobsList, Assessment } from '../../shared/jobs.ts';
 import type { IncomingJob, Job, Source } from './types.ts';
 import { assessJob } from '../matching/matching.ts';
-import { criteriaAssessment } from '../matching/criteria.ts';
+import { criteriaAssessment, resolveLocation } from '../matching/criteria.ts';
+import { buildRegionLocationIndex } from '../geo/location-index.ts';
 import { companyKey, groupDuplicates } from '../matching/deduplication.ts';
 import { descriptionQuality, listingQuality, preserveDescription, sourceContent, authoritativeSources } from '../matching/job-quality.ts';
 import { countryOverlaps } from '../geo/overlap.ts';
@@ -28,7 +29,21 @@ export class Jobs {
   store:Store;profiles:Profiles;changed:()=>void;
   onSaved:(job:JobRecord)=>void=()=>{};
   overlapCache:{key:string;value:Map<string,number>}|undefined;
-  constructor(store:Store,profiles:Profiles,changed:()=>void){this.store=store;this.profiles=profiles;this.changed=changed;}
+  constructor(store:Store,profiles:Profiles,changed:()=>void){this.store=store;this.profiles=profiles;this.changed=changed;this.store.transaction(()=>this.indexLocations());}
+  indexLocations() {
+    // Derived data is rebuilt for upgraded databases and restored backups.
+    for(const row of this.store.db.prepare('SELECT id,location FROM jobs WHERE NOT EXISTS(SELECT 1 FROM job_locations WHERE job_id=jobs.id)').all())
+      this.indexLocation(Number(row.id),[...resolveLocation(String(row.location)).values]);
+  }
+  private indexLocation(id:number,values:string[]) {
+    this.store.db.prepare('DELETE FROM job_locations WHERE job_id=?').run(id);
+    const insert=this.store.db.prepare('INSERT INTO job_locations(job_id,value) VALUES(?,?)');
+    for(const value of values)insert.run(id,value);
+  }
+  locations() {
+    const rows=this.store.db.prepare('SELECT DISTINCT location FROM jobs WHERE duplicate_of IS NULL').all();
+    return buildRegionLocationIndex(rows.map((row,i)=>({id:String(i),location:String(row.location)}))).options;
+  }
   row(id:number):Row {const row=this.store.db.prepare('SELECT * FROM jobs WHERE id=?').get(id);if(!row)throw new Error('Job not found.');return row;}
   listings(id:number):Row[]{return this.store.db.prepare(`SELECT l.*,s.name,s.kind,s.identifier FROM job_listings l JOIN sources s ON s.id=l.source_id WHERE job_id=?
       UNION ALL SELECT NULL AS source_id,l.source_item_id,l.job_id,l.url,l.fields,l.last_seen_at,l.name,l.kind,l.identifier FROM imported_listings l WHERE job_id=? AND NOT EXISTS(SELECT 1 FROM job_listings live JOIN sources s ON s.id=live.source_id WHERE s.kind=l.kind AND s.identifier=l.identifier AND live.source_item_id=l.source_item_id)
@@ -43,15 +58,22 @@ export class Jobs {
   list(filter:JobFilter):JobsList {
     const where=['duplicate_of IS NULL'],values:(string|number)[]=[];
     if(filter.view==='new')where.push("status='new' AND closed_at IS NULL AND json_extract(assessment,'$.availability')='open'");
-    if(filter.view==='saved')where.push("status IN ('saved','applied')");
+    if(filter.view==='skipped')where.push("status='skipped'");
+    if(filter.view==='saved') {
+      if(filter.savedStatus){where.push('status=?');values.push(filter.savedStatus);}
+      else where.push("status IN ('saved','applied')");
+    }
     const words=filter.search?.match(/[\p{L}\p{N}_+#.-]+/gu)?.slice(0,20);
     if(words?.length){where.push('id IN (SELECT rowid FROM jobs_fts WHERE jobs_fts MATCH ?)');values.push(words.map(w=>'"'+w.replaceAll('"','""')+'"*').join(' AND '));}
     if(filter.level){where.push('match_level=?');values.push(filter.level);}
     if(filter.arrangement){where.push('arrangement=?');values.push(filter.arrangement);}
     if(filter.country){where.push('EXISTS(SELECT 1 FROM json_each(jobs.countries) WHERE value=?)');values.push(filter.country);}
+    if(filter.locations?.length){where.push(`id IN (SELECT job_id FROM job_locations WHERE value IN (${filter.locations.map(()=>'?').join(',')}))`);values.push(...filter.locations);}
     if(filter.days){where.push('posted_at>=?');values.push(new Date(Date.now()-filter.days*86400000).toISOString());}
     const sql=where.join(' AND '),total=Number(this.store.db.prepare(`SELECT count(*) n FROM jobs WHERE ${sql}`).get(...values)!.n);
-    const rows=this.store.db.prepare(`SELECT * FROM jobs WHERE ${sql} ORDER BY ${filter.view==='saved'?'saved_at DESC':'match_score DESC,first_seen_at DESC'},id DESC LIMIT ? OFFSET ?`).all(...values,filter.limit||100,filter.offset||0);
+    const sort=filter.sort||(filter.view==='saved'?'saved':'match');
+    const order=sort==='saved'?'saved_at DESC':sort==='discovered'?'first_seen_at DESC':'match_score DESC,first_seen_at DESC';
+    const rows=this.store.db.prepare(`SELECT * FROM jobs WHERE ${sql} ORDER BY ${order},id DESC LIMIT ? OFFSET ?`).all(...values,filter.limit||100,filter.offset||0);
     return {jobs:rows.map(r=>this.record(r)),total,newCount:Number(this.store.db.prepare("SELECT count(*) n FROM jobs WHERE status='new' AND closed_at IS NULL AND duplicate_of IS NULL AND json_extract(assessment,'$.availability')='open'").get()!.n),savedCount:Number(this.store.db.prepare("SELECT count(*) n FROM jobs WHERE status IN ('saved','applied')").get()!.n),countries:this.store.db.prepare('SELECT DISTINCT value FROM jobs,json_each(countries) ORDER BY value').all().map(r=>String(r.value))};
   }
   incoming(row:Row):IncomingJob {
@@ -93,6 +115,7 @@ export class Jobs {
     this.store.db.prepare('INSERT INTO job_listings VALUES(?,?,?,?,?,?) ON CONFLICT(source_id,source_item_id) DO UPDATE SET job_id=excluded.job_id,url=excluded.url,fields=excluded.fields,last_seen_at=excluded.last_seen_at').run(Number(source.id),item.sourceItemId,row.id,item.url,JSON.stringify(item),time);
     this.store.db.prepare('DELETE FROM imported_listings WHERE kind=? AND identifier=? AND source_item_id=?').run(source.type,source.identifier,item.sourceItemId);
     this.store.db.prepare('DELETE FROM fingerprints WHERE url=?').run(item.url);
+    this.indexLocation(Number(row.id),criteria.locationValues);
     this.deduplicate(companyKey(content.company));return true;
   }
   deduplicate(company:string) {
@@ -105,6 +128,7 @@ export class Jobs {
       const item=this.incoming(row),{assessment,criteria,reason}=this.assess(item,profile,row,undefined,overlaps);companies.add(String(row.company_key));
       if(reason&&['new','skipped'].includes(String(row.status))){this.fingerprint(item,profile.revision,reason);this.store.db.prepare('DELETE FROM jobs WHERE id=?').run(row.id);continue;}
       this.store.db.prepare('UPDATE jobs SET countries=?,overlap_hours=?,match_level=?,match_score=?,eligibility=?,assessment=?,profile_revision=?,closed_at=? WHERE id=?').run(JSON.stringify(criteria.countries),criteria.overlapHours,assessment.category,assessment.score,assessment.eligibility==='unknown'?'review':assessment.eligibility,JSON.stringify(assessment),profile.revision,assessment.availability==='closed'?(row.closed_at||at()):null,row.id);
+      this.indexLocation(Number(row.id),criteria.locationValues);
     }
     for(const company of companies)this.deduplicate(company);
   }

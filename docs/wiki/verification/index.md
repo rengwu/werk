@@ -5,6 +5,8 @@ updated: 2026-11-02
 ---
 # Verification
 
+- [Restored browsing controls and app branding](runs/2026-11-02-job-filters.md)
+
 - [v0.1.1 draft release](runs/2026-11-02-v0.1.1-draft.md)
 - [Profile layout](runs/2026-11-02-profile-layout.md)
 - [Stable source ordering](runs/2026-11-02-source-order.md)

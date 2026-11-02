@@ -31,6 +31,18 @@ A ready [profile](profile.md) enables **Scan now** in setup or Inbox. Sources ar
 - J/K select, S saves, X skips, O opens the ordinary posting link, / focuses FTS search, Escape clears it. Typing and the assistant overlay disable shortcuts. Save/Skip advance New selection and have Move back to New. Hide company appends a profile revision and preserves saved records.
 - Filters are temporary; criteria control collection. Description highlights show exact evidence/requirement clauses. Notes autosave. Incomplete postings accept a manually pasted full description.
 
+## Browsing controls
+
+[REB-job-browsing](../decisions/index.md#product) restores the selected legacy controls:
+
+- **Inbox:** New / All matches / Skipped. Skipped contains stored skipped records, including closed ones until retention expires them. **Move back to New** reverses a skip; closed jobs remain outside New. Best match is the default sort; Recently discovered uses the first discovery time, independently of the posting's published date. Both orders have a stable job-ID tie-breaker.
+- **Saved:** All / Saved / Applied. These are manual application records. Recently saved is the default sort, with Best match and Recently discovered also available. A status change immediately moves the row into the appropriate subset.
+- **Filters:** match level, work arrangement, posted date and searchable location selections. Multiple locations match **any** selected value, combined with the other filters and full-text search. Location choices include countries, broad regions and subregions, cities/source labels in search, Worldwide, Unspecified and Unresolved where present. Countries include resolved cities; regions include their countries and narrower regions. A country selection does not imply that region-only or Worldwide postings list that country. Worldwide requires an explicit global statement; Unspecified covers missing/remote-only locations, while Unresolved covers unrecognized labels. These choices do not establish work authorization.
+- The location disclosure uses native search and checkboxes. Escape closes it and returns focus to its summary without clearing job search. **Clear locations** resets location selections. **Clear filters** resets the four filter groups while retaining search, the selected view and sort order. The Filters button counts active groups even when collapsed.
+- Inbox and Saved remember their own view, search, sort and filters across navigation and renderer reloads in the same session. These choices do not update the profile or expand what is collected. Changing a control resets pagination to the first page. Filtering does not discard an unsaved document edit.
+
+SQLite schema 7 adds indexed location membership derived from the existing resolver. Upgrades and backup restores rebuild it from original job locations; source changes and profile reassessment refresh it, and job deletion cascades. Sorting and filtering happen before SQL pagination. The picker queries distinct stored location labels separately; typing a job search does not reconstruct a full in-memory jobs snapshot. The backup format is unchanged.
+
 ## Verification recipe
 
 Use [setup](../verification/setup.md) and fictional data:
@@ -45,11 +57,15 @@ WERK_EXE="$PWD/release/mac-arm64/werk.app/Contents/MacOS/werk" node --experiment
 
 The driver seeds only the profile/source prerequisites, then uses setup Scan now, real adapter parsing, SQLite and keyboard/UI actions. It checks FTS, filters, highlights, notes, hiding, source counters and schedule. It enables a source at the bottom of Settings with a mouse click, disables it with Space, and checks that row order, scrolling and focus stay stable. It then enables MoAIJobs and verifies a matching job reaches Inbox through a recorded feed. Temporary data is removed; sanitized evidence remains in `smoke-output/discovery/`. For an authorized single public read: `node --experimental-strip-types scripts/check-live-discovery.ts` uses Remotive and an isolated fictional profile. `scripts/check-live-feeds.ts` accepts exact RSS source names and uses one bounded scan per named source; see [setup](../verification/setup.md#discovery-fixtures).
 
+`tests/job-filters.test.ts` exercises sort/date distinctions, SQL pagination, view/criterion composition, location coverage, upgrade backfill, backup restoration and API validation. With the same packaged test app, run `WERK_EXE="<executable>" node --experimental-strip-types tests/job-filters-smoke.ts`. It seeds fictional jobs and then uses the actual controls for sorting, Skip/recovery, location search/multi-selection, Saved/Applied changes, session restoration and Clear filters. It checks keyboard Escape/focus, light/dark axe results and the 900×600 minimum window. Evidence is in `smoke-output/job-filters/`.
+
 ## Coverage and limitations
 
 Source tests port the relevant archived JSON, RSS, structured HTML and location regressions, plus pipeline/FTS/closure/retention/criteria tests. The source catalog contains board-specific public discovery seeds; a board that changes or blocks public reads reports failure and keeps existing jobs. The live check is deliberately bounded; it does not certify all providers. Letter generation and the saved editing workspace arrive with M4.
 
 ## Verification history
+
+- [Restored browsing controls and app branding](../verification/runs/2026-11-02-job-filters.md).
 
 - [Stable source ordering](../verification/runs/2026-11-02-source-order.md).
 - [Source expansion](../verification/runs/2026-11-02-source-expansion.md).

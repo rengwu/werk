@@ -17,6 +17,10 @@ The no-application/no-engagement product rules remain assistant instructions. Wi
 
 ## Product
 
+**REB-job-browsing (2026-11-02):** After comparing the legacy controls with werk, the user requested: “lets bring back #1 #3 #6 #2, you may rework it however you like”. Restore sorting, Saved/Applied filtering, rich location selection and a Skipped view. Inbox offers New / All matches / Skipped and Best match / Recently discovered. Saved offers All / Saved / Applied and also retains Recently saved as its default sort. Locations use searchable multiple country, region, city and explicit coverage selections. Keep these controls temporary and independent of collection criteria; remember each page's choices within the current session, show an active-filter count and provide Clear filters. See [discovery and Inbox](../features/discovery.md).
+
+**REB-app-branding (2026-11-02):** The user requested that built apps use werk's icon and metadata instead of Electron defaults. Package the selected icon for runtime use, set the window/Dock icon and About identity explicitly, and set the Windows application identity to the installer app ID. Verify the real packaged OS icon and macOS bundle/Windows executable metadata in the existing launch check. See [desktop](../features/desktop.md).
+
 **REB-source-order (2026-11-02):** The user reported that enabling a source reset scrolling and requested that checkbox state no longer control sorting. Keep Sources alphabetical regardless of enabled state, preserving the row, scroll position and checkbox focus when toggled. See [discovery](../features/discovery.md).
 
 **REB-factory-reset (2026-11-02):** The user requested a Settings button to clear the entire app's state. Add a confirmed factory reset that removes personal records, conversations, copied attachments, app-owned ChatGPT credentials, schedules, source configuration and preferences, and returns to first-run setup. Cancel leaves data intact. Preserve originals and exports outside app-owned storage. Tests use fictional data; implementing the button does not authorize resetting the user's installation.

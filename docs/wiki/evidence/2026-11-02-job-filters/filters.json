@@ -1,0 +1,22 @@
+{
+  "result": "Passed",
+  "scenarios": [
+    "Inbox defaults to best match; Recently discovered puts the newest discovery first",
+    "Skip removes a job from New; Skipped finds it and Move back to New restores it",
+    "Multiple countries match either country, compose with search/match, and Escape closes locations with focus return",
+    "Regions include their countries; city, Worldwide, Unspecified and Unresolved selections remain distinct",
+    "Saved/Applied tabs follow manual status changes and retain dirty letters until a row change is explicitly accepted",
+    "Each view remembers its controls across navigation/reload; Clear filters restores results and keeps search/sort",
+    "Expanded filters pass light/dark axe checks, keyboard controls and 900×600 layout bounds"
+  ],
+  "accessibility": [
+    {
+      "theme": "light",
+      "violations": []
+    },
+    {
+      "theme": "dark",
+      "violations": []
+    }
+  ]
+}

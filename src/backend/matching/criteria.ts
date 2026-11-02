@@ -30,5 +30,5 @@ export function criteriaAssessment(item:IncomingJob,profile:Profile,overlaps=cou
     if(!compatible) conflict=true;
   }
   if(overlapHours!==null&&overlapHours<profile.criteria.minOverlapHours)conflict=true;
-  return {countries:location.countries,arrangement,overlapHours,conflict};
+  return {countries:location.countries,locationValues:[...location.values],arrangement,overlapHours,conflict};
 }

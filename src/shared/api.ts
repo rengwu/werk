@@ -4,6 +4,7 @@ import type { ProfileVersion } from '../backend/profile/store.ts';
 import type { AiState, Task, Attachment, AssistantContext, ChatState, SendMode } from './ai.ts';
 import type { JobRecord,JobFilter,JobsList,JobStatus,SourceRecord,ScanState } from './jobs.ts';
 import type {LetterState,LetterVersion,CvState} from './documents.ts';
+import type { LocationOption } from '../backend/geo/locations.ts';
 export type Theme = 'system' | 'light' | 'dark';
 export type Settings = { appearance: Theme; scanInterval:0|4|12 };
 export type UpdateState = { checkedAt: string | null; state: 'unchecked' | 'current' | 'available' | 'unavailable'; version?: string; url?: string };
@@ -44,6 +45,7 @@ export interface Api {
   'scan.get': (params:undefined) => ScanState;
   'scan.start': (params:{id?:number}) => ScanState;
   'jobs.list': (params:JobFilter) => JobsList;
+  'jobs.locations': (params:undefined) => LocationOption[];
   'jobs.get': (params:{id:number}) => JobRecord;
   'jobs.open': (params:{id:number}) => JobRecord;
   'jobs.status': (params:{id:number;status:JobStatus}) => JobRecord;

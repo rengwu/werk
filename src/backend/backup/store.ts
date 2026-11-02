@@ -60,6 +60,7 @@ export class Backups {
           insertJob.run(...columns.map(key=>values[key] as string|number|null));
         }
         for(const job of data.jobs)if(job.duplicate_of!==null)store.db.prepare('UPDATE jobs SET duplicate_of=? WHERE id=?').run(ids.get(job.duplicate_of)!,ids.get(job.id)!);
+        service.jobs.indexLocations();
         const listing=store.db.prepare('INSERT INTO imported_listings VALUES(?,?,?,?,?,?,?,?)');
         for(const item of data.listings)listing.run(ids.get(item.job_id)!,item.kind,item.identifier,item.name,item.source_item_id,item.url,JSON.stringify(item.fields),item.last_seen_at);
         const letter=store.db.prepare("INSERT INTO cover_letter_versions VALUES(?,?,?,?, 'restore',?,?)");

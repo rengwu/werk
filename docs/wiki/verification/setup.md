@@ -51,6 +51,8 @@ node docs/wiki/_build.mjs --check
 
 The discovery driver also accepts `WERK_DEV_APP=1` when `WERK_EXE` points to Electron and the working directory contains an isolated development app. CI continues to use packaged apps. Do not use the live development data folder for either mode.
 
+`WERK_EXE="<packaged test executable>" node --experimental-strip-types tests/job-filters-smoke.ts` verifies restored browsing controls with its own temporary fictional profile and jobs. It never opens the user's data. Screenshots and results remain in `smoke-output/job-filters/`. The production launch driver also checks werk's OS name/version/icon metadata through `tests/branding.ts`, saving the rendered app icon and sanitized metadata in `smoke-output/`.
+
 ## Documents, backups and accessibility
 
 `npm run setup:latex` downloads the pinned compiler and prepares/verifies its offline package cache. On Windows, install Go 1.24 and download the `latex-cache` CI artifact into `resources/runtime/cache` first. The cache is built once on macOS and tested on both OSes. Packaged apps contain the compiler/cache; development setup is separate.

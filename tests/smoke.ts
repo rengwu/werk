@@ -5,6 +5,7 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { spawn } from 'node:child_process';
 import { createServer } from 'node:http';
+import { verifyBranding } from './branding.ts';
 
 const exe = process.env.WERK_EXE;
 if (!exe) throw new Error('Set WERK_EXE to the packaged werk executable.');
@@ -28,13 +29,15 @@ try {
   results.startupMs = Math.round(performance.now() - start);
   assert.ok(Number(results.startupMs) < 3000, `Shell startup took ${results.startupMs} ms`);
   scenarios.push('Fresh launch within 3 seconds');
+  results.branding = await verifyBranding(app, exe, output);
+  scenarios.push('Packaged werk name, version, OS metadata and custom icon differ from Electron defaults');
   assert.equal(await page.evaluate(() => typeof (window as unknown as { require?: unknown }).require), 'undefined');
   await page.getByRole('button', { name: 'Settings', exact: true }).click();
   await page.getByRole('combobox', { name: 'Appearance' }).selectOption('dark');
   await page.waitForFunction(() => document.documentElement.dataset.mode === 'dark');
   await page.getByRole('tab', { name: 'Diagnostics' }).click();
   await page.getByTestId('diagnostic-fts5').filter({ hasText: 'Available' }).waitFor();
-  assert.equal(await page.getByTestId('diagnostic-schema').textContent(), '6');
+  assert.equal(await page.getByTestId('diagnostic-schema').textContent(), '7');
   assert.equal(await page.getByTestId('diagnostic-backend').textContent(), 'running');
   results.diagnostics = await page.locator('.diagnostics').innerText();
   await page.screenshot({ path: join(output, 'diagnostics-dark.png') });

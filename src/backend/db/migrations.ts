@@ -112,6 +112,14 @@ CREATE TABLE imported_listings (
   PRIMARY KEY(kind,identifier,source_item_id)
 ) STRICT;
 CREATE INDEX imported_listings_job ON imported_listings(job_id);
+`, `
+CREATE TABLE job_locations (
+  job_id INTEGER NOT NULL REFERENCES jobs(id) ON DELETE CASCADE,
+  value TEXT NOT NULL,
+  PRIMARY KEY (job_id, value)
+) STRICT;
+CREATE INDEX job_locations_value ON job_locations(value, job_id);
+CREATE INDEX jobs_discovered ON jobs(first_seen_at DESC, id DESC) WHERE duplicate_of IS NULL;
 ` ];
 export function migrate(db: DatabaseSync) {
   let version = Number(db.prepare('PRAGMA user_version').get()?.user_version || 0);

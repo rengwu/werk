@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { Store } from './db/store.ts';
 import { Profiles } from './profile/store.ts';
 import { criteriaSchema } from '../shared/profile.ts';
+import { jobFilterSchema } from '../shared/jobs.ts';
 import { countryOverlaps } from './geo/overlap.ts';
 import { AiRuntime } from './ai/runtime.ts';
 import { ModelQueue } from './ai/queue.ts';
@@ -97,7 +98,8 @@ export class Service {
       'sources.add':input=>this.sources.add(z.object({value:z.string().trim().min(1).max(1500),name:z.string().trim().max(120).optional(),kind:z.enum(['greenhouse','ashby','lever','rss','catalog']).optional()}).strict().parse(input)),
       'scan.get':()=>this.sources.state(),
       'scan.start':input=>this.sources.start(z.object({id:z.number().int().positive().optional()}).strict().parse(input).id),
-      'jobs.list':input=>this.jobs.list(z.object({view:z.enum(['new','all','saved']),search:z.string().max(500).optional(),level:z.enum(['strong','adjacent']).optional(),arrangement:z.enum(['remote','hybrid','onsite']).optional(),country:z.string().regex(/^[A-Z]{2}$/).optional(),days:z.number().int().min(1).max(365).optional(),limit:z.number().int().min(1).max(100).optional(),offset:z.number().int().min(0).optional()}).strict().parse(input)),
+      'jobs.list':input=>this.jobs.list(jobFilterSchema.parse(input)),
+      'jobs.locations':()=>this.jobs.locations(),
       'jobs.get':input=>this.jobs.get(z.object({id:z.number().int().positive()}).strict().parse(input).id),
       'jobs.open':input=>this.jobs.open(z.object({id:z.number().int().positive()}).strict().parse(input).id),
       'jobs.status':input=>{const p=z.object({id:z.number().int().positive(),status:z.enum(['new','skipped','saved','applied'])}).strict().parse(input);return this.jobs.status(p.id,p.status);},

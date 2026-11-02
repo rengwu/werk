@@ -1,0 +1,11 @@
+{
+  "typecheck": "Passed",
+  "unitTests": {
+    "passed": 47,
+    "failed": 0
+  },
+  "productionBuild": "Passed",
+  "packagedShell": "Passed",
+  "packagedFilters": "Passed",
+  "wiki": "Passed"
+}

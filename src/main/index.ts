@@ -7,6 +7,8 @@ import type { BackendInit, FileDownload } from '../shared/api.ts';
 import { clearAppData, markReset, resetMarker } from './reset.ts';
 
 app.setName('werk');
+if (process.platform === 'win32') app.setAppUserModelId('io.github.rengwu.werk');
+const appIcon = join(app.isPackaged ? process.resourcesPath : join(app.getAppPath(), 'resources'), 'icon.png');
 if (process.env.WERK_DATA_DIR) app.setPath('userData', resolve(process.env.WERK_DATA_DIR));
 else app.setPath('userData', join(app.getPath('appData'), app.isPackaged ? 'werk' : 'werk-dev'));
 mkdirSync(app.getPath('userData'), { recursive: true, mode: 0o700 });
@@ -118,7 +120,7 @@ async function finishFactoryReset() {
 }
 function createWindow() {
   rendererReady = false;
-  win = new BrowserWindow({ width: 1280, height: 820, minWidth: 900, minHeight: 600, show: false, title: 'werk',
+  win = new BrowserWindow({ width: 1280, height: 820, minWidth: 900, minHeight: 600, show: false, title: 'werk', icon: appIcon,
     backgroundColor: nativeTheme.shouldUseDarkColors ? '#181818' : '#fcfcfc',
     titleBarStyle: process.platform === 'darwin' ? 'hiddenInset' : 'default', trafficLightPosition: { x: 14, y: 15 }, autoHideMenuBar: true,
     webPreferences: { preload: join(__dirname, 'preload.cjs'), sandbox: true, contextIsolation: true, nodeIntegration: false, webSecurity: true, plugins: true },
@@ -177,6 +179,8 @@ app.on('before-quit', event => {
   if (win) win.close(); else beginShutdown();
 });
 void app.whenReady().then(async () => {
+  app.setAboutPanelOptions({ applicationName: 'werk', applicationVersion: app.getVersion(), iconPath: appIcon });
+  if (process.platform === 'darwin') app.dock?.setIcon(appIcon);
   Menu.setApplicationMenu(Menu.buildFromTemplate([
     ...(process.platform === 'darwin' ? [{ label: 'werk', submenu: [{ role: 'about' as const }, { type: 'separator' as const }, { role: 'hide' as const }, { role: 'hideOthers' as const }, { role: 'unhide' as const }, { type: 'separator' as const }, { label: 'Quit werk', accelerator: 'Cmd+Q', click: () => app.quit() }] }] : []),
     { role: 'editMenu' }, { role: 'viewMenu' }, { role: 'windowMenu' },
