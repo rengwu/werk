@@ -18,7 +18,9 @@ export class Sources {
   read:typeof readUrl;
   constructor(store:Store,profiles:Profiles,jobs:Jobs,changed:()=>void,read:typeof readUrl=readUrl){
     this.store=store;this.profiles=profiles;this.jobs=jobs;this.changed=changed;this.read=read;configureHttp(store);
-    if(!store.get('sourcesInitialized',false))store.transaction(()=>{for(const source of discoverySources)store.db.prepare('INSERT INTO sources(kind,identifier,name,enabled,config) VALUES(?,?,?,?,?) ON CONFLICT DO NOTHING').run(source.type,source.identifier,source.name,Number(source.enabled),JSON.stringify({requestLimit:source.requestLimit,intervalHours:source.intervalHours}));store.set('sourcesInitialized',true);});
+    // Add missing catalog entries on upgrades without replacing user choices,
+    // source identities, cooldowns, custom sources or existing job provenance.
+    store.transaction(()=>{for(const source of discoverySources)store.db.prepare('INSERT INTO sources(kind,identifier,name,enabled,config) VALUES(?,?,?,?,?) ON CONFLICT DO NOTHING').run(source.type,source.identifier,source.name,Number(source.enabled),JSON.stringify({requestLimit:source.requestLimit,intervalHours:source.intervalHours}));});
     this.timer=setInterval(()=>this.tick(),30000);this.timer.unref();
   }
   list():SourceRecord[]{return this.store.db.prepare(`SELECT s.id,s.kind,s.identifier,s.name,s.enabled,s.last_scan_at AS lastScanAt,s.last_result AS lastResult,s.last_error AS lastError,s.next_scan_at AS nextScanAt,count(DISTINCT j.id) AS kept,count(DISTINCT CASE WHEN j.status IN ('saved','applied') THEN j.id END) AS saved FROM sources s LEFT JOIN job_listings l ON l.source_id=s.id LEFT JOIN jobs j ON j.id=l.job_id GROUP BY s.id ORDER BY s.enabled DESC,s.name`).all().map(row=>({...row,enabled:!!row.enabled})) as SourceRecord[];}

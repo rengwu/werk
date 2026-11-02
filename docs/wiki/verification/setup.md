@@ -1,7 +1,7 @@
 ---
 title: Verification setup
 section: Verification
-updated: 2026-11-01
+updated: 2026-11-02
 ---
 # Verification setup
 
@@ -46,6 +46,10 @@ node docs/wiki/_build.mjs --check
 `tests/discovery.test.ts` exercises the real SQLite pipeline and `tests/parsers.test.ts` preserves relevant archived parser regressions. The packaged driver `tests/discovery-smoke.ts` uses the same `WERK_EXE` command as the profile driver, with a test build. It seeds fictional profile/source prerequisites and records HTTP responses in its temporary directory. HTTP fixtures are unavailable in production builds.
 
 `node --experimental-strip-types scripts/check-live-discovery.ts` performs exactly one bounded Remotive scan against a fictional profile, reports counts/database size, and removes its temporary data. Use only when a live check is authorized.
+
+`node --experimental-strip-types scripts/check-live-feeds.ts 'NoDesk · Engineering' 'MoAIJobs'` similarly checks only the named catalog feeds with fictional data and no inference. Each feed has a one-request limit. It reports parsed/full/empty-description/unknown-employer/kept counts in `smoke-output/source-feeds/live.json`, fails on an unsuccessful or unexpectedly empty read, and removes its database. The [source-expansion run](runs/2026-11-02-source-expansion.md) checked all thirteen added feeds. `tests/source-feeds.test.ts` covers their recorded shapes and old-catalog upgrades without network access.
+
+The discovery driver also accepts `WERK_DEV_APP=1` when `WERK_EXE` points to Electron and the working directory contains an isolated development app. CI continues to use packaged apps. Do not use the live development data folder for either mode.
 
 ## Documents, backups and accessibility
 

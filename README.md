@@ -12,7 +12,7 @@ The rebuild is ready for pre-release testing. Installers are available in the [B
 
 ## Use
 
-Connect your ChatGPT subscription in Settings → AI, build a profile, set your search criteria, and scan. New installations start empty, with 17 API/RSS sources enabled and scraped boards off. Scans are manual unless you enable a schedule.
+Connect your ChatGPT subscription in Settings → AI, build a profile, set your search criteria, and scan. New installations start empty, with 30 API/RSS sources enabled and 20 scraped boards off. Scans are manual unless you enable a schedule.
 
 The assistant is an embedded pi session with full file, shell and network access on your computer. Share local paths or URLs, drop files, inspect tool calls, and steer or interrupt work while it runs. It uses `gpt-5.6-sol` with high reasoning through your ChatGPT subscription; it does not silently switch models or use API-key billing. Profile changes retain supporting evidence and version history. The assistant is instructed to prepare private drafts and never submit applications or contact others; full shell access is not a technical restriction on those actions.
 

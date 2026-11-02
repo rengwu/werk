@@ -82,7 +82,7 @@ async function freshState(page: Page) {
   assert.equal(await page.evaluate(()=>sessionStorage.getItem('werk:backup-restored')),null);
   assert.equal(await page.evaluate(()=>Object.values(localStorage).some(v=>v.includes('Draft to erase'))),false);
   for (const count of Object.values(records().counts)) assert.equal(count,0);
-  assert.deepEqual(records().sources,{total:37,enabled:17});
+  assert.deepEqual(records().sources,{total:50,enabled:30});
   await assert.rejects(access(join(dir,'pi-auth','credentials.json')));
   for (const file of ['pi/sessions/old.jsonl','cv/1.pdf','logs/old.log',resetMarker]) await assert.rejects(access(join(dir,file)));
   assert.equal(await readFile(original,'utf8'),'Original fictional evidence');

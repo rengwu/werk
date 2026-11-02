@@ -1,0 +1,150 @@
+{
+  "checkedAt": "2026-11-02T07:09:16.873Z",
+  "result": "Passed",
+  "requests": 13,
+  "sources": [
+    {
+      "name": "Berlin Startup Jobs · Engineering",
+      "url": "https://berlinstartupjobs.com/engineering/feed/",
+      "result": "Passed",
+      "parsed": 12,
+      "full": 0,
+      "emptyDescriptions": 0,
+      "unknownEmployers": 0,
+      "kept": 11,
+      "error": null
+    },
+    {
+      "name": "Dev Remotely",
+      "url": "https://devremotely.com/feed/jobs.xml",
+      "result": "Passed",
+      "parsed": 50,
+      "full": 0,
+      "emptyDescriptions": 0,
+      "unknownEmployers": 0,
+      "kept": 47,
+      "error": null
+    },
+    {
+      "name": "Elixir Jobs",
+      "url": "https://elixirjobs.net/rss",
+      "result": "Passed",
+      "parsed": 10,
+      "full": 0,
+      "emptyDescriptions": 0,
+      "unknownEmployers": 10,
+      "kept": 7,
+      "error": null
+    },
+    {
+      "name": "FOSS Jobs",
+      "url": "https://www.fossjobs.net/rss/all/",
+      "result": "Passed",
+      "parsed": 10,
+      "full": 10,
+      "emptyDescriptions": 0,
+      "unknownEmployers": 0,
+      "kept": 4,
+      "error": null
+    },
+    {
+      "name": "Hasjob",
+      "url": "https://hasjob.co/feed",
+      "result": "Passed",
+      "parsed": 18,
+      "full": 18,
+      "emptyDescriptions": 0,
+      "unknownEmployers": 3,
+      "kept": 3,
+      "error": null
+    },
+    {
+      "name": "MoAIJobs",
+      "url": "https://www.moaijobs.com/ai-jobs.rss",
+      "result": "Passed",
+      "parsed": 353,
+      "full": 353,
+      "emptyDescriptions": 0,
+      "unknownEmployers": 0,
+      "kept": 219,
+      "error": null
+    },
+    {
+      "name": "NoDesk · Engineering",
+      "url": "https://nodesk.co/remote-jobs/engineering/index.xml",
+      "result": "Passed",
+      "parsed": 10,
+      "full": 0,
+      "emptyDescriptions": 0,
+      "unknownEmployers": 0,
+      "kept": 8,
+      "error": null
+    },
+    {
+      "name": "Python Job Board",
+      "url": "https://www.python.org/jobs/feed/rss/",
+      "result": "Passed",
+      "parsed": 20,
+      "full": 20,
+      "emptyDescriptions": 0,
+      "unknownEmployers": 20,
+      "kept": 20,
+      "error": null
+    },
+    {
+      "name": "Rails Job Board",
+      "url": "https://jobs.rubyonrails.org/jobs.rss",
+      "result": "Passed",
+      "parsed": 11,
+      "full": 11,
+      "emptyDescriptions": 0,
+      "unknownEmployers": 0,
+      "kept": 11,
+      "error": null
+    },
+    {
+      "name": "Real Work From Anywhere",
+      "url": "https://www.realworkfromanywhere.com/rss.xml",
+      "result": "Passed",
+      "parsed": 118,
+      "full": 118,
+      "emptyDescriptions": 0,
+      "unknownEmployers": 0,
+      "kept": 51,
+      "error": null
+    },
+    {
+      "name": "Remote First Jobs",
+      "url": "https://remotefirstjobs.com/rss/jobs/software-development.rss",
+      "result": "Passed",
+      "parsed": 100,
+      "full": 100,
+      "emptyDescriptions": 0,
+      "unknownEmployers": 0,
+      "kept": 46,
+      "error": null
+    },
+    {
+      "name": "Startup Jobs · Remote",
+      "url": "https://startup.jobs/feeds/jobs?workplace=remote",
+      "result": "Passed",
+      "parsed": 50,
+      "full": 0,
+      "emptyDescriptions": 0,
+      "unknownEmployers": 0,
+      "kept": 9,
+      "error": null
+    },
+    {
+      "name": "We Work Remotely · DevOps",
+      "url": "https://weworkremotely.com/categories/remote-devops-sysadmin-jobs.rss",
+      "result": "Passed",
+      "parsed": 33,
+      "full": 33,
+      "emptyDescriptions": 0,
+      "unknownEmployers": 0,
+      "kept": 19,
+      "error": null
+    }
+  ]
+}

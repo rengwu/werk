@@ -13,7 +13,7 @@ Settings → General → Factory reset → Reset werk opens a native confirmatio
 
 After confirmation, werk discards unsaved edits, stops background work, and closes its old window and backend before deleting data. It clears the profile and its revisions, all jobs and fingerprints, letters and CV versions/PDFs, conversations and copied attachments, pi sessions, ChatGPT credentials, source configuration, schedules, settings and logs. Chromium storage, cookies, cached data and unsent drafts are cleared separately. Original files and exports outside the app's data folder remain untouched; unknown files in a custom data folder are also preserved. This is a logical reset, not a secure disk erasure.
 
-werk then opens first-run setup, signed out, with System appearance, manual scans and the default 17 enabled API/feed sources and 20 disabled scraped boards. No scan or inference is started by reset. Queued or running work from the old state cannot resume in the fresh backend.
+werk then opens first-run setup, signed out, with System appearance, manual scans and the current default 30 enabled API/feed sources and 20 disabled scraped boards. No scan or inference is started by reset. Queued or running work from the old state cannot resume in the fresh backend. These catalog counts were expanded in the [source update](../journal/2026-11-02-more-sources.md); earlier reset verification retains its original tested counts.
 
 If cleanup fails, werk offers Retry reset or Quit werk and retains a pending-reset marker. The next launch finishes cleanup before opening a backend or showing old records. A cancelled confirmation writes no marker and changes no records.
 

@@ -249,6 +249,12 @@ export function normalizeJobicy(data: RecordData): IncomingJob[] {
   );
 }
 
+function feedText(value: unknown): string {
+  // Some publishers wrap an already escaped description in literal CDATA.
+  // Unwrap it before sanitizing; otherwise the HTML parser drops the entire job.
+  const raw = str((value as RecordData)?.["#text"] ?? value);
+  return htmlText(raw.replace(/^\s*<!\[CDATA\[([\s\S]*)\]\]>\s*$/, "$1"));
+}
 export function normalizeRss(xml: string, source: Source): IncomingJob[] {
   const parsed = new XMLParser({
     ignoreAttributes: false,
@@ -270,18 +276,18 @@ export function normalizeRss(xml: string, source: Source): IncomingJob[] {
         const href = typeof link === "string" ? link : link?.["@_href"];
         let url = "";
         try {
-          if (href) url = new URL(href, source.identifier).href;
+          if (href) url = new URL(text(href), source.identifier).href;
         } catch {
           /* Ignore malformed entries. */
         }
         const completeContent =
           [entry["content:encoded"], entry.content]
-            .map(text)
+            .map(feedText)
             .sort((a, b) => b.length - a.length)[0] || "";
         const description =
           completeContent ||
           [entry.description, entry.summary]
-            .map(text)
+            .map(feedText)
             .sort((a, b) => b.length - a.length)[0] ||
           "";
         let title = text(entry.title) || "Hiring post";
@@ -289,6 +295,64 @@ export function normalizeRss(xml: string, source: Source): IncomingJob[] {
           entry["job:company"] || entry["dc:creator"] || entry.author?.name,
         );
         let location = text(entry["job:location"] || entry.region);
+        let employmentType = text(entry["job:job_type"]);
+        let salary = text(entry["job:salary"]);
+        let statedArrangement = "";
+        const expandedFeed = ["nodesk.co", "realworkfromanywhere.com", "devremotely.com", "startup.jobs", "python.org", "jobs.rubyonrails.org", "elixirjobs.net", "fossjobs.net", "berlinstartupjobs.com", "hasjob.co", "remotefirstjobs.com", "moaijobs.com"].includes(host);
+        if (expandedFeed) {
+          // Publisher accounts are not employers. Accept only explicit fields
+          // or the documented title/header formats below.
+          company = text(entry["job:company"]);
+          location ||= description.match(/(?:^|\n)(?:Job |Work )?Location:\s*([^\n]+)/i)?.[1]?.trim() || "";
+        }
+        if (["nodesk.co", "realworkfromanywhere.com", "devremotely.com", "startup.jobs", "jobs.rubyonrails.org", "fossjobs.net", "remotefirstjobs.com", "moaijobs.com"].includes(host)) {
+          if (host === "realworkfromanywhere.com") company ||= text(entry.author);
+          if (company && title.endsWith(` at ${company}`)) title = title.slice(0, -company.length - 4);
+          else if (!company) {
+            const split = title.lastIndexOf(" at ");
+            if (split > 0) { company = title.slice(split + 4); title = title.slice(0, split); }
+          }
+        }
+        if (host === "python.org") {
+          location ||= description.split("\n")[0].trim();
+          // Both titles and employers may contain commas. Keep the source title
+          // intact rather than guessing where one ends and the other begins.
+        }
+        if (host === "fossjobs.net") {
+          employmentType ||= title.match(/^\[([^\]]+)\]/)?.[1] || "";
+          title = title.replace(/^\[[^\]]+\]\s*/, "");
+        }
+        if (host === "berlinstartupjobs.com") {
+          const split = title.lastIndexOf(" // ");
+          if (split > 0) { company = title.slice(split + 4); title = title.slice(0, split); }
+        }
+        if (host === "hasjob.co") {
+          location ||= text(entry.location);
+          const header = description.split(/\n+/).map(line => line.trim());
+          if (location && header[1] === location) company ||= header[0];
+          if (/^(?:anywhere|remote)$/i.test(location)) statedArrangement = "Remote";
+        }
+        if (host === "elixirjobs.net") {
+          employmentType ||= description.match(/(?:^|\n)Job type:\s*([^\n]+)/i)?.[1]?.trim() || "";
+          const place = description.match(/(?:^|\n)Job place:\s*([^\n]+)/i)?.[1]?.trim();
+          if (/^remote$/i.test(place || "")) statedArrangement = "Remote";
+          if (/^on[- ]?site$/i.test(place || "")) statedArrangement = "On-site";
+        }
+        if (host === "startup.jobs") {
+          const lines = description.split(/\n+/), last = lines.at(-1)!;
+          if (lines.length > 1 || /^(?:Remote|Hybrid|On[- ]site|Worldwide)\b/i.test(last)) {
+            const parts = last.split(" · ");
+            location ||= parts[0].trim();
+            salary ||= parts.slice(1).join(" · ").trim();
+          }
+        }
+        if (host === "devremotely.com") {
+          const parts = description.split("\n")[0].split(" · ");
+          if (parts[0] === company) {
+            location ||= parts[1]?.trim() || "";
+            salary ||= parts.slice(2).join(" · ").trim();
+          }
+        }
         if (host === "app.vuejobs.com") {
           company =
             description.match(/^Employer:\s*([^\n]+)/i)?.[1]?.trim() || company;
@@ -358,14 +422,14 @@ export function normalizeRss(xml: string, source: Source): IncomingJob[] {
                 description,
               )));
         const hasFullDescription =
-          (["weworkremotely.com", "remotejobs.com"].includes(host) ||
+          (["weworkremotely.com", "remotejobs.com", "python.org", "jobs.rubyonrails.org", "fossjobs.net", "realworkfromanywhere.com", "remotefirstjobs.com", "moaijobs.com"].includes(host) ||
             !!completeContent) &&
           description.length > 200 &&
           !/(?:\.\.\.|…|read more|continue reading)\s*$/i.test(description);
-        const specialist = ["jobs.wordpress.net", "remotejobs.com"].includes(
+        const specialist = expandedFeed || ["jobs.wordpress.net", "remotejobs.com"].includes(
           host,
         );
-        let arrangement = remote ? "Remote" : "Unspecified";
+        let arrangement = statedArrangement || (remote ? "Remote" : "Unspecified");
         if (specialist) {
           if (
             /\bhybrid\b/i.test(title) ||
@@ -394,12 +458,12 @@ export function normalizeRss(xml: string, source: Source): IncomingJob[] {
           locationScope: host === "weworkremotely.com" ? "hiring" : "listed",
           arrangement,
           employmentType:
-            text(entry["job:job_type"]) ||
+            employmentType ||
             (specialist
               ? title.match(/\b(?:Full-time|Part-time|Contract)\b/i)?.[0]
               : "") ||
             "Unspecified",
-          salary: text(entry["job:salary"]),
+          salary,
           url,
           description,
           publishedAt: sourceDate(

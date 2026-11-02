@@ -42,7 +42,7 @@ werk is a clean rebuild of the previous app, ununemploy, which is archived on th
 
 - Electron app for macOS Apple Silicon and Windows 11 x64, in TypeScript except the Windows LaTeX sandbox helper (Go); one backend utility process; SQLite in the user's data folder; no login, no cloud hosting, no telemetry.
 - Closing the window keeps werk running: in the Dock on macOS, in the system tray on Windows (tray menu: Open, Quit). Quit stops everything.
-- Scans are manual by default; Settings can turn on a schedule. New installations enable the 17 API and RSS sources; the 20 scraped boards are available but off.
+- Scans are manual by default; Settings can turn on a schedule. New installations enable 30 API and RSS sources; the 20 scraped boards are available but off. Catalog additions reach existing installations without replacing source choices or custom boards.
 - Store only jobs that pass the profile's criteria and are Strong or Adjacent and not Incompatible; fingerprint the rest; delete unsaved jobs 30 days after they close.
 - Unsigned installers built by GitHub Actions on version tags into draft releases; the user publishes releases. The app checks GitHub for newer releases and shows a notice; no automatic updates.
 - Port from the `legacy` branch deliberately; do not restore removed features.

@@ -1,7 +1,7 @@
 ---
 title: Discovery and Inbox
 section: Features
-updated: 2026-11-01
+updated: 2026-11-02
 ---
 # Discovery and Inbox
 
@@ -13,9 +13,12 @@ Discover and triage jobs against the canonical profile, following [REB-inbox, RE
 
 ## Entry points and prerequisites
 
-A ready [profile](profile.md) enables **Scan now** in setup or Inbox. Sources are inside Settings: 17 API/RSS sources on, 20 scraped boards off. Company ATS boards and RSS/Atom URLs can be added. Settings → General chooses Manual (default), Every 4 hours or Every 12 hours; each source still respects its own cooldown and daily/request limits.
+A ready [profile](profile.md) enables **Scan now** in setup or Inbox. Sources are inside Settings: 30 API/RSS sources on, 20 scraped boards off. Company ATS boards and RSS/Atom URLs can be added. Settings → General chooses Manual (default), Every 4 hours or Every 12 hours; each source still respects its own cooldown and daily/request limits. [The source expansion](../journal/2026-11-02-more-sources.md) lists the thirteen additional feeds, verified coverage and limitations.
 
 ## Expected outcomes
+
+- Startup inserts missing catalog sources without replacing existing IDs, enabled choices, settings, cooldowns or custom boards. Restarting does not re-enable a source the user disabled. New feed entries follow the API/feed enabled default; scanning remains manual unless a schedule was already configured.
+- Feed parsing preserves explicit employer, job location and employment metadata. Posting accounts are not employers. Python's ambiguous comma-separated employer/title stays intact with employer unknown; Berlin titles use their explicit employer suffix. Literal CDATA wrappers are sanitized into readable text. NoDesk, Dev Remotely, Startup Jobs, Berlin and Elixir remain excerpts; missing country/work-authorization information is not inferred from a board's remote branding.
 
 - Keep only Strong/Adjacent, non-Incompatible postings that satisfy explicit criteria. Unknown locations, arrangements, work authorization and overlap do not exclude a posting. Rejected postings retain a URL/hash/revision/reason fingerprint, never a body.
 - Match scoring uses the user's target role families and evidence, with separate professional/project attribution. Unsupported senior scope, credentials and AI/ML tenure limit the score. `MATCH_VERSION=6` records the adaptation from the archived candidate-specific role defaults to arbitrary profiles.
@@ -39,7 +42,7 @@ npx electron-builder --dir --publish never
 WERK_EXE="$PWD/release/mac-arm64/werk.app/Contents/MacOS/werk" node --experimental-strip-types tests/discovery-smoke.ts
 ```
 
-The driver seeds only the profile/source prerequisites, then uses setup Scan now, real adapter parsing, SQLite and keyboard/UI actions. It checks FTS, filters, highlights, notes, hiding, source counters and schedule. Temporary data is removed; sanitized evidence remains in `smoke-output/discovery/`. For an authorized single public read: `node --experimental-strip-types scripts/check-live-discovery.ts` uses Remotive and an isolated fictional profile.
+The driver seeds only the profile/source prerequisites, then uses setup Scan now, real adapter parsing, SQLite and keyboard/UI actions. It checks FTS, filters, highlights, notes, hiding, source counters and schedule, then enables MoAIJobs in Settings and verifies a matching job reaches Inbox through a recorded feed. Temporary data is removed; sanitized evidence remains in `smoke-output/discovery/`. For an authorized single public read: `node --experimental-strip-types scripts/check-live-discovery.ts` uses Remotive and an isolated fictional profile. `scripts/check-live-feeds.ts` accepts exact RSS source names and uses one bounded scan per named source; see [setup](../verification/setup.md#discovery-fixtures).
 
 ## Coverage and limitations
 
@@ -47,4 +50,5 @@ Source tests port the relevant archived JSON, RSS, structured HTML and location 
 
 ## Verification history
 
+- [Source expansion](../verification/runs/2026-11-02-source-expansion.md).
 - [M3 discovery and triage](../verification/runs/2026-11-01-m3-discovery.md).
