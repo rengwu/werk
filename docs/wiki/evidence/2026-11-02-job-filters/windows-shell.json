@@ -1,0 +1,30 @@
+{
+  "platform": "win32",
+  "arch": "x64",
+  "scenarios": [
+    "Fresh launch within 3 seconds",
+    "Packaged werk name, version, OS metadata and custom icon differ from Electron defaults",
+    "Sandboxed renderer, utility-process SQLite, FTS5, schema and diagnostics",
+    "Backend killed, restarted and queries reconnected",
+    "Repeated crashes stop automatic retries; explicit Restart recovers",
+    "Close hides window; second launch reopens the same instance",
+    "Appearance persists after quit and relaunch"
+  ],
+  "startupMs": 888,
+  "branding": {
+    "name": "werk",
+    "version": "0.1.1",
+    "title": "werk",
+    "metadata": {
+      "ProductVersion": "0.1.1.0",
+      "ProductName": "werk",
+      "FileVersion": "0.1.1",
+      "FileDescription": "werk",
+      "CompanyName": "John Goh"
+    },
+    "sourceIconSha256": "ca54c17646a81fd716a69524828adaa74b4c5b8c9ddc091fc333dcf5bb696fe7",
+    "osIconSha256": "2e41c16f9cb577b02c5dd73c3df2b9a5529a5ed640dfa34dbae483d463e0accd",
+    "differsFromElectronIcon": true
+  },
+  "result": "Passed"
+}

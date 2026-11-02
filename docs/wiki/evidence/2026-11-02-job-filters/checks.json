@@ -7,5 +7,12 @@
   "productionBuild": "Passed",
   "packagedShell": "Passed",
   "packagedFilters": "Passed",
-  "wiki": "Passed"
+  "wiki": "Passed",
+  "ci": {
+    "result": "Passed",
+    "revision": "e52ddb4bdddf990546e518024b23db4b6ef860ac",
+    "url": "https://github.com/rengwu/werk/actions/runs/41439655389",
+    "macOS": "Passed",
+    "Windows": "Passed"
+  }
 }
