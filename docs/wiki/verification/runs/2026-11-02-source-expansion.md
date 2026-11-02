@@ -2,15 +2,19 @@
 title: Source expansion verification
 section: Verification
 updated: 2026-11-02
-result: Untested
+result: Passed
 ---
 # Source expansion verification
 
-Scope: [FEAT-discovery and FEAT-inbox](../../features/discovery.md), thirteen added feeds, catalog upgrades, feed parsing and Settings-to-Inbox behavior. [Research and source limits](../../journal/2026-11-02-more-sources.md) record the selection. All profile and UI checks used fictional records in disposable folders; the user's data was not used for scans or inference.
+Scope: [FEAT-discovery and FEAT-inbox](../../features/discovery.md), thirteen added feeds, catalog upgrades, feed parsing and Settings-to-Inbox behavior. [Research and source limits](../../journal/2026-11-02-more-sources.md) record the selection. Automated profile and UI checks used fictional records in disposable folders; the user's data was not used for scans or inference.
 
 ## Build and environment
 
 Local checks used a dirty tree based on `648df34d5a54164eac2b6aba4fba58319a6f18a3`, fingerprint `1e5ed42fcce8e7fde47b90b2e0d919f92bcfefb1f73f945c2fdef917505b3767`. The [source manifest](../../evidence/2026-11-02-source-expansion/source-manifest.json) records the files. macOS arm64, Node 22.19.0, Electron 44.9.1, SQLite schema 6. The isolated UI instance used the unchanged production main/renderer with the updated backend built for recorded HTTP responses and simulated inference. It did not share the live app's folder.
+
+The implementation was committed as `710375b9d34a8b3cb49f2edb3a3ffca4877f6045`. A production macOS package built successfully with `npm run package`. The idle development app was restarted with that production build and its existing data folder; native UI inspection confirmed Settings → Sources changed from 17 of 37 enabled to 30 of 50, and its existing ChatGPT connection remained available. No scan or reset was run in that instance.
+
+[CI run 41405461609](https://github.com/rengwu/werk/actions/runs/41405461609) passed at that exact revision on macOS arm64 and Windows x64. It built production installers, exercised install/launch and compiler isolation, then used separate fixture packages for simulated inference and recorded discovery responses. The [CI evidence](../../evidence/2026-11-02-source-expansion/ci.json) records the individual checks. No release was created.
 
 ## Results
 
@@ -20,7 +24,7 @@ Local checks used a dirty tree based on `648df34d5a54164eac2b6aba4fba58319a6f18a
 | Catalog upgrade | Add missing feeds once while preserving existing configuration | Old installation fixture gained 13 feeds; disabled sources, IDs, cooldowns, checkpoint and custom board survived repeated reopen | Passed | `tests/source-feeds.test.ts` |
 | Live feeds | Bounded reads produce usable job descriptions and preserve unknown metadata | 13 requests parsed 795 entries, with no empty descriptions; 663 were full descriptions and the rest excerpts | Passed | [Live results](../../evidence/2026-11-02-source-expansion/live.json) |
 | Settings and Inbox | New feeds visible; enable, scan, ingest and triage work through real controls | Expanded discovery driver passed seven scenarios, including an enabled MoAIJobs feed with nested CDATA | Passed | [UI results](../../evidence/2026-11-02-source-expansion/ui.json), [Sources](../../evidence/2026-11-02-source-expansion/sources.png) |
-| Packaged macOS and Windows | Same discovery behavior, defaults and reset counts in packaged apps | Awaiting CI | Untested | Build workflow |
+| Packaged macOS and Windows | Same discovery behavior, defaults and reset counts in packaged apps | Both platforms passed the expanded discovery driver, factory reset, assistant, documents, backup, accessibility and production launch checks; Windows install/uninstall preserved data | Passed | [CI checks](../../evidence/2026-11-02-source-expansion/ci.json) |
 
 ## Findings and limits
 

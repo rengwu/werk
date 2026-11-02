@@ -1,0 +1,166 @@
+{
+  "revision": "710375b9d34a8b3cb49f2edb3a3ffca4877f6045",
+  "url": "https://github.com/rengwu/werk/actions/runs/41405461609",
+  "status": "completed",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "name": "build (macos-latest)",
+      "url": "https://github.com/rengwu/werk/actions/runs/41405461609/job/125146841369",
+      "conclusion": "success",
+      "checks": [
+        {
+          "name": "Run npm ci",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run setup:latex",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify Windows AppContainer boundaries",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Run npm run check",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm test",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run package",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install on Windows",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Verify offline compiler isolation",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run smoke",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify packaged OAuth browser handoff and cancellation",
+          "conclusion": "success"
+        },
+        {
+          "name": "Uninstall on Windows and preserve data",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Verify profile and assistant with fictional data",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify pi tools, dropped files, steering and interruption",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify discovery and keyboard triage with recorded responses",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify letters and sandboxed CV workspace",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify backup export and restore",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify factory reset and recovery",
+          "conclusion": "success"
+        },
+        {
+          "name": "Audit accessibility and keyboard navigation",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "name": "build (windows-latest)",
+      "url": "https://github.com/rengwu/werk/actions/runs/41405461609/job/125146841474",
+      "conclusion": "success",
+      "checks": [
+        {
+          "name": "Run npm ci",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run setup:latex",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify Windows AppContainer boundaries",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run check",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm test",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run package",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install on Windows",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify offline compiler isolation",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run smoke",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify packaged OAuth browser handoff and cancellation",
+          "conclusion": "success"
+        },
+        {
+          "name": "Uninstall on Windows and preserve data",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify profile and assistant with fictional data",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify pi tools, dropped files, steering and interruption",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify discovery and keyboard triage with recorded responses",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify letters and sandboxed CV workspace",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify backup export and restore",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify factory reset and recovery",
+          "conclusion": "success"
+        },
+        {
+          "name": "Audit accessibility and keyboard navigation",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ]
+}
