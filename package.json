@@ -1,7 +1,7 @@
 {
   "name": "werk",
   "productName": "werk",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "Local job discovery, fit assessment, cover letters and CV management.",
   "author": "John Goh",

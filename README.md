@@ -6,8 +6,8 @@ The rebuild is ready for pre-release testing. Installers are available in the [B
 
 ## Install
 
-- **macOS:** open `werk-0.1.0-arm64.dmg` and drag werk to Applications. The build is ad hoc signed, without an Apple developer certificate or notarization. For the first launch, use System Settings → Privacy & Security → Open Anyway. If macOS calls the downloaded app damaged, remove its quarantine attribute with `xattr -dr com.apple.quarantine /Applications/werk.app`.
-- **Windows:** run `werk-0.1.0-setup.exe`. If SmartScreen blocks the unsigned installer, choose More info → Run anyway. It installs for the current user.
+- **macOS:** open `werk-0.1.1-arm64.dmg` and drag werk to Applications. The build is ad hoc signed, without an Apple developer certificate or notarization. For the first launch, use System Settings → Privacy & Security → Open Anyway. If macOS calls the downloaded app damaged, remove its quarantine attribute with `xattr -dr com.apple.quarantine /Applications/werk.app`.
+- **Windows:** run `werk-0.1.1-setup.exe`. If SmartScreen blocks the unsigned installer, choose More info → Run anyway. It installs for the current user.
 - Closing the window keeps werk running in the macOS Dock or Windows tray. Quit stops it. Updates are notices with a download link; installing a newer version preserves the data folder.
 
 ## Use
